@@ -8,7 +8,7 @@ This repo has recently been recreated to correct a source control issue. Please 
 - Recreate any forks based on this repo. This was recreated as of 0.6.21 tag of the original repo
 - Re-star the repository
 
-[![Build Status](https://dev.azure.com/azure-pipelines-terraform-rc/azure-pipelines-terraform-rc/_apis/build/status/azure-pipelines-tasks-terraform-rc?branchName=main)](https://dev.azure.com/azure-pipelines-terraform-rc/azure-pipelines-terraform-rc/_build/latest?definitionId=1&branchName=main)
+[![Build Status](https://dev.azure.com/azure-pipelines-terraform-rc/azure-pipelines-terraform-rc/_apis/build/status/charleszipp.azure-pipelines-tasks-terraform?branchName=main)](https://dev.azure.com/azure-pipelines-terraform-rc/azure-pipelines-terraform-rc/_build/latest?definitionId=2&branchName=main)
 ![Visual Studio Marketplace Installs - Azure DevOps Extension](https://img.shields.io/visual-studio-marketplace/azure-devops/installs/total/charleszipp.azure-pipelines-tasks-terraform?label=marketplace%20installs)
 
 This contains tasks for installing and executing Terraform commands from Azure Pipelines. These extensions are intended to work on any build agent. They are also intended to provide a guided abstraction to deploying infrastructure with Terraform from Azure Pipelines.
