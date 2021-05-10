@@ -1,0 +1,7 @@
+{ 
+	"some_string": {
+    	"sensitive": false,
+    	"type": "string",
+    	"value": "some-string-value"
+  	}
+}

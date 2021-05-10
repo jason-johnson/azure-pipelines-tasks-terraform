@@ -1,0 +1,13 @@
+jobs:
+  - job: terraform_templates
+    steps:
+      - task: CopyFiles@2
+        displayName: stage templates
+        inputs:
+          contents: |   
+            $(terraform_templates_dir)/**/*
+          targetFolder: $(build.artifactstagingdirectory)/terraform_templates
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathToPublish: '$(Build.ArtifactStagingDirectory)/terraform_templates'
+          artifactName: terraform_templates

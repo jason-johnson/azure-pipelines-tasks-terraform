@@ -1,0 +1,22 @@
+{
+    "cSpell.words": [
+        "ACCESSTOKEN",
+        "Azdo",
+        "SYSTEMVSSCONNECTION",
+        "TEAMPROJECT",
+        "Terraform",
+        "azurerm",
+        "backend",
+        "devops",
+        "injectable",
+        "inversify",
+        "terraform",
+        "toolrunner",
+        "vsts"
+    ],
+    "cucumberautocomplete.steps": [
+        "tasks/terraform-cli/src/tests/steps/*.ts"
+    ],
+    "cucumberautocomplete.syncfeatures": "tasks/terraform-cli/src/tests/features/*.feature",
+    "cucumberautocomplete.strictGherkinCompletion": false
+}

@@ -1,0 +1,26 @@
+{
+    "id": "azure-pipelines-tasks-terraform-alpha",
+    "name": "Azure Pipelines Terraform Tasks (Alpha)",
+    "galleryFlags": [
+        "Preview"
+    ],
+    "public": false,
+    "baseUri": "https://localhost:3000",
+    "contributions": [
+        {
+            "description": "A tab to show terraform plan output",
+            "id": "azure-pipelines-tasks-terraform-plan",
+            "type": "ms.vss-build-web.build-results-tab",
+            "targets": [
+                 "ms.vss-build-web.build-results-view"
+            ],
+            "properties": {
+                "name": "Terraform Plan (Alpha)",
+                "supportsTasks": [
+                    "721c3f90-d938-11e8-9d92-09d7594721b5"
+                ],
+                "uri": "index.html"
+            }
+        }
+    ]
+}

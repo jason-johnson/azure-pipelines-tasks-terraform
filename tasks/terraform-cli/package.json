@@ -1,0 +1,58 @@
+{
+  "name": "azure-pipelines-tasks-terraform-cli",
+  "version": "1.0.0",
+  "description": "Azure Pipelines task to execute terraform cli commands",
+  "main": ".bin/index.js",
+  "scripts": {
+    "build": "tsc --build",
+    "test": "cucumber-js -p default",
+    "test:coverage": "nyc -r cobertura -r html \"cucumber-js\" \"-p\" \"default\"",
+    "test:report": "mkdir -p .tests && cucumber-js -p report | grep -Ev '^##vso|^\\[command]|^[a-zA-Z0-9]' | cucumber-junit > ./.tests/results.xml",
+    "start": "ts-node -r dotenv/config ./src/index.ts",
+    "pack": "copyfiles package.json task.json icon.png \".bin/*.js\" \".bin/**/*.js\" -e \".bin/tests/*\" .dist && cd .dist && npm install --only=prod",
+    "upload": "tfx build tasks upload --task-path .dist",
+    "delete": "tfx build tasks delete --task-id 721c3f90-d938-11e8-9d92-09d7594721b5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charleszipp/azure-pipelines-tasks-terraform.git"
+  },
+  "keywords": [
+    "terraform",
+    "azure-devops",
+    "azure-pipelines"
+  ],
+  "author": "Charles Zipp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/charleszipp/azure-pipelines-tasks-terraform/issues"
+  },
+  "homepage": "https://github.com/charleszipp/azure-pipelines-tasks-terraform#readme",
+  "dependencies": {
+    "applicationinsights": "^1.8.8",
+    "azure-devops-node-api": "^10.1.1",
+    "azure-pipelines-task-lib": "^3.0.6-preview.0",
+    "dotenv": "^8.2.0",
+    "intercept-stdout": "^0.1.2",
+    "mock-require": "^3.0.3",
+    "q": "^1.5.1"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.14",
+    "@types/cucumber": "^6.0.1",
+    "@types/intercept-stdout": "^0.1.0",
+    "@types/mock-require": "^2.0.0",
+    "@types/node": "^14.14.6",
+    "@types/q": "^1.5.4",
+    "chai": "^4.2.0",
+    "copyfiles": "^2.4.0",
+    "cucumber": "^6.0.5",
+    "cucumber-junit": "^1.7.1",
+    "cucumber-pretty": "^6.0.0",
+    "cucumber-tsflow": "^3.4.1",
+    "nyc": "^15.1.0",
+    "tfx-cli": "^0.8.3",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.5"
+  }
+}

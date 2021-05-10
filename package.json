@@ -1,0 +1,22 @@
+{
+  "name": "azure-pipelines-tasks-terraform",
+  "version": "1.0.0",
+  "description": "This contains the Azure Pipelines tasks for installing and executing terraform commands.",
+  "scripts": {
+    "unpublish": "tfx extension unpublish"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charleszipp/azure-pipelines-tasks-terraform.git"
+  },
+  "author": "Charles Zipp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/charleszipp/azure-pipelines-tasks-terraform/issues"
+  },
+  "homepage": "https://github.com/charleszipp/azure-pipelines-tasks-terraform#readme",
+  "devDependencies": {
+    "cross-var": "^1.1.0",
+    "tfx-cli": "^0.8.3"
+  }
+}

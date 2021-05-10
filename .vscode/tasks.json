@@ -1,0 +1,233 @@
+{
+	"version": "2.0.0",	
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "install",
+			"path": "tasks/terraform-cli/",
+			"problemMatcher": [],
+			"label": "install - tasks/terraform-cli",
+			"detail": "install dependencies from package"
+		},
+		{
+			"type": "typescript",
+			"tsconfig": "tasks/terraform-cli/tsconfig.json",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "build",
+			"label": "build - tasks/terraform-cli"
+		},
+		{
+			"type": "typescript",
+			"tsconfig": "tasks/terraform-cli/tsconfig.json",
+			"option": "watch",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"group": "build",
+			"label": "watch - tasks/terraform-cli"
+		},
+		{
+			"type": "npm",
+			"script": "start",
+			"path": "tasks/terraform-cli/",
+			"problemMatcher": [],
+			"label": "start - tasks/terraform-cli",
+			"detail": "ts-node -r dotenv/config ./src/index.ts"
+		},
+		{
+			"type": "npm",
+			"script": "test",
+			"path": "tasks/terraform-cli/",
+			"group": "test",
+			"problemMatcher": [],
+			"label": "test - tasks/terraform-cli",
+			"detail": "cucumber-js -p default"
+		},
+		{
+			"type": "npm",
+			"script": "test -- --name \"${input:scenario}\"",
+			"path": "tasks/terraform-cli/",
+			"group": "test",
+			"problemMatcher": [],
+			"label": "test scenario - tasks/terraform-cli",
+			"detail": "cucumber-js -p default"
+		},
+		{
+			"type": "npm",
+			"script": "pack",
+			"path": "tasks/terraform-cli/",
+			"problemMatcher": [],
+			"label": "pack - tasks/terraform-cli",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"install - tasks/terraform-cli",
+				"build - tasks/terraform-cli"
+			]
+		},
+		{
+			"type": "typescript",
+			"tsconfig": "tasks/terraform-installer/tsconfig.json",
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "build",
+			"label": "build - tasks/terraform-installer"
+		},
+		{
+			"type": "typescript",
+			"tsconfig": "tasks/terraform-installer/tsconfig.json",
+			"option": "watch",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"group": "build",
+			"label": "watch - tasks/terraform-installer"
+		},
+		{
+			"type": "npm",
+			"script": "start",
+			"path": "tasks/terraform-installer/",
+			"problemMatcher": [],
+			"label": "start - tasks/terraform-installer",
+			"detail": "ts-node --require dotenv/config ./src/index.ts"
+		},
+		{
+			"type": "npm",
+			"script": "pack",
+			"path": "tasks/terraform-installer/",
+			"problemMatcher": [],
+			"label": "pack - tasks/terraform-installer",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"install - tasks/terraform-installer",
+				"build - tasks/terraform-installer"
+			]
+		},
+		{
+			"type": "npm",
+			"script": "install",
+			"path": ".",
+			"problemMatcher": [],
+			"label": "install - extension",
+			"detail": "install dependencies at the extension level"
+		},
+		{
+			"type": "npm",
+			"script": "pack",
+			"path": ".",
+			"problemMatcher": [],
+			"label": "pack - extension",
+			"dependsOn": [
+				"pack - tasks/terraform-cli",
+				"pack - tasks/terraform-installer",
+				"pack - tasks/terraform-plan",
+				"install - extension"
+			],
+			"dependsOrder": "parallel"
+		},
+		{
+			"type": "npm",
+			"script": "install",
+			"path": "views/terraform-plan/",
+			"problemMatcher": [],
+			"label": "install - views/terraform-plan",
+			"detail": "install dependencies from package"
+		},
+		{
+			"type": "npm",
+			"script": "build",
+			"path": "views/terraform-plan/",
+			"problemMatcher": [],
+			"group": "build",
+			"label": "build - views/terraform-plan"
+		},
+		{
+			"type": "npm",
+			"script": "test",
+			"path": "views/terraform-plan/",
+			"label": "tests - views/terraform-plan"
+		},		
+		{
+			"type": "npm",
+			"script": "start",
+			"path": "views/terraform-plan/",
+			"label": "start - views/terraform-plan",
+			"detail": "starts webpack dev server",
+			"promptOnClose": true,
+			"isBackground": true,			
+			"problemMatcher": [{
+				"owner": "webpack",
+				"severity": "error",
+				"fileLocation": "absolute",
+				"pattern": [
+				  {
+					"regexp": "ERROR in (.*)",
+					"file": 1
+				  },
+				  {
+					"regexp": "\\((\\d+),(\\d+)\\):(.*)",
+					"line": 1,
+					"column": 2,
+					"message": 3
+				  }
+				],
+				"background": {
+				  "activeOnStart": true,
+				  "beginsPattern": "Compiling\\.\\.\\.",
+				  "endsPattern": "Compiled "
+				}
+			}]
+		}, {
+			"type": "npm",
+			"script": "start:alpha",
+			"path": "views/terraform-plan/",
+			"label": "start:alpha - views/terraform-plan",
+			"detail": "starts webpack dev server configured for remote debugging with Azure DevOps",
+			"promptOnClose": true,
+			"isBackground": true,			
+			"problemMatcher": [{
+				"owner": "webpack",
+				"severity": "error",
+				"fileLocation": "absolute",
+				"pattern": [
+				  {
+					"regexp": "ERROR in (.*)",
+					"file": 1
+				  },
+				  {
+					"regexp": "\\((\\d+),(\\d+)\\):(.*)",
+					"line": 1,
+					"column": 2,
+					"message": 3
+				  }
+				],
+				"background": {
+				  "activeOnStart": true,
+				  "beginsPattern": "Compiling\\.\\.\\.",
+				  "endsPattern": "Compiled "
+				}
+			}]
+		},
+		{
+			"type": "npm",
+			"script": "pack",
+			"path": "views/terraform-plan/",
+			"problemMatcher": [],
+			"label": "pack - views/terraform-plan",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"install - views/terraform-plan",
+				"build - views/terraform-plan"
+			]
+		}
+	],
+	"inputs": [
+		{
+			"id": "scenario",
+			"type": "promptString",
+			"description": "The scenario to run"
+		}
+	]
+}

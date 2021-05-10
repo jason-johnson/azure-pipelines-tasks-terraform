@@ -1,0 +1,95 @@
+{
+    "manifestVersion": 1,
+    "version": "0.4.14",
+    "publisher": "charleszipp",
+    "targets": [{
+        "id": "Microsoft.VisualStudio.Services"
+    }],
+    "description": "Tasks to execute terraform commands during Azure Pipelines",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "vss-extension-icon.png"
+    },
+    "files": [
+        { "path": "tasks/terraform-cli/.dist", "packagePath": "TerraformCLI" },
+        { "path": "tasks/terraform-installer/.dist", "packagePath": "TerraformInstaller" },
+        { "path": "views/terraform-plan/.dist", "addressable": true}
+    ],
+    "repository" : {
+        "type" : "git",
+        "uri" : "https://github.com/charleszipp/azure-pipelines-tasks-terraform"
+    },
+    "content": {
+        "details": {
+            "path": "overview.md"
+        }
+    },
+    "screenshots": [
+        {
+            "path": "screenshots/overview-tfcli-azure-sub.jpg"
+        },
+        {
+            "path": "screenshots/overview-tfcli-backend-azurerm.jpg"
+        },
+        {
+            "path": "screenshots/overview-tfinstall-task-fields.jpg"
+        },
+        {
+            "path": "screenshots/overview-tfcli-secure-vars.jpg"
+        },
+        {
+            "path": "screenshots/overview-tfcli-ensure-backend.jpg"
+        },
+        {
+            "path": "screenshots/overview-tfplan-view-no-plans.jpg"
+        },
+        {
+            "path": "screenshots/overview-tfplan-view.jpg"
+        }
+    ],
+    "links": {
+        "support": {
+            "uri": "https://github.com/charleszipp/azure-pipelines-tasks-terraform/issues"
+        },
+        "license": {
+            "uri": "https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/LICENSE"
+        }
+    },
+    
+    "tags" : [
+        "terraform", "azurerm", "azure", "infrastructure as code", "iac", "cloud", "deploy"
+    ],
+    "scopes": [
+        "vso.build"
+    ],
+    "contributions": [
+        {
+            "id": "azure-pipelines-tasks-terraform-cli",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "TerraformCLI",
+                "supportsTasks": [
+                    "721c3f90-d938-11e8-9d92-09d7594721b5"
+                ]
+            }
+        },
+        {
+            "id": "azure-pipelines-tasks-terraform-installer",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "TerraformInstaller",
+                "supportsTasks": [
+                    "11645770-d18e-11e8-8f5b-1b8b62612b3b"
+                ]
+            }
+        }
+    ]
+}

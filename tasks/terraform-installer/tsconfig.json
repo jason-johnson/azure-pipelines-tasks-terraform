@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "sourceMap": false,
+    "outDir": "./.bin",
+    "strict": true,
+    "types": ["node"],
+    "esModuleInterop": true
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "azure-pipelines-tasks-terraform-installer",
+  "version": "1.0.0",
+  "description": "Azure devops pipeline task to install terraform",
+  "main": ".bin/index.js",
+  "scripts": {
+    "build": "tsc --build",
+    "pack": "copyfiles package.json task.json icon.png \".bin/*.js\" .dist && cd .dist && npm install --only=prod",
+    "delete": "tfx build tasks delete --task-id 11645770-d18e-11e8-8f5b-1b8b62612b3b",
+    "upload": "tfx build tasks upload --task-path .dist",
+    "start": "ts-node --require dotenv/config ./src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charleszipp/azure-pipelines-tasks-terraform.git"
+  },
+  "keywords": [
+    "terraform",
+    "azure-devops",
+    "vsts"
+  ],
+  "author": "Charles Zipp",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/charleszipp/azure-pipelines-tasks-terraform/issues"
+  },
+  "homepage": "https://github.com/charleszipp/azure-pipelines-tasks-terraform#readme",
+  "devDependencies": {
+    "@types/node": "^14.14.20",
+    "@types/q": "^1.5.4",
+    "copyfiles": "^2.4.0",
+    "dotenv": "^8.2.0",
+    "tfx-cli": "^0.8.3",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.5"
+  },
+  "dependencies": {
+    "azure-pipelines-task-lib": "^3.0.6-preview.0",
+    "azure-pipelines-tool-lib": "^0.13.2",
+    "node-fetch": "^2.6.1",
+    "q": "^1.5.1"
+  }
+}

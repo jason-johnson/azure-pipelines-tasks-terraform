@@ -1,0 +1,59 @@
+jobs:
+- job: views_terraform_plan
+  dependsOn: version
+  variables:
+      GitVersion.SemVer: $[ dependencies.version.outputs['version.GitVersion.SemVer'] ]
+      GitVersion.Major: $[ dependencies.version.outputs['version.GitVersion.Major'] ]
+      GitVersion.Minor: $[ dependencies.version.outputs['version.GitVersion.Minor'] ]
+      GitVersion.Patch: $[ dependencies.version.outputs['version.GitVersion.Patch'] ]
+  steps:
+    - task: Npm@1
+      displayName: version
+      inputs:
+        workingDir: $(views_terraform_plan_dir)
+        command: custom
+        customCommand: version $(GitVersion.SemVer) --no-git-tag-version --allow-same-version
+    - task: Npm@1
+      displayName: install  
+      inputs:
+        workingDir: $(views_terraform_plan_dir)
+        command: ci
+    - task: Npm@1
+      displayName: build
+      inputs:            
+        workingDir: $(views_terraform_plan_dir)
+        command: custom
+        customCommand: run build
+    - task: Npm@1
+      displayName: test
+      inputs:  
+        workingDir: $(views_terraform_plan_dir)
+        command: custom
+        customCommand: run test
+    - task: PublishCodeCoverageResults@1
+      displayName: test - publish coverage
+      inputs:
+        codeCoverageTool: cobertura
+        summaryFileLocation: $(views_terraform_plan_dir)/.tests/coverage/cobertura-coverage.xml
+        reportDirectory: $(views_terraform_plan_dir)/.tests/coverage
+    - task: PublishTestResults@2
+      displayName: test - publish results
+      inputs:
+        testResultsFormat: JUnit
+        testResultsFiles: 'results.xml' 
+        searchFolder: $(views_terraform_plan_dir)/.tests     
+    - task: Npm@1
+      displayName: pack
+      inputs:  
+        workingDir: $(views_terraform_plan_dir)
+        command: custom
+        customCommand: run pack
+    - task: CopyFiles@2
+      displayName: stage artifacts
+      inputs:
+        contents: |
+          views/terraform-plan/.dist/**/*
+        targetFolder: $(Build.ArtifactStagingDirectory)
+    - publish: '$(Build.ArtifactStagingDirectory)'
+      artifact: views_terraform_plan
+      displayName: publish artifacts

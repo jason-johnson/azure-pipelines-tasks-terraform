@@ -1,0 +1,36 @@
+{ 
+	"some_bool": {
+    	"sensitive": false,
+    	"type": "bool",
+    	"value": true
+	},	  
+	"some_string": {
+    	"sensitive": false,
+    	"type": "string",
+    	"value": "some-string-value"
+  	},	  
+	"some_secret_string": {
+		"sensitive": true,
+		"type": "string",
+		"value": "some-string-value"
+	},	  
+	"some_number": {
+		"sensitive": false,
+		"type": "number",
+		"value": 1
+	},
+	"some_tuple": {
+		"sensitive": false,
+		"type": [ "tuple", [ "string", "number", "string" ]],
+		"value": [ "1", 2, "3" ]
+	},
+	"some_map": {
+	  "sensitive": false,
+	  "type": [ "object", { "A": "number", "B": "number", "C": "number" }],
+	  "value": {
+		"A": 1,
+		"B": 2,
+		"C": 3
+	  }
+	}
+}

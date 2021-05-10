@@ -1,0 +1,40 @@
+parameters:
+  stage: ''
+
+jobs:
+- job: switch_workspaces_${{ parameters.stage }}
+  steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: download terraform templates
+      inputs: 
+        artifact: terraform_templates
+        path: $(terraform_extension_dir)
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+      displayName: install terraform
+      inputs:
+        terraformVersion: 0.15.0
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: 'terraform init'
+      inputs:
+        command: init
+        workingDirectory: $(terraform_templates_dir)
+        backendType: azurerm
+        backendServiceArm: 'env_test'
+        ensureBackend: true
+        backendAzureRmResourceGroupName: rg-trfrm-${{ parameters.stage }}-eus-czp
+        backendAzureRmResourceGroupLocation: eastus
+        backendAzureRmStorageAccountName: sttrfrm${{ parameters.stage }}eusczp
+        backendAzureRmStorageAccountSku: Standard_RAGRS
+        backendAzureRmContainerName: azure-pipelines-terraform
+        backendAzureRmKey: workspace_switch.tfstate
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: select workspace default
+      inputs:
+        workingDirectory: $(terraform_templates_dir)
+        command: workspace        
+        workspaceSubCommand: select
+        workspaceName: default
+    - bash: |
+        terraform workspace show
+      displayName: show workspace
+      workingDirectory: $(terraform_templates_dir)

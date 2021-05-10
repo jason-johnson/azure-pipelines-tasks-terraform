@@ -1,0 +1,48 @@
+jobs:
+- job: terraform_extension
+  dependsOn: ['version', 'terraform_cli', 'terraform_installer']
+  variables:
+      GitVersion.SemVer: $[ dependencies.version.outputs['version.GitVersion.SemVer'] ]
+  steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: download terraform installer
+      inputs: 
+        artifact: terraform_installer
+        path: $(terraform_extension_dir)
+    - task: DownloadPipelineArtifact@2
+      displayName: download terraform cli
+      inputs: 
+        artifact: terraform_cli
+        path: $(terraform_extension_dir)
+    - task: DownloadPipelineArtifact@2
+      displayName: download views terraform plan
+      inputs: 
+        artifact: views_terraform_plan
+        path: $(terraform_extension_dir)
+    - task: Npm@1
+      displayName: version
+      inputs:
+        workingDir: $(terraform_extension_dir)
+        command: custom
+        customCommand: version $(GitVersion.SemVer) --no-git-tag-version --allow-same-version
+    - task: Npm@1
+      displayName: install  
+      inputs:
+        workingDir: $(terraform_extension_dir)
+        command: ci
+    - task: CopyFiles@2
+      displayName: stage extension
+      inputs:
+        contents: |
+          !node_modules/.bin/*
+          screenshots/*
+          overview.md
+          package*.json
+          vss-extension*.json
+          vss-extension-icon.png
+          **/*.sh
+        targetFolder: $(build.artifactstagingdirectory)/terraform_extension
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)/terraform_extension'
+        artifactName: terraform_extension

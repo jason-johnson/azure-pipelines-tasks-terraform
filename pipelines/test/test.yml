@@ -1,0 +1,15 @@
+parameters:
+  stage: ''
+  scenarios: 
+
+stages:
+- stage: test_${{ parameters.stage }}
+  variables:
+    - group: env_${{ parameters.stage }}
+  jobs:
+    - ${{ each scenario in parameters.scenarios }}:
+      - template: ${{ scenario }}
+        parameters:
+          stage: ${{ parameters.stage }}
+
+    

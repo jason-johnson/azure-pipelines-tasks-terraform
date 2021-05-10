@@ -1,0 +1,79 @@
+parameters:
+  stage: ''
+
+stages:
+- stage: publish_private_${{ parameters.stage }}
+  variables:
+    - group: env_${{ parameters.stage }}
+  jobs:
+  - deployment: publish_private_${{ parameters.stage }}
+    displayName: publish private ${{ parameters.stage }}
+    environment: marketplace_${{ parameters.stage }}  
+    variables:
+        GitVersion.Major: $[ stageDependencies.build_${{ parameters.stage }}.version.outputs['version.GitVersion.Major'] ]
+        GitVersion.Minor: $[ stageDependencies.build_${{ parameters.stage }}.version.outputs['version.GitVersion.Minor'] ]
+        GitVersion.Patch: $[ stageDependencies.build_${{ parameters.stage }}.version.outputs['version.GitVersion.Patch'] ]
+    strategy:
+      runOnce:
+        deploy:
+          steps:    
+          - task: DownloadPipelineArtifact@2
+            displayName: download terraform extension
+            inputs: 
+              artifact: terraform_extension
+              path: $(terraform_extension_dir)
+          - task: DownloadPipelineArtifact@2
+            displayName: download terraform installer
+            inputs: 
+              artifact: terraform_installer
+              path: $(terraform_extension_dir)
+          - task: DownloadPipelineArtifact@2
+            displayName: download terraform cli
+            inputs: 
+              artifact: terraform_cli
+              path: $(terraform_extension_dir)
+          - task: DownloadPipelineArtifact@2
+            displayName: download views terraform plan
+            inputs: 
+              artifact: views_terraform_plan
+              path: $(terraform_extension_dir)
+          - task: TfxInstaller@3
+            displayName: 'install tfx-cli'
+            inputs:
+              version: '0.8.x'
+              checkLatest: true  
+          - bash: tfx extension unpublish 
+              --publisher $(marketplace_publisher) 
+              --extension-id azure-pipelines-tasks-terraform-${{ parameters.stage }}
+              -t $(marketplace_access_token)
+          - task: PublishAzureDevOpsExtension@3
+            name: publish
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'marketplace_charleszipp'
+              cwd: $(terraform_extension_dir)
+              extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch)            
+              shareWith: chzipp,azure-pipelines-terraform-${{ parameters.stage }}
+              patternManifest: |
+                vss-extension.json
+                vss-extension-${{ parameters.stage }}.json            
+          - task: InstallAzureDevOpsExtension@3
+            name: install
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'marketplace_charleszipp'
+              publisherId: $(marketplace_publisher)
+              extensionId: azure-pipelines-tasks-terraform-${{ parameters.stage }}
+              accounts: $(ado_service_url)
+          - task: Bash@3
+            name: wait_tasks_terraform_installer
+            inputs:
+              filePath: $(Build.SourcesDirectory)/pipelines/publish/poll_task_install.sh
+              arguments: -s $(ado_service_url) -t $(marketplace_access_token) -c 11645770-d18e-11e8-8f5b-1b8b62612b3b          
+          - task: Bash@3
+            name: wait_tasks_terraform_cli
+            inputs:
+              filePath: $(terraform_extension_dir)/pipelines/publish/poll_task_install.sh
+              arguments: -s $(ado_service_url) -t $(marketplace_access_token) -c 721c3f90-d938-11e8-9d92-09d7594721b5
+
+              

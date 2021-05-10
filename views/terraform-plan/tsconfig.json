@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "module": "amd",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "target": "es6",
+    "outDir": ".bin",
+    "jsx": "react",
+    "lib": ["es6", "dom"],
+    "types": ["react", "node", "jest"],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+  },
+  "exclude": [
+      "node_modules",
+      "tasks"
+  ]
+}

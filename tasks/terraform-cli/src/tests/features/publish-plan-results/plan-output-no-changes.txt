@@ -1,0 +1,8 @@
+[0m[1mazurerm_resource_group.test_01: Refreshing state... [id=/subscriptions/00000000-aaaa-0000-0000-aaaaaaaaaaaa/resourceGroups/test-01-rg][0m
+[0m[1mazurerm_resource_group.test_02: Refreshing state... [id=/subscriptions/00000000-aaaa-0000-0000-aaaaaaaaaaaa/resourceGroups/test-02-rg][0m
+
+[0m[1m[32mNo changes. Infrastructure is up-to-date.[0m[32m
+
+This means that Terraform did not detect any differences between your
+configuration and real physical resources that exist. As a result, no
+actions need to be performed.[0m

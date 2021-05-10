@@ -1,0 +1,27 @@
+parameters:
+  stage: ''
+
+jobs:
+- job: init_with_self_configured_backend_${{ parameters.stage }}
+  steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: download terraform templates
+      inputs: 
+        artifact: terraform_templates
+        path: $(terraform_extension_dir)
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+      displayName: install terraform
+      inputs:
+        terraformVersion: 0.15.0
+    - task: DownloadSecureFile@1
+      name: backend_config_file
+      displayName: 'download backend config file'
+      inputs:
+        secureFile: 'backend_${{ parameters.stage }}.vars'
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: 'terraform init'
+      inputs:
+        command: init
+        workingDirectory: $(terraform_templates_dir)
+        backendType: self-configured
+        commandOptions: '-backend-config="$(backend_config_file.secureFilePath)"'

@@ -1,0 +1,287 @@
+{
+    "id": "721c3f90-d938-11e8-9d92-09d7594721b5",
+    "name": "TerraformCLI",
+    "friendlyName": "Terraform CLI",
+    "description": "Execute terraform cli commands",
+    "author": "Charles Zipp",
+    "helpMarkDown": "",
+    "category": "Utility",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [],
+    "version": {
+        "Major": "#{GitVersion.Major}#",
+        "Minor": "#{GitVersion.Minor}#",
+        "Patch": "#{GitVersion.Patch}#"
+    },
+    "minimumAgentVersion": "1.95.0",
+    "instanceNameFormat": "terraform $(command)",
+    "groups": [{
+            "name": "backendAzureRm",
+            "displayName": "AzureRM Backend Configuration",
+            "isExpanded": false,
+            "visibleRule": "command = init && backendType = azurerm"
+        },
+        {
+            "name": "importArguments",
+            "displayName": "Import Arguments",
+            "isExpanded": false,
+            "visibleRule": "command = import"
+        },
+        {
+            "name": "forceUnlockArguments",
+            "displayName": "Force-unlock Arguments",
+            "isExpanded": true,
+            "visibleRule": "command = forceunlock"
+        },
+        {
+            "name": "variables",
+            "displayName": "Variables",
+            "isExpanded": false,
+            "visibleRule": "command = init || command = validate || command = plan || command = apply || command = destroy || command = refresh || command = import || command = forceunlock || command = show"
+        },
+        {
+            "name": "showVariables",
+            "displayName": "Show Variables",
+            "isExpanded": false,
+            "visibleRule": "command = show"
+        }
+    ],
+    "inputs": [{
+            "name": "command",
+            "type": "pickList",
+            "label": "Command",
+            "defaultValue": "validate",
+            "required": true,
+            "helpMarkDown": "The terraform command to run.",
+            "options": {
+                "init": "init",
+                "validate": "validate",
+                "plan": "plan",
+                "apply": "apply",
+                "destroy": "destroy",
+                "show": "show",
+                "refresh": "refresh",
+                "import": "import",
+                "output": "output",
+                "forceunlock": "force-unlock",
+                "workspace" : "workspace"
+            },
+            "properties": {
+                "EditableOptions": "False"
+            }
+        },
+        {
+            "name": "workingDirectory",
+            "type": "filePath",
+            "label": "Configuration Directory",
+            "defaultValue": "$(System.DefaultWorkingDirectory)",
+            "helpMarkDown": "Terraform configuration directory. If empty, the root of the repository (build) or artifacts (release) is used, which is $(System.DefaultWorkingDirectory)",
+            "required": "false"
+        },
+        {
+            "name": "environmentServiceName",
+            "type": "connectedService:AzureRM",
+            "label": "Environment Azure Subscription (select if not configured inside terraform code)",
+            "required": false,
+            "visibleRule": "command = plan || command = apply || command = destroy || command = refresh || command = import",
+            "helpMarkDown": "Select an Azure service connection if you would like the azurerm provider configured for you (using the service principal credentials configured in the selected service connection). **This field is optional.** Leave empty should you choose to self-configure the provider(s) used. Provider environment variables can be configured securely by selecting an env file from the `Secured Variables File` pick list."
+        },
+        {
+            "name": "runAzLogin",
+            "type": "boolean",
+            "label": "Run Azure CLI Login",
+            "defaultValue": "false",
+            "required": false,
+            "visibleRule": "command = plan || command = apply || command = destroy || command = refresh || command = import",
+            "helpMarkDown": "If checked, task will execute az login to enable local-exec provisioner to run az cli commands"
+        },
+        {
+            "name": "secureVarsFile",
+            "type": "secureFile",
+            "label": "Secured Variables File (Secrets)",
+            "required": false,
+            "helpMarkDown": "Pick a secure file from Azure DevOps Secure Files. This option is used to pass terraform variables using a tfvars or .env file stored in secure files.",
+            "groupName": "variables"
+        },
+        {
+            "name": "workspaceSubCommand",
+            "type": "pickList",
+            "label": "Workspace Sub Command",
+            "defaultValue": "select",
+            "required": false,
+            "helpMarkDown": "The workspace sub-command to run.",
+            "options": {
+                "select": "select"
+            },
+            "properties": {
+                "EditableOptions": "False"
+            },
+            "visibleRule": "command = workspace"
+        },
+        {
+            "name": "commandOptions",
+            "type": "string",
+            "label": "Command Options",
+            "helpMarkDown": "Any additional options for the selected command such as `-input=true`. Multiple options can be provided delimited by spaces as `-option1=value -option2=value -option3=value`",
+            "required": "false",
+            "visibleRule": "command != forceunlock"
+        },
+        {
+            "name": "backendType",
+            "type": "pickList",
+            "label": "Backend Type",
+            "defaultValue": "local",
+            "required": false,
+            "helpMarkDown": "Select the terraform backend type to use. Select self-configured if your backend configuration is expected to be set via environment variables or command options. Environment files can be provided using Secure Files Library in AzDO and specified in Secure Files configuration field. Command options such as `-backend-config=` flag can be provided in the Command Options configuration field.",
+            "options": {
+                "local": "local",
+                "azurerm": "azurerm",
+                "selfConfigured": "self-configured"
+            },
+            "properties": {
+                "EditableOptions": "False"
+            },
+            "visibleRule": "command = init"
+        },
+        {
+            "name": "backendServiceArm",
+            "type": "connectedService:AzureRM",
+            "label": "Backend Azure Subscription",
+            "required": false,
+            "helpMarkDown": "Select an Azure resource manager subscription for the terraform backend configuration",
+            "groupName": "backendAzureRm"
+        },
+        {
+            "name": "ensureBackend",
+            "type": "boolean",
+            "label": "Create Backend (If not exists)",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "If checked, a backend will be created according to the configuration provided for the selected backend if it does not exist",
+            "groupName": "backendAzureRm"
+        },
+        {
+            "name": "backendAzureRmResourceGroupName",
+            "type": "string",
+            "label": "Resource Group Name",
+            "required": false,
+            "helpMarkDown": "The resource group which contains the storage account.",
+            "groupName": "backendAzureRm"
+        },
+        {
+          "name" : "backendAzureRmResourceGroupLocation",
+          "type" : "string",
+          "label" : "Resource Group Location",
+          "required" : false,
+          "helpMarkDown" : "The name of the location into which the resource group will be provisioned (i.e. 'eastus')",
+          "groupName": "backendAzureRm",
+          "visibleRule" : "ensureBackend = true"
+        },
+        {
+            "name": "backendAzureRmStorageAccountName",
+            "type": "string",
+            "label": "Storage Account Name",
+            "required": false,
+            "helpMarkDown": "The name of the storage account.",
+            "groupName": "backendAzureRm"
+        },
+        {
+          "name" : "backendAzureRmStorageAccountSku",
+          "type" : "string",
+          "label" : "Storage Account SKU",
+          "required" : false,
+          "helpMarkDown" : "The storage account SKU. Defaults to Standard_RAGRS.",
+          "defaultValue" : "Standard_RAGRS",
+          "groupName": "backendAzureRm",
+          "visibleRule" : "ensureBackend = true"
+        },
+        {
+            "name": "backendAzureRmContainerName",
+            "type": "string",
+            "label": "Container Name",
+            "required": false,
+            "helpMarkDown": "The name of the container to use within the storage account.",
+            "groupName": "backendAzureRm"
+        },
+        {
+            "name": "backendAzureRmKey",
+            "type": "string",
+            "label": "Key",
+            "required": false,
+            "helpMarkDown": "The key where to place/look for state file inside the container",
+            "groupName": "backendAzureRm"
+        },
+        {
+            "name": "aiInstrumentationKey",
+            "type": "string",
+            "required": false,
+            "visibleRule": "command = x",
+            "defaultValue": "#{ai_instrumentation_key}#"
+        },
+        {
+            "name": "allowTelemetryCollection",
+            "type": "boolean",
+            "label": "Allow Telemetry Collection",
+            "defaultValue": "true",
+            "required": true,
+            "helpMarkDown": "When checked, allows the collection of usage telemetry to assist with improving the experience."
+        },
+        {
+            "name": "inputTargetPlanOrStateFilePath",
+            "type": "string",
+            "label": "Target Plan or State File Path",
+            "required": false,
+            "helpMarkDown": "path to a terraform plan or state file to show its content, If no path is specified, the current state will be shown.",
+            "groupName": "showVariables"
+        },
+        {
+            "name": "resourceAddress",
+            "type": "string",
+            "label": "Resource Address",
+            "required": false,
+            "helpMarkDown": "Terraform [Resource Address](https://www.terraform.io/docs/internals/resource-addressing.html) to which the target resource will be imported. See [terraform import usage](https://www.terraform.io/docs/commands/import.html#usage)",
+            "groupName": "importArguments"
+        },
+        {
+            "name": "resourceId",
+            "type": "string",
+            "label": "Resource ID",
+            "required": false,
+            "helpMarkDown": "ID of the target resource to import. For example, the ID of Azure Resource Group is the /sub/{subId}/resourceGroups/{resourceGroupName}. See [azure resource group import example](https://www.terraform.io/docs/providers/azurerm/r/resource_group.html#import) and [terraform import usage](https://www.terraform.io/docs/commands/import.html#usage)",
+            "groupName": "importArguments"
+        },
+        {
+            "name": "lockID",
+            "type": "string",
+            "label": "Lock ID",
+            "required": false,
+            "helpMarkDown": "Lock ID which needs to be forcefully removed",
+            "groupName": "forceUnlockArguments"
+        },
+        {
+            "name": "publishPlanResults",
+            "type": "string",
+            "label": "Publish Plan Results Name",
+            "required": false,
+            "visibleRule": "command = plan",
+            "helpMarkDown": "The name to give the published plan. If provided, the plan will be published and made available on the Terraform Plan view/tab."
+        },
+        {
+            "name": "workspaceName",
+            "type": "string",
+            "label": "Workspace Name",
+            "required": false,
+            "visibleRule": "workspaceSubCommand = select",
+            "helpMarkDown": "The name of the target workspace"
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": ".bin/index.js",
+            "argumentFormat": ""
+        }
+    }
+}

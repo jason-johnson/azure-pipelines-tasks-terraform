@@ -1,0 +1,25 @@
+{
+    "resource_changes": [
+        {
+            "address": "azurerm_resource_group.rg",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": [
+                    "create"
+                ],
+                "before": null,
+                "after": {
+                    "location": "",
+                    "name": "rg---"
+                },
+                "after_unknown": {
+                    "id": true,
+                    "tags": true
+                }
+            }
+        }
+    ]
+}

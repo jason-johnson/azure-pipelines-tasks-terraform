@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "target": "es6",
+      "module": "commonjs",
+      "sourceMap": false,
+      "strict": true,
+      "outDir": ".bin",    
+      "typeRoots": [
+        "node_modules/@types"
+      ],
+      "types": [
+        "node", 
+        "chai",
+        "cucumber"
+      ],
+      "esModuleInterop": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+    },
+    "exclude": [
+      "node_modules"
+    ]
+  }

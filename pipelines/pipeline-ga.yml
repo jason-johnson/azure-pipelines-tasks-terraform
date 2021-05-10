@@ -1,0 +1,31 @@
+pr: none
+trigger:
+  branches:
+    exclude:
+      - '*'	
+  tags:
+    include:
+      - '*'
+  
+variables:
+  terraform_extension_dir: $(System.DefaultWorkingDirectory)
+  terraform_installer_dir: $(System.DefaultWorkingDirectory)/tasks/terraform-installer
+  terraform_cli_dir: $(System.DefaultWorkingDirectory)/tasks/terraform-cli
+  views_terraform_plan_dir: $(System.DefaultWorkingDirectory)/views/terraform-plan
+  terraform_templates_dir: $(System.DefaultWorkingDirectory)/templates
+  # secure files can only be parameterized if variable is defined at global scope
+  # https://github.com/microsoft/azure-pipelines-tasks/issues/6885#issuecomment-618200608
+  tf_variables_secure_file: b1de708e-785c-4088-9305-3b772630676a
+  marketplace_publisher: charleszipp
+  ado_service_url: https://dev.azure.com/azure-pipelines-terraform-ga
+
+
+name: $(GitVersion.FullSemVer)
+
+stages:
+  - template: build/build.yml
+    parameters:
+      stage: ga
+  - template: publish/publish_public.yml
+    parameters:
+      stage: ga
