@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "azure-pipelines-task-lib": "^3.0.6-preview.0",
-    "azure-pipelines-tool-lib": "^0.13.2",
+    "azure-pipelines-tool-lib": "^1.0.2",
     "node-fetch": "^2.6.1",
     "q": "^1.5.1"
   }
