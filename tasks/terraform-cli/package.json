@@ -47,11 +47,11 @@
     "chai": "^4.2.0",
     "copyfiles": "^2.4.0",
     "cucumber": "^6.0.5",
-    "cucumber-junit": "^1.7.1",
+    "cucumber-junit": "^1.5.0",
     "cucumber-pretty": "^6.0.0",
     "cucumber-tsflow": "^3.4.1",
     "nyc": "^15.1.0",
-    "tfx-cli": "^0.8.3",
+    "tfx-cli": "^0.6.4",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.5"
   }
