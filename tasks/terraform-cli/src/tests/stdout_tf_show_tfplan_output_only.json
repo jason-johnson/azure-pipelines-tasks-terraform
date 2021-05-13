@@ -1,0 +1,23 @@
+{
+    "format_version": "0.1",
+    "terraform_version": "0.13.4",
+    "planned_values": {
+        "outputs": {
+            "some_string": {
+                "sensitive": false,
+                "value": "NOT_EXISTS"
+            }
+        },
+        "root_module": {}
+    },
+    "output_changes": {
+        "some_string": {
+            "actions": [
+                "create"
+            ],
+            "before": null,
+            "after": "NOT_EXISTS",
+            "after_unknown": false
+        }
+    }
+}

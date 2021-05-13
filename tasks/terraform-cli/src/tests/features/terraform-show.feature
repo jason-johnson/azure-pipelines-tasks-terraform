@@ -81,3 +81,14 @@ Feature: terraform show
         And the terraform cli task fails with message "terraform show command supports only env files, no tfvars are allowed during this stage."
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "1"
         And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is not set
+
+        Scenario: show tf plan file with output only
+        Given terraform exists
+        And terraform command is "show"
+        And running command "terraform show -json show.plan" returns successful result with stdout from file "./src/tests/stdout_tf_show_tfplan_output_only.json"
+        And the target plan or state file is "show.plan"
+        When the terraform cli task is run
+        Then the terraform cli task executed command "terraform show -json show.plan"
+        And the terraform cli task is successful
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+        And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is set to "false"

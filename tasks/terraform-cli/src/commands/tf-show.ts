@@ -44,14 +44,17 @@ export class TerraformShow implements ICommand {
         let jsonResult = JSON.parse(resultNoEol);
         const deleteValue = "delete";
 
-        for (let resourceChange  of jsonResult.resource_changes) {
-            if  (resourceChange.change.actions.includes(deleteValue))
-            {
-                this.setDestroyDetectedFlag(ctx, true);
-                this.logger.warning("Destroy detected!")
-                return;
+        if(jsonResult.resource_changes){
+            for (let resourceChange  of jsonResult.resource_changes) {
+                if  (resourceChange.change.actions.includes(deleteValue))
+                {
+                    this.setDestroyDetectedFlag(ctx, true);
+                    this.logger.warning("Destroy detected!")
+                    return;
+                }
             }
         }
+        
         this.logger.debug("No destroy detected")
         this.setDestroyDetectedFlag(ctx, false);
     }
