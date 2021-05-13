@@ -53,7 +53,7 @@ stages:
               connectedServiceName: 'marketplace_charleszipp'
               cwd: $(terraform_extension_dir)
               extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch)            
-              shareWith: chzipp,azure-pipelines-terraform-${{ parameters.stage }}
+              shareWith: $(marketplace_share_with)
               patternManifest: |
                 vss-extension.json
                 vss-extension-${{ parameters.stage }}.json            
