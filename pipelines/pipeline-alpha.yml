@@ -27,4 +27,4 @@ stages:
       stage: alpha
       scenarios:
         - smoke_test.yml
-        - init_with_self_configured_backend.yml
+        - switch_workspaces.yml
