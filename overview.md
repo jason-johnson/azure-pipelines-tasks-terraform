@@ -328,3 +328,15 @@ The task supports managing workspaces within pipelines. The following workspace 
     workspaceSubCommand: select
     workspaceName: foo
 ```
+
+### Workspace New
+
+```yaml
+- task: TerraformCLI@0
+  displayName: select workspace foo
+  inputs:
+    workingDirectory: $(terraform_templates_dir)
+    command: workspace        
+    workspaceSubCommand: new
+    workspaceName: foo
+```

@@ -1,0 +1,1 @@
+\u001b[0m\u001b[32m\u001b[1mCreated and switched to workspace \"bar\"!\u001b[0m\u001b[32m\n\nYou're now on a new, empty workspace. Workspaces isolate their state,\nso if you run \"terraform plan\" Terraform will not see any existing state\nfor this configuration.\u001b[0m\n

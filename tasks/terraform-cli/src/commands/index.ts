@@ -55,6 +55,7 @@ export { TerraformForceUnlock as ForceUnlockCommandHandler } from './tf-force-un
 export { TerraformShow as ShowCommandHandler } from './tf-show';
 export { TerraformFormat as FormatCommandHandler } from './tf-fmt';
 export { TerraformWorkspaceSelect as WorkspaceSelectCommandHandler } from './tf-workspace-select';
+export { TerraformWorkspaceNew as WorkspaceNewCommandHandler } from './tf-workspace-new';
 
 declare module '../runners'{
     interface RunnerResult{

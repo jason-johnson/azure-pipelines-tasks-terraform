@@ -115,6 +115,8 @@ export class Task {
         switch(this.ctx.workspaceSubCommand){
             case "select":
                 return new commands.WorkspaceSelectCommandHandler(this.runner);
+            case "new":
+                return new commands.WorkspaceNewCommandHandler(this.runner);
             default:
                 throw new Error(`Workspace sub-command "${this.ctx.workspaceSubCommand}" is not supported`);
         }        

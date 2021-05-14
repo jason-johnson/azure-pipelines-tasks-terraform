@@ -28,6 +28,13 @@ jobs:
         backendAzureRmContainerName: azure-pipelines-terraform
         backendAzureRmKey: workspace_switch.tfstate
     - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: new workspace foo
+      inputs:
+        workingDirectory: $(terraform_templates_dir)
+        command: workspace        
+        workspaceSubCommand: new
+        workspaceName: foo
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: select workspace default
       inputs:
         workingDirectory: $(terraform_templates_dir)
@@ -37,4 +44,8 @@ jobs:
     - bash: |
         terraform workspace show
       displayName: show workspace
+      workingDirectory: $(terraform_templates_dir)
+    - bash: |
+        terraform workspace delete foo
+      displayName: delete new workspace
       workingDirectory: $(terraform_templates_dir)
