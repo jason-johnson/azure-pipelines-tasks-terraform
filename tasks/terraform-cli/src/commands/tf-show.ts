@@ -8,15 +8,15 @@ import { ITaskAgent } from "../task-agent";
 export class TerraformShow implements ICommand {
     constructor(
         private readonly taskAgent: ITaskAgent,
-        private readonly runner: IRunner, 
+        private readonly runner: IRunner,
         private readonly logger: ILogger
         ) {
     }
 
-    async exec(ctx: ITaskContext): Promise<CommandResponse> {        
+    async exec(ctx: ITaskContext): Promise<CommandResponse> {
         const options = await new RunWithTerraform(ctx, true)
-            .withSecureVarFile(this.taskAgent, ctx.secureVarsFileId, ctx.secureVarsFileName)    
-            .withJsonOutput(ctx.commandOptions)            
+            .withSecureVarFile(this.taskAgent, ctx.secureVarsFileId, ctx.secureVarsFileName)
+            .withJsonOutput(ctx.commandOptions)
             .withCommandOptions(ctx.commandOptions)
             .withPlanOrStateFile(ctx.planOrStateFilePath)
             .build();
@@ -54,14 +54,14 @@ export class TerraformShow implements ICommand {
                 }
             }
         }
-        
+
         this.logger.debug("No destroy detected")
         this.setDestroyDetectedFlag(ctx, false);
     }
 
     private setDestroyDetectedFlag(ctx: ITaskContext, value : boolean):void
     {
-        ctx.setVariable("TERRAFORM_PLAN_HAS_DESTROY_CHANGES", value.toString(), false);
+        ctx.setVariable("TERRAFORM_PLAN_HAS_DESTROY_CHANGES", value.toString(), false, true);
         this.logger.debug(`set vso[task.setvariable variable=TERRAFORM_PLAN_HAS_DESTROY_CHANGES] to ${value}`)
     }
 }
