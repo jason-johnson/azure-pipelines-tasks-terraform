@@ -18,6 +18,9 @@ const planHasChangesRe = /^Terraform will perform the following actions:/
 const planSummaryLineRe = /^Plan: ([0-9]?) to add, ([0-9]?) to change, ([0-9]?) to destroy.$/
 const planSummaryEndRe = /^[-]+$/
 
+const planWarning = /^Warning: (.*)/
+
+
 // The lines can have shell color codes in them
 const planColorCodesRe = /\x1b\[[0-9;]*m/g
 
@@ -94,6 +97,11 @@ export class TerraformPlan implements ICommand {
         for (let line of plan.split('\n')) {
             let tmpLine = line.replace(planColorCodesRe, '');
             let match = tmpLine.match(matcher)
+            let warning = tmpLine.match(planWarning)
+
+            if (warning !== null) {
+                this.logger.warning(`${warning[1]}`)
+            }
 
             if (lookingForSummaryEnd && match !== null) {
                 break
