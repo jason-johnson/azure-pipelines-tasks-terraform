@@ -15,7 +15,7 @@ const planHasChangesRe = /^Terraform will perform the following actions:/
 //Plan: 1 to add, 1 to change, 1 to destroy.
 //Plan: 0 to add, 1 to change, 1 to destroy.
 //Plan: 0 to add, 1 to change, 0 to destroy.
-const planSummaryLineRe = /^Plan: ([0-9]?) to add, ([0-9]?) to change, ([0-9]?) to destroy.$/
+const planSummaryLineRe = /^Plan: ([0-9]+) to add, ([0-9]+) to change, ([0-9]+) to destroy.$/
 const planSummaryEndRe = /^[-]+$/
 
 // The lines can have shell color codes in them
