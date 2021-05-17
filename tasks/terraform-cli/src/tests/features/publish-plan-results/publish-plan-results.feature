@@ -12,6 +12,23 @@ Feature: publish plan results
         When the terraform cli task is run
         Then the terraform cli task is successful
         And a plan named "test_deploy.tfplan" is published with the following content from file "./src/tests/features/publish-plan-results/plan-summary-with-adds-destroys-and-updates.txt"
+        And the following warnings are logged
+        |Plan 'test_deploy.tfplan' is going to create 1 resources.|
+        |Plan 'test_deploy.tfplan' is going to update 1 resources.|
+        |Plan 'test_deploy.tfplan' is going to destroy 1 resources.|
+
+    Scenario: publish plan results enabled no changes
+        Given terraform exists
+        And terraform command is "plan" with options "-detailed-exitcode"
+        And running command "terraform plan -detailed-exitcode" returns successful result with exit code 0 and stdout from file "./src/tests/features/publish-plan-results/plan-output-no-changes.txt"
+        And publish plan result is "test_deploy.tfplan"
+        When the terraform cli task is run
+        Then the terraform cli task is successful
+        And a plan named "test_deploy.tfplan" is published with the following content from file "./src/tests/features/publish-plan-results/plan-summary-no-changes.txt"
+        And the following warnings are not logged
+        |Plan 'test_deploy.tfplan' is going to create 0 resources.|
+        |Plan 'test_deploy.tfplan' is going to update 0 resources.|
+        |Plan 'test_deploy.tfplan' is going to destroy 0 resources.|
 
     Scenario: publish plan results not specified
         Given terraform exists
