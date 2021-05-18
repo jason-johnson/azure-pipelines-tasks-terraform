@@ -5,6 +5,7 @@ import { ILogger } from "../logger";
 
 const versionRe = /([0-9]+)\.([0-9]+)\.([0-9]+)?/;
 const versionOutOfDate = /Your version of Terraform is out of date! The latest version\nis [0-9]+\.[0-9]+\.[0-9]+\./;
+const versionOutOfDate11 = /Your version of Terraform is out of date! The latest version\r\nis [0-9]+\.[0-9]+\.[0-9]+\./;
 
 export class TerraformVersion implements ICommand {
     private readonly runner: IRunner;
@@ -22,9 +23,9 @@ export class TerraformVersion implements ICommand {
         if(version){
             ctx.setTerraformVersion(version[0], Number.parseInt(version[1]), Number.parseInt(version[2]), Number.parseInt(version[3]))
         }
-        const outOfDate = result.stdout.match(versionOutOfDate);
+        const outOfDate = result.stdout.match(versionOutOfDate) || result.stdout.match(versionOutOfDate11);
         if (outOfDate !== null){
-            this.logger.warning(String(outOfDate).replace('\n',''))
+            this.logger.warning(String(outOfDate).replace('\n',' ').replace('\r', ''));
         }
 
         return result.toCommandResponse();
