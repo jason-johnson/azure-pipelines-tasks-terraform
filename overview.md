@@ -55,6 +55,19 @@ If `terraformVersion` not provided, task defaults to `latest`
         terraformVersion: 0.14.3
 ```
 
+## Check Terraform Version
+
+The task supports running `terraform version` individually. When run, if the version is out of date, the task will log a warning to the pipeline summary if there is a newer version of terraform available.
+
+```yaml
+- task: TerraformCLI@0
+  displayName: 'check terraform version'
+  inputs:
+    command: version
+```
+
+When running the other commands, `terraform version` is also run so that the version is recorded to the build log. However, warnings regarding out of date versions will be suppressed to reduce noise.
+
 ## Azure Service Connection / Service Principal Integration
 
 When executing commands that interact with Azure such as `plan`, `apply`, and `destroy`, the task will utilize an Azure Service Connection to authorize operations against the target subscription. This is specified via the `environmentServiceName` input
