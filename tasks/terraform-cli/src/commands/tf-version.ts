@@ -4,8 +4,7 @@ import { ITaskContext } from "../context";
 import { ILogger } from "../logger";
 
 const versionRe = /([0-9]+)\.([0-9]+)\.([0-9]+)?/;
-const versionOutOfDate = /Your version of Terraform is out of date! The latest version\nis [0-9]+\.[0-9]+\.[0-9]+\./;
-const versionOutOfDate11 = /Your version of Terraform is out of date! The latest version\r\nis [0-9]+\.[0-9]+\.[0-9]+\./;
+const versionOutOfDate = /Your version of Terraform is out of date! The latest version\r?\nis ([0-9]+\.[0-9]+\.[0-9]+)\./;
 
 export class TerraformVersion implements ICommand {
     private readonly runner: IRunner;
@@ -24,11 +23,11 @@ export class TerraformVersion implements ICommand {
             ctx.setTerraformVersion(version[0], Number.parseInt(version[1]), Number.parseInt(version[2]), Number.parseInt(version[3]))
         }
         if(ctx.name === "version"){
-            const outOfDate = result.stdout.match(versionOutOfDate) || result.stdout.match(versionOutOfDate11);
+            const outOfDate = result.stdout.match(versionOutOfDate);
             if (outOfDate !== null){
-                this.logger.warning(String(outOfDate).replace('\n',' ').replace('\r', ''));
+                this.logger.warning("Your version of Terraform is out of date! The latest version is " + String(outOfDate[1]));
             }
-        }        
+        }
 
         return result.toCommandResponse();
     }
