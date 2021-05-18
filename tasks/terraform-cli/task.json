@@ -57,6 +57,7 @@
             "required": true,
             "helpMarkDown": "The terraform command to run.",
             "options": {
+                "version": "version",
                 "init": "init",
                 "validate": "validate",
                 "plan": "plan",
