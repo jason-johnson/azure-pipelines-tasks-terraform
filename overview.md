@@ -245,7 +245,7 @@ Use output variables as pipeline variables
 
 ## Terraform Plan View
 
-The extension includes a feature to render terraform plans within the pipeline run summary. To use this feature `publishPlanResults` input must be provided when running `terraform plan` via the `TerraformCLI` task. Then input should be set to the name that should be assigned to the plan.
+The extension includes a feature to render terraform plans within the pipeline run summary. To use this feature the `publishPlanResults` input must be provided when running `terraform plan` via the `TerraformCLI` task. The input should be set to the name that should be assigned to the plan (however, do not use the name of a subfolder in the working directory).
 
 > **Important** - When enabling `publishPlanResults` the `-detailed-exitcode` option will be added when running terraform plan if it was not already provided in the `commandOptions` input. This will cause `TERRAFORM_LAST_EXITCODE` to be `2` when plan includes changes; which is a successful exitcode. Additionally, warnings will be logged to the pipeline summary when changes are present as a means to alert that changes will be made if the templates are applied.
 

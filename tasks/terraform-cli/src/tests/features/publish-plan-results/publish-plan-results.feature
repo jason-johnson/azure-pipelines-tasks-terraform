@@ -55,3 +55,12 @@ Feature: publish plan results
         And a plan named "test_deploy.tfplan" is published with the following content from file "./src/tests/features/publish-plan-results/plan-summary-with-1-unchanged-1-to-add.txt"
         And 2 plans are published
 
+    Scenario: publish plan results with more than 9 changes
+        Given terraform exists
+        And terraform command is "plan" with options "-detailed-exitcode"
+        And running command "terraform plan -detailed-exitcode" returns successful result with exit code 2 and stdout from file "./src/tests/features/publish-plan-results/plan-output-with-more-than-nine-changes.txt"
+        And publish plan result is "test_deploy.tfplan"
+        When the terraform cli task is run
+        Then the terraform cli task is successful
+        And a plan named "test_deploy.tfplan" is published with the following content from file "./src/tests/features/publish-plan-results/plan-summary-with-more-than-nine-changes.txt"
+
