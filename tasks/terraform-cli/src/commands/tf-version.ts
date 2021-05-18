@@ -23,10 +23,12 @@ export class TerraformVersion implements ICommand {
         if(version){
             ctx.setTerraformVersion(version[0], Number.parseInt(version[1]), Number.parseInt(version[2]), Number.parseInt(version[3]))
         }
-        const outOfDate = result.stdout.match(versionOutOfDate) || result.stdout.match(versionOutOfDate11);
-        if (outOfDate !== null){
-            this.logger.warning(String(outOfDate).replace('\n',' ').replace('\r', ''));
-        }
+        if(ctx.name === "version"){
+            const outOfDate = result.stdout.match(versionOutOfDate) || result.stdout.match(versionOutOfDate11);
+            if (outOfDate !== null){
+                this.logger.warning(String(outOfDate).replace('\n',' ').replace('\r', ''));
+            }
+        }        
 
         return result.toCommandResponse();
     }
