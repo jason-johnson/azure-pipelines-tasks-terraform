@@ -25,13 +25,13 @@ export class Task {
         "fmt": "fmt",
         "workspace" : "workspace"
     }
-    
-    constructor(ctx: ITaskContext, runner: IRunner, taskAgent: ITaskAgent, logger: ILogger){        
+
+    constructor(ctx: ITaskContext, runner: IRunner, taskAgent: ITaskAgent, logger: ILogger){
         this.ctx = ctx;
         this.runner = runner;
         this.taskAgent = taskAgent;
         this.logger = logger;
-    }     
+    }
 
     async exec(): Promise<commands.CommandResponse> {
         let handlerName = this.commandResolvers[this.ctx.name];
@@ -39,14 +39,14 @@ export class Task {
         if(!handlerName){
             throw new Error(`Support for command "${this.ctx.name}" is not implemented`);
         }
-        
-        let response: commands.CommandResponse | undefined;        
+
+        let response: commands.CommandResponse | undefined;
         try{
             const command = <commands.ICommand>(<any>this)[handlerName]();
-            
+
             if(this.ctx.name !== 'version'){
                 response = await this.version().exec(this.ctx);
-            }            
+            }
             response = await command.exec(this.ctx);
         }
         catch(err){
@@ -64,7 +64,7 @@ export class Task {
     }
 
     version(): commands.ICommand {
-        return new commands.VersionCommandHandler(this.runner);
+        return new commands.VersionCommandHandler(this.runner, this.logger);
     }
 
     init(): commands.ICommand {
@@ -85,7 +85,7 @@ export class Task {
 
     destroy(): commands.ICommand {
         return new commands.DestroyCommandHandler(this.taskAgent, this.runner);
-    }  
+    }
 
     import(): commands.ICommand {
         return new commands.ImportCommandHandler(this.taskAgent, this.runner);
@@ -102,7 +102,7 @@ export class Task {
     forceUnlock(): commands.ICommand {
         return new commands.ForceUnlockCommandHandler(this.taskAgent, this.runner);
     }
-    
+
     show(): commands.ICommand {
         return new commands.ShowCommandHandler(this.taskAgent, this.runner, this.logger);
     }
@@ -119,6 +119,6 @@ export class Task {
                 return new commands.WorkspaceNewCommandHandler(this.runner);
             default:
                 throw new Error(`Workspace sub-command "${this.ctx.workspaceSubCommand}" is not supported`);
-        }        
+        }
     }
 }

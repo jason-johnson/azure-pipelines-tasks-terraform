@@ -1,5 +1,7 @@
 import { binding, given, then, when, after, before } from 'cucumber-tsflow';
-import { expect } from 'chai';
+import { expect, use as chaiUse } from 'chai';
+import assertArrays from 'chai-arrays';
+chaiUse(assertArrays);
 import TaskRunner from './task-runner';
 import { TaskAnswers } from './task-answers.steps';
 import { requestedAnswers } from './mock-answer-spy';
@@ -149,11 +151,36 @@ export class TerraformSteps {
         expect(Object.keys(this.test.taskAgent.attachedFiles).length).to.eq(count);
     }
 
+    @then("the following warnings are logged")
+    public warningsAreLogged(table: TableDefinition){
+        expect(this.test.logger).not.to.be.undefined;
+        if(this.test.logger){
+            const warningsExpected = this.tableToArray(table);
+            expect(this.test.logger.warnings).to.be.containingAllOf(warningsExpected);
+        }
+    }
+
+    @then("the following warnings are not logged")
+    public warningsAreNotLogged(table: TableDefinition){
+        expect(this.test.logger).not.to.be.undefined;
+        if(this.test.logger){
+            const warningsNotExpected = this.tableToArray(table);
+            expect(this.test.logger.warnings).not.to.be.containingAllOf(warningsNotExpected);
+        }
+    }
+
     private expectAttachmentContent(name: string){
         const attachment = this.test.taskAgent.attachedFiles[name];
         expect(attachment).not.does.be.undefined;
         const content = this.test.taskAgent.writtenFiles[attachment.path];
         expect(content).not.does.be.undefined;
         return content;
+    }
+
+    private tableToArray(table: TableDefinition){
+        let values: string[] = [];
+        const rows = table.raw();
+        rows.forEach(row => values.push(row[0]));
+        return values;
     }
 }

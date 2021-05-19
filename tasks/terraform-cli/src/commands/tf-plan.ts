@@ -66,6 +66,7 @@ export class TerraformPlan implements ICommand {
             switch (result.exitCode) {
                 case terraformPlanOkNoChanges:
                     content = this.parsePlanOutput(result.stdout, planHasNoChangesRe, ctx.publishPlanResults);
+                    this.logger.warning(`Plan '${ctx.publishPlanResults}' has no changes. Infrastructure is up-to-date.`)
                     break;
                 case terraformPlanOkHasChanges:
                     content = this.parsePlanOutput(result.stdout, planHasChangesRe, ctx.publishPlanResults)
@@ -80,9 +81,9 @@ export class TerraformPlan implements ICommand {
     }
 
     private planSummaryReport(toAdd: string, toUpdate: string, toDestroy: string, planName: string) {
-        this.logger.warning(`Plan '${planName}' is going to create ${toAdd} resources.`)
-        this.logger.warning(`Plan '${planName}' is going to update ${toUpdate} resources.`)
-        this.logger.warning(`Plan '${planName}' is going to destroy ${toDestroy} resources.`)
+        if ( toAdd     != "0" ) this.logger.warning(`Plan '${planName}' is going to create ${toAdd} resources.`)
+        if ( toUpdate  != "0" ) this.logger.warning(`Plan '${planName}' is going to update ${toUpdate} resources.`)
+        if ( toDestroy != "0" ) this.logger.warning(`Plan '${planName}' is going to destroy ${toDestroy} resources.`)
     }
 
     private parsePlanOutput(plan: string, summaryLine: RegExp, planName: string): string {

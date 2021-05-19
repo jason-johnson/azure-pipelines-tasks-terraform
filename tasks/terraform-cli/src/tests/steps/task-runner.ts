@@ -8,12 +8,14 @@ import { CommandResponse } from "../../commands";
 import { ITaskContext } from "../../context";
 import intercept from 'intercept-stdout';
 import TaskLogger from "../../logger/task-logger";
+import MockLogger from "../../logger/mock-logger";
 
 export default class TaskRunner {
     error?: Error;
     response?: CommandResponse;
     logs: string[] = [];
     public readonly taskAgent: MockTaskAgent;
+    public logger?: MockLogger;
 
     constructor() {        
         this.taskAgent = new MockTaskAgent();
@@ -21,9 +23,9 @@ export default class TaskRunner {
 
     public async run(taskContext: ITaskContext, taskAnswers: ma.TaskLibAnswers) {        
         const toolFactory = new MockToolFactory();
-        const logger = new TaskLogger(taskContext, tasks)
-        const runner = new AzdoRunner(toolFactory, logger);
-        const task = new Task(taskContext, runner, this.taskAgent, logger);
+        this.logger = new MockLogger(new TaskLogger(taskContext, tasks));
+        const runner = new AzdoRunner(toolFactory, this.logger);
+        const task = new Task(taskContext, runner, this.taskAgent, this.logger);
         setAnswers(taskAnswers);
         try{
             //separate the stdout from task and cucumbers test

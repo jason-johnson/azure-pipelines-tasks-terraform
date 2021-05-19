@@ -1,0 +1,3 @@
+Terraform v0.15.3
+on windows_amd64
++ provider registry.terraform.io/hashicorp/azurerm v2.59.0
