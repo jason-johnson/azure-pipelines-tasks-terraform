@@ -24,7 +24,7 @@ export class TerraformDestroy implements ICommand {
 
     async exec(ctx: ITaskContext): Promise<CommandResponse> {
         const provider = this.getProvider(ctx);
-        const options = await new RunWithTerraform(ctx)            
+        const options = await new RunWithTerraform(ctx)
             .withSecureVarFile(this.taskAgent, ctx.secureVarsFileId, ctx.secureVarsFileName)    
             .withAutoApprove()
             .withProvider(ctx, provider)
