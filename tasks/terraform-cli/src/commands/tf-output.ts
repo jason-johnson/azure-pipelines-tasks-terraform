@@ -12,7 +12,7 @@ export class TerraformOutput implements ICommand {
     }
 
     async exec(ctx: ITaskContext): Promise<CommandResponse> {
-        const options = await new RunWithTerraform(ctx, true)            
+        const options = await new RunWithTerraform(ctx, true)
             .withJsonOutput(ctx.commandOptions)
             .withCommandOptions(ctx.commandOptions)
             .build();
@@ -25,13 +25,13 @@ export class TerraformOutput implements ICommand {
                 const outputVariable = outputVariables[key];
                 if(["string", "number", "bool"].includes(outputVariable.type)){
                     // set pipeline variable so its available to subsequent steps
-                    ctx.setVariable(`TF_OUT_${key.toUpperCase()}`, outputVariable.value, outputVariable.sensitive);
+                    ctx.setVariable(`TF_OUT_${key.toUpperCase()}`, outputVariable.value, outputVariable.sensitive, true);
                 }
-            }   
+            }
         }
         else{
             this.logger.warning("Terraform output command was run but, returned no results. No output variables found.")
-        }         
+        }
 
         return result.toCommandResponse();
     }
