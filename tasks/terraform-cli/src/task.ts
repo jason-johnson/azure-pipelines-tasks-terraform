@@ -57,7 +57,7 @@ export class Task {
             this.ctx.finished();
             this.logger.command(response?.status !== commands.CommandStatus.Failed, this.ctx.runTime);
             if(response && response.lastExitCode !== undefined){
-                this.ctx.setVariable("TERRAFORM_LAST_EXITCODE", response.lastExitCode.toString());
+                this.ctx.setVariable("TERRAFORM_LAST_EXITCODE", response.lastExitCode.toString(), false, true);
             }
         }
         return response;

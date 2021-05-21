@@ -9,7 +9,7 @@ Feature: terraform plan
         When the terraform cli task is run
         Then the terraform cli task executed command "terraform plan"
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
 
     Scenario: plan with azurerm
         Given terraform exists
@@ -42,7 +42,7 @@ Feature: terraform plan
             | -u servicePrincipal1      |
             | -p servicePrincipalKey123 |
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
 
     Scenario: plan with azurerm and command options
         Given terraform exists
@@ -75,7 +75,7 @@ Feature: terraform plan
             | -u servicePrincipal1      |
             | -p servicePrincipalKey123 |
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
 
     Scenario: plan with azurerm and var file in command options
         Given terraform exists
@@ -95,7 +95,7 @@ Feature: terraform plan
             | ARM_CLIENT_ID       | servicePrincipal1      |
             | ARM_CLIENT_SECRET   | servicePrincipalKey123 |
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
 
     Scenario: plan with detailed exit code and changes present
         Given terraform exists
@@ -128,8 +128,8 @@ Feature: terraform plan
             | -u servicePrincipal1      |
             | -p servicePrincipalKey123 |
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "2"        
-        And pipeline variable "TERRAFORM_PLAN_HAS_CHANGES" is set to "true"
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "2" as output
+        And pipeline variable "TERRAFORM_PLAN_HAS_CHANGES" is set to "true" as output
 
     Scenario: plan with detailed exit code and no changes present
         Given terraform exists
@@ -162,8 +162,8 @@ Feature: terraform plan
             | -u servicePrincipal1      |
             | -p servicePrincipalKey123 |
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"        
-        And pipeline variable "TERRAFORM_PLAN_HAS_CHANGES" is set to "false"
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
+        And pipeline variable "TERRAFORM_PLAN_HAS_CHANGES" is set to "false" as output
 
     Scenario: plan with secure var file
         Given terraform exists        
@@ -197,7 +197,7 @@ Feature: terraform plan
             | -u servicePrincipal1      |
             | -p servicePrincipalKey123 |
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
 
     Scenario: plan with secure env file
         Given terraform exists        
@@ -234,7 +234,7 @@ Feature: terraform plan
             | -u servicePrincipal1      |
             | -p servicePrincipalKey123 |
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
 
     Scenario: plan with invalid auth scheme
         Given terraform exists
