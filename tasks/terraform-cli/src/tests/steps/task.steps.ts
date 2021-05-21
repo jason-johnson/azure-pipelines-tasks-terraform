@@ -13,15 +13,15 @@ import { publishedPlanAttachmentType } from '../../commands/tf-plan';
 
 @binding([TaskRunner, MockTaskContext, TaskAnswers])
 export class TerraformSteps {
-    
+
     constructor(
-        private test: TaskRunner, 
+        private test: TaskRunner,
         private ctx: MockTaskContext,
-        private answers: TaskAnswers) { }        
+        private answers: TaskAnswers) { }
 
     @when("the terraform cli task is run")
     public async terraformIsExecuted(){
-        await this.test.run(this.ctx, this.answers);     
+        await this.test.run(this.ctx, this.answers);
     }
 
     @then("the terraform cli task executed command {string}")
@@ -46,7 +46,7 @@ export class TerraformSteps {
         })
         const commandsAfterInit = commands.slice(terraformInitIndex + 1);
         expect(commandsAfterInit).to.satisfy((cmds: string[]) => {
-            return cmds.length == 0 || 
+            return cmds.length == 0 ||
                 (cmds.findIndex((cmd: string) => { return cmd.startsWith("az") }) == -1)
         })
     }
@@ -65,7 +65,7 @@ export class TerraformSteps {
     public assertAzureStorageAccountNotCreated(){
         const executions = requestedAnswers['exec']
             .filter((exec: string, i: number) => exec.includes("az storage account create"));
-        
+
         expect(executions.length, "At least one execution was found that looks like storage account was created").to.be.eq(0);
     }
 
@@ -104,7 +104,7 @@ export class TerraformSteps {
             if(this.test.response){
                 expect(this.test.response.status).to.eq(CommandStatus.Success);
             }
-        }        
+        }
     }
 
     @then("the terraform cli task fails with message {string}")
@@ -119,7 +119,7 @@ export class TerraformSteps {
                 expect(this.test.response.status).to.eq(CommandStatus.Failed);
                 expect(this.test.response.message).to.eq(message);
             }
-        }        
+        }
     }
 
     @then("the terraform cli task throws error with message {string}")
@@ -135,8 +135,16 @@ export class TerraformSteps {
     public planDetailsAreAttachedWithTheFollowingContentFromFile(name: string,  filePath: string){
         const actualPlan = this.expectAttachmentContent(name);
         const expectedPlan = fs.readFileSync(filePath, 'utf-8');
-        
+
         expect(actualPlan).to.eq(expectedPlan);
+    }
+
+    @then("an output is published with the following content from file {string}")
+    public outputDetailsAreAttachedWithTheFollowingContentFromFile(filePath: string){
+        const actualOutput = this.stripColoring(this.convertCRLFtoLF( this.test.logs.join('')));
+        const expectedOutput = fs.readFileSync(filePath, 'utf-8');
+
+        expect(actualOutput).to.eq(expectedOutput);
     }
 
     @then("no plans are published")
@@ -155,5 +163,28 @@ export class TerraformSteps {
         const content = this.test.taskAgent.writtenFiles[attachment.path];
         expect(content).not.does.be.undefined;
         return content;
+    }
+
+    private convertCRLFtoLF(text: string){
+        return text.replace(/\r\n/g,'\n');
+    }
+
+    private stripColoring(text: string){
+        return text.replace(/\x1B\[(\d+(;\d+)?)?[m|K]/g,'');
+    }
+
+    private convertToHex(text: string){
+        const backSpace = String.fromCharCode(8)
+        var text_charCoded = "^";
+
+        for (var i = 0; i < text.length; i++) {
+            if ( text.charCodeAt(i) == 10 ) {
+                text_charCoded += backSpace + "$\n^";
+            }
+            else {
+                text_charCoded += ( "0" + text.charCodeAt(i).toString(16).toUpperCase()).substr(-2) + " ";
+            }
+          }
+        return text_charCoded;
     }
 }
