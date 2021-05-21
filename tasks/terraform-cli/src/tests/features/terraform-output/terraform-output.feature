@@ -9,7 +9,6 @@ Feature: terraform output
         When the terraform cli task is run
         Then the terraform cli task executed command "terraform output -json"
         And the terraform cli task is successful
-        # And an output is published with the following content from file "./src/tests/features/terraform-output/console_tf_output_all_types.txt"
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
         And pipeline variable "TF_OUT_SOME_BOOL" is set to "true" as output
         And pipeline variable "TF_OUT_SOME_STRING" is set to "some-string-value" as output
@@ -41,7 +40,6 @@ Feature: terraform output
         When the terraform cli task is run
         Then the terraform cli task executed command "terraform output -json -no-color"
         And the terraform cli task is successful
-        # And an output is published with the following content from file "./src/tests/features/terraform-output/console_tf_output_string.txt"
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
         And pipeline variable "TF_OUT_SOME_STRING" is set to "some-string-value" as output
         And the following info messages are logged
