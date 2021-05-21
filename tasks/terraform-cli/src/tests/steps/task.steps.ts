@@ -11,7 +11,9 @@ import { CommandStatus } from '../../commands';
 import { _startsWith } from 'azure-pipelines-task-lib/internal';
 import fs from 'fs';
 import { publishedPlanAttachmentType } from '../../commands/tf-plan';
+import util from 'util';
 
+const vsoWarningFormat = '##vso[task.issue type=warning;]%s';
 
 @binding([TaskRunner, MockTaskContext, TaskAnswers])
 export class TerraformSteps {
@@ -141,14 +143,6 @@ export class TerraformSteps {
         expect(actualPlan).to.eq(expectedPlan);
     }
 
-    @then("an output is published with the following content from file {string}")
-    public outputDetailsAreAttachedWithTheFollowingContentFromFile(filePath: string){
-        const actualOutput = this.stripColoring(this.convertCRLFtoLF( this.test.logs.join('')));
-        const expectedOutput = fs.readFileSync(filePath, 'utf-8');
-
-        expect(actualOutput).to.eq(expectedOutput);
-    }
-
     @then("no plans are published")
     public planDetailsAreNotAttached(){
         expect(this.test.taskAgent.attachedTypes[publishedPlanAttachmentType]).to.be.undefined;
@@ -161,30 +155,20 @@ export class TerraformSteps {
 
     @then("the following warnings are logged")
     public warningsAreLogged(table: TableDefinition){
-        expect(this.test.logger).not.to.be.undefined;
-        if(this.test.logger){
-            const warningsExpected = this.tableToArray(table);
-            expect(this.test.logger.warnings).to.be.containingAllOf(warningsExpected);
-        }
+        const warningsExpected = this.tableToWarnings(table);
+        expect(this.test.logs).to.be.containingAllOf(warningsExpected);
     }
 
     @then("the following warnings are not logged")
     public warningsAreNotLogged(table: TableDefinition){
-        expect(this.test.logger).not.to.be.undefined;
-        if(this.test.logger){
-            const warningsNotExpected = this.tableToArray(table);
-            expect(this.test.logger.warnings).not.to.be.containingAllOf(warningsNotExpected);
-        }
+        const warningsNotExpected = this.tableToWarnings(table);
+            expect(this.test.logs).not.to.be.containingAllOf(warningsNotExpected);
     }
 
     @then("the following info messages are logged")
     public infoMessagesAreLogged(table: TableDefinition){        
-        expect(this.test.logger).not.to.be.undefined;
-        if(this.test.logger){
-            const infosExpected = this.tableToArray(table).map(val => val + '\n');
-            const logs = this.test.logs.map(log => this.stripColoring(this.convertCRLFtoLF(log)));
-            expect(logs).to.be.containingAllOf(infosExpected);
-        }
+        const infosExpected = this.tableToLogs(table);
+        expect(this.test.logs).to.be.containingAllOf(infosExpected);
     }
 
     private expectAttachmentContent(name: string){
@@ -202,14 +186,15 @@ export class TerraformSteps {
         return values;
     }
 
-    private convertCRLFtoLF(text: string){
-        return text.replace(/\r\n/g,'\n');
+    private tableToLogs(table: TableDefinition) {
+        return this.tableToArray(table).map(log => log + '\n');
     }
 
-    private stripColoring(text: string){
-        return text.replace(/\x1B\[(\d+(;\d+)?)?[m|K]/g,'');
+    private tableToWarnings(table: TableDefinition){
+        return this.tableToLogs(table).map(log => util.format(vsoWarningFormat, log));
     }
 
+    // keeping this to potentially be used for file comparison in other tests
     private convertToHex(text: string){
         const backSpace = String.fromCharCode(8)
         var text_charCoded = "^";
