@@ -30,6 +30,6 @@ TF_OUT_SOME_BOOL = true
 TF_OUT_SOME_STRING = some-string-value
 TF_OUT_SOME_SECRET_STRING = ********* (sensitive)
 TF_OUT_SOME_NUMBER = 1
-##vso[task.issue type=warning;]Currently only keys of type "string", "number", and "bool" will returned. The Key "some_tuple" is not supported!
-##vso[task.issue type=warning;]Currently only keys of type "string", "number", and "bool" will returned. The Key "some_map" is not supported!
+##vso[task.issue type=warning;]Currently only keys of type "string", "number", and "bool" will returned. The key "some_tuple" is not supported!
+##vso[task.issue type=warning;]Currently only keys of type "string", "number", and "bool" will returned. The key "some_map" is not supported!
 ##vso[task.debug]executed command 'output'

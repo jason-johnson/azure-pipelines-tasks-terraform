@@ -34,7 +34,7 @@ export class TerraformOutput implements ICommand {
                     }
                 }
                 else {
-                    this.logger.warning(`Currently only keys of type \"string\", \"number\", and \"bool\" will returned. The Key \"${key}\" is not supported!`)
+                    this.logger.warning(`Currently only keys of type \"string\", \"number\", and \"bool\" will returned. The key \"${key}\" is not supported!`)
                 }
             }
         }

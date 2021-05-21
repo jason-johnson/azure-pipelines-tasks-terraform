@@ -15,6 +15,9 @@ Feature: terraform output
         And pipeline variable "TF_OUT_SOME_STRING" is set to "some-string-value"
         And pipeline secret "TF_OUT_SOME_SECRET_STRING" is set to "some-secret-string-value"
         And pipeline variable "TF_OUT_SOME_NUMBER" is set to "1"
+        And the following warnings are logged
+        |Currently only keys of type "string", "number", and "bool" will returned. The key "some_tuple" is not supported!|
+        |Currently only keys of type "string", "number", and "bool" will returned. The key "some_map" is not supported!|
 
         Scenario: output with no variables defined
         Given terraform exists
