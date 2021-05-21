@@ -177,6 +177,16 @@ export class TerraformSteps {
         }
     }
 
+    @then("the following info messages are logged")
+    public infoMessagesAreLogged(table: TableDefinition){        
+        expect(this.test.logger).not.to.be.undefined;
+        if(this.test.logger){
+            const infosExpected = this.tableToArray(table).map(val => val + '\n');
+            const logs = this.test.logs.map(log => this.stripColoring(this.convertCRLFtoLF(log)));
+            expect(logs).to.be.containingAllOf(infosExpected);
+        }
+    }
+
     private expectAttachmentContent(name: string){
         const attachment = this.test.taskAgent.attachedFiles[name];
         expect(attachment).not.does.be.undefined;
