@@ -55,6 +55,19 @@ If `terraformVersion` not provided, task defaults to `latest`
         terraformVersion: 0.14.3
 ```
 
+## Check Terraform Version
+
+The task supports running `terraform version` individually. When run, if the version is out of date, the task will log a warning to the pipeline summary if there is a newer version of terraform available.
+
+```yaml
+- task: TerraformCLI@0
+  displayName: 'check terraform version'
+  inputs:
+    command: version
+```
+
+When running the other commands, `terraform version` is also run so that the version is recorded to the build log. However, warnings regarding out of date versions will be suppressed to reduce noise.
+
 ## Azure Service Connection / Service Principal Integration
 
 When executing commands that interact with Azure such as `plan`, `apply`, and `destroy`, the task will utilize an Azure Service Connection to authorize operations against the target subscription. This is specified via the `environmentServiceName` input
@@ -232,7 +245,7 @@ Use output variables as pipeline variables
 
 ## Terraform Plan View
 
-The extension includes a feature to render terraform plans within the pipeline run summary. To use this feature `publishPlanResults` input must be provided when running `terraform plan` via the `TerraformCLI` task. Then input should be set to the name that should be assigned to the plan.
+The extension includes a feature to render terraform plans within the pipeline run summary. To use this feature the `publishPlanResults` input must be provided when running `terraform plan` via the `TerraformCLI` task. The input should be set to the name that should be assigned to the plan (however, do not use the name of a subfolder in the working directory).
 
 > **Important** - When enabling `publishPlanResults` the `-detailed-exitcode` option will be added when running terraform plan if it was not already provided in the `commandOptions` input. This will cause `TERRAFORM_LAST_EXITCODE` to be `2` when plan includes changes; which is a successful exitcode. Additionally, warnings will be logged to the pipeline summary when changes are present as a means to alert that changes will be made if the templates are applied.
 
