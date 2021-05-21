@@ -15,6 +15,7 @@ export class TerraformOutput implements ICommand {
         const options = await new RunWithTerraform(ctx, true)
             .withJsonOutput(ctx.commandOptions)
             .withCommandOptions(ctx.commandOptions)
+            .withOutputArguments(ctx.outputName)
             .build();
         const result = await this.runner.exec(options);
 
@@ -25,7 +26,12 @@ export class TerraformOutput implements ICommand {
                 const outputVariable = outputVariables[key];
                 if(["string", "number", "bool"].includes(outputVariable.type)){
                     // set pipeline variable so its available to subsequent steps
-                    ctx.setVariable(`TF_OUT_${key.toUpperCase()}`, outputVariable.value, outputVariable.sensitive, true);
+                    if (ctx.outputType = "raw") {
+                        ctx.setVariable(`TF_OUT_${key.toUpperCase()}`, outputVariable.value, outputVariable.sensitive, true);
+                    }
+                    else if (ctx.outputType = "json") {
+                        ctx.setVariable(`TF_OUT_${key.toUpperCase()}`, JSON.stringify(outputVariable), outputVariable.sensitive, true);
+                    }
                 }
             }
         }

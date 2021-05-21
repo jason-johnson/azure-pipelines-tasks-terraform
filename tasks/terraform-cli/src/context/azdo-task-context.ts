@@ -133,6 +133,12 @@ export default class AzdoTaskContext implements ITaskContext {
     get workspaceName() {
         return this.getInput("workspaceName", true);
     }
+    get outputName() {
+        return this.getInput("outputName");
+    }
+    get outputType() {
+        return this.getInput("outputType");
+    }
     finished() {
         this.finishedAt = process.hrtime(this.startedAt);
         this.runTime = this.finishedAt[1] / 1000000;

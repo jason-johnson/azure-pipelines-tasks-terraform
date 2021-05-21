@@ -4,8 +4,8 @@ export abstract class RunnerOptionsBuilder {
     abstract build(): Promise<RunnerOptions>;
 }
 
-export abstract class RunnerOptionsDecorator extends RunnerOptionsBuilder{   
-    constructor(protected readonly builder: RunnerOptionsBuilder){        
+export abstract class RunnerOptionsDecorator extends RunnerOptionsBuilder{
+    constructor(protected readonly builder: RunnerOptionsBuilder){
         super();
     }
 }
@@ -27,4 +27,4 @@ export { default as RunWithSecureVarFile } from './run-with-secure-var-file';
 export { default as RunWithSuccessCodes } from './run-with-success-codes';
 export { default as RunWithTerraform } from "./run-with-terraform";
 export { default as RunWithWorkspace } from "./run-with-workspace";
-
+export { default as RunWithOutputArguments } from "./run-with-output-arguments";

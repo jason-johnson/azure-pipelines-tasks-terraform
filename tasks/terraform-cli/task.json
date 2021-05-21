@@ -48,6 +48,12 @@
             "isExpanded": false,
             "visibleRule": "command = show"
         }
+        {
+            "name": "outputVariables",
+            "displayName": "Output Variables",
+            "isExpanded": false,
+            "visibleRule": "command = output"
+        }
     ],
     "inputs": [{
             "name": "command",
@@ -277,6 +283,30 @@
             "required": false,
             "visibleRule": "workspaceSubCommand = select",
             "helpMarkDown": "The name of the target workspace"
+        },
+        {
+            "name": "outputName",
+            "type": "string",
+            "label": "The name of the output variable",
+            "required": false,
+            "helpMarkDown": "If terraform output shall only provide a single variable provide the name here.",
+            "groupName": "outputVariables"
+        },
+        {
+            "name": "outputType",
+            "type": "pickList",
+            "label": "The type of output [json|raw]",
+            "defaultValue": "raw",
+            "required": false,
+            "helpMarkDown": "Whether terraform output is suppose to be output as json or raw format.",
+            "options": {
+                "raw": "raw",
+                "json": "json"
+            },
+            "properties": {
+                "EditableOptions": "False"
+            },
+            "groupName": "outputVariables"
         }
     ],
     "execution": {

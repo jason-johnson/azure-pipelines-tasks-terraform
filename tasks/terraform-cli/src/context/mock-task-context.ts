@@ -37,6 +37,8 @@ export default class MockTaskContext implements ITaskContext {
     publishPlanResults: string = "";
     workspaceSubCommand: string = "";
     workspaceName: string = "";
+    outputName?: string = "";
+    outputType: string = "";
     public readonly startedAt: [number, number];
     private _finishedAt: [number, number] | undefined;
     runTime: number = 0;

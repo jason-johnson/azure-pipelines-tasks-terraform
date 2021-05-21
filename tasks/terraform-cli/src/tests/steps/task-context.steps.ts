@@ -6,8 +6,8 @@ import { BackendTypes } from '../../backends';
 
 @binding([MockTaskContext])
 export class TaskContextSteps {
-    constructor(private ctx: MockTaskContext) { }    
-    
+    constructor(private ctx: MockTaskContext) { }
+
     @given("terraform command is {string}")
     public inputTerraformCommand(command: string){
         this.ctx.name = command;
@@ -24,11 +24,11 @@ export class TaskContextSteps {
         this.ctx.secureVarsFileId = id;
         this.ctx.secureVarsFileName = name;
         process.env[`SECUREFILE_NAME_${id}`] = name;
-    }  
-    
+    }
+
     @given("azurerm backend service connection {string} exists as")
     public inputAzureRmBackendServiceEndpoint(backendServiceName: string, table: TableDefinition){
-        var endpoint = table.rowsHash();        
+        var endpoint = table.rowsHash();
         this.ctx.backendServiceArm = backendServiceName;
         this.ctx.backendServiceArmAuthorizationScheme = endpoint.scheme;
         this.ctx.backendServiceArmClientId = endpoint.clientId;
@@ -39,7 +39,7 @@ export class TaskContextSteps {
 
     @given("azurerm service connection {string} exists as")
     public inputAzureRmServiceEndpoint(environmentServiceName: string, table: TableDefinition){
-        var endpoint = table.rowsHash();        
+        var endpoint = table.rowsHash();
         this.ctx.environmentServiceName = environmentServiceName;
         this.ctx.environmentServiceArmAuthorizationScheme = endpoint.scheme;
         this.ctx.environmentServiceArmClientId = endpoint.clientId;
@@ -101,6 +101,17 @@ export class TaskContextSteps {
     public workspaceCommandIsForName(subCommand: string, name: string){
         this.ctx.workspaceSubCommand = subCommand;
         this.ctx.workspaceName = name;
+    }
+
+    @given("the outputType is {string}")
+    public outputType(outputType: string){
+        this.ctx.outputType = outputType;
+    }
+
+    @given("the outputType is {string} and outputName is {string}")
+    public outputTypeAndName(outputType: string, outputName: string){
+        this.ctx.outputType = outputType;
+        this.ctx.outputName = outputName;
     }
 
     @then("pipeline variable {string} is set to {string}")
