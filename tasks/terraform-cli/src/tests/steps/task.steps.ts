@@ -106,7 +106,7 @@ export class TerraformSteps {
             expect(this.test.response).to.not.be.undefined;
             expect(this.test.error).to.be.undefined;
             if(this.test.response){
-                expect(this.test.response.status).to.eq(CommandStatus.Success);
+                expect(this.test.response.status).to.eq(CommandStatus.Success, this.test.response.message);
             }
         }
     }
@@ -166,7 +166,7 @@ export class TerraformSteps {
     }
 
     @then("the following info messages are logged")
-    public infoMessagesAreLogged(table: TableDefinition){        
+    public infoMessagesAreLogged(table: TableDefinition){
         const infosExpected = this.tableToLogs(table);
         expect(this.test.logs).to.be.containingAllOf(infosExpected);
     }
