@@ -11,19 +11,21 @@ import { CommandStatus } from '../../commands';
 import { _startsWith } from 'azure-pipelines-task-lib/internal';
 import fs from 'fs';
 import { publishedPlanAttachmentType } from '../../commands/tf-plan';
+import util from 'util';
 
+const vsoWarningFormat = '##vso[task.issue type=warning;]%s';
 
 @binding([TaskRunner, MockTaskContext, TaskAnswers])
 export class TerraformSteps {
-    
+
     constructor(
-        private test: TaskRunner, 
+        private test: TaskRunner,
         private ctx: MockTaskContext,
-        private answers: TaskAnswers) { }        
+        private answers: TaskAnswers) { }
 
     @when("the terraform cli task is run")
     public async terraformIsExecuted(){
-        await this.test.run(this.ctx, this.answers);     
+        await this.test.run(this.ctx, this.answers);
     }
 
     @then("the terraform cli task executed command {string}")
@@ -48,7 +50,7 @@ export class TerraformSteps {
         })
         const commandsAfterInit = commands.slice(terraformInitIndex + 1);
         expect(commandsAfterInit).to.satisfy((cmds: string[]) => {
-            return cmds.length == 0 || 
+            return cmds.length == 0 ||
                 (cmds.findIndex((cmd: string) => { return cmd.startsWith("az") }) == -1)
         })
     }
@@ -67,7 +69,7 @@ export class TerraformSteps {
     public assertAzureStorageAccountNotCreated(){
         const executions = requestedAnswers['exec']
             .filter((exec: string, i: number) => exec.includes("az storage account create"));
-        
+
         expect(executions.length, "At least one execution was found that looks like storage account was created").to.be.eq(0);
     }
 
@@ -104,9 +106,9 @@ export class TerraformSteps {
             expect(this.test.response).to.not.be.undefined;
             expect(this.test.error).to.be.undefined;
             if(this.test.response){
-                expect(this.test.response.status).to.eq(CommandStatus.Success);
+                expect(this.test.response.status).to.eq(CommandStatus.Success, this.test.response.message);
             }
-        }        
+        }
     }
 
     @then("the terraform cli task fails with message {string}")
@@ -121,7 +123,7 @@ export class TerraformSteps {
                 expect(this.test.response.status).to.eq(CommandStatus.Failed);
                 expect(this.test.response.message).to.eq(message);
             }
-        }        
+        }
     }
 
     @then("the terraform cli task throws error with message {string}")
@@ -137,7 +139,7 @@ export class TerraformSteps {
     public planDetailsAreAttachedWithTheFollowingContentFromFile(name: string,  filePath: string){
         const actualPlan = this.expectAttachmentContent(name);
         const expectedPlan = fs.readFileSync(filePath, 'utf-8');
-        
+
         expect(actualPlan).to.eq(expectedPlan);
     }
 
@@ -153,20 +155,20 @@ export class TerraformSteps {
 
     @then("the following warnings are logged")
     public warningsAreLogged(table: TableDefinition){
-        expect(this.test.logger).not.to.be.undefined;
-        if(this.test.logger){
-            const warningsExpected = this.tableToArray(table);
-            expect(this.test.logger.warnings).to.be.containingAllOf(warningsExpected);
-        }
+        const warningsExpected = this.tableToWarnings(table);
+        expect(this.test.logs).to.be.containingAllOf(warningsExpected);
     }
 
     @then("the following warnings are not logged")
     public warningsAreNotLogged(table: TableDefinition){
-        expect(this.test.logger).not.to.be.undefined;
-        if(this.test.logger){
-            const warningsNotExpected = this.tableToArray(table);
-            expect(this.test.logger.warnings).not.to.be.containingAllOf(warningsNotExpected);
-        }
+        const warningsNotExpected = this.tableToWarnings(table);
+            expect(this.test.logs).not.to.be.containingAllOf(warningsNotExpected);
+    }
+
+    @then("the following info messages are logged")
+    public infoMessagesAreLogged(table: TableDefinition){
+        const infosExpected = this.tableToLogs(table);
+        expect(this.test.logs).to.be.containingAllOf(infosExpected);
     }
 
     private expectAttachmentContent(name: string){
@@ -183,4 +185,29 @@ export class TerraformSteps {
         rows.forEach(row => values.push(row[0]));
         return values;
     }
+
+    private tableToLogs(table: TableDefinition) {
+        return this.tableToArray(table).map(log => log + '\n');
+    }
+
+    private tableToWarnings(table: TableDefinition){
+        return this.tableToLogs(table).map(log => util.format(vsoWarningFormat, log));
+    }
+
+    // keeping this to potentially be used for file comparison in other tests
+    private convertToHex(text: string){
+        const backSpace = String.fromCharCode(8)
+        var text_charCoded = "^";
+
+        for (var i = 0; i < text.length; i++) {
+            if ( text.charCodeAt(i) == 10 ) {
+                text_charCoded += backSpace + "$\n^";
+            }
+            else {
+                text_charCoded += ( "0" + text.charCodeAt(i).toString(16).toUpperCase()).substr(-2) + " ";
+            }
+          }
+        return text_charCoded;
+    }
+
 }

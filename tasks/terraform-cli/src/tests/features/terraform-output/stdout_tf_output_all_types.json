@@ -1,19 +1,19 @@
-{ 
+{
 	"some_bool": {
     	"sensitive": false,
     	"type": "bool",
     	"value": true
-	},	  
+	},
 	"some_string": {
     	"sensitive": false,
     	"type": "string",
     	"value": "some-string-value"
-  	},	  
+  	},
 	"some_secret_string": {
 		"sensitive": true,
 		"type": "string",
-		"value": "some-string-value"
-	},	  
+		"value": "some-secret-string-value"
+	},
 	"some_number": {
 		"sensitive": false,
 		"type": "number",

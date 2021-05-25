@@ -1,0 +1,32 @@
+##vso[task.debug]looking up mock answers for "which", key '"terraform"'
+##vso[task.debug]found mock response
+##vso[task.debug]check path : terraform
+##vso[task.debug]looking up mock answers for "checkPath", key '"terraform"'
+##vso[task.debug]found mock response
+##vso[task.debug]terraform arg: version
+##vso[task.debug]exec tool: terraform
+##vso[task.debug]Arguments:
+##vso[task.debug]   version
+##vso[task.debug]ignoreTempPath=undefined
+##vso[task.debug]tempPath=undefined
+[command]terraform version
+version successful
+rc:0
+success:true
+##vso[task.debug]looking up mock answers for "which", key '"terraform"'
+##vso[task.debug]found mock response
+##vso[task.debug]check path : terraform
+##vso[task.debug]looking up mock answers for "checkPath", key '"terraform"'
+##vso[task.debug]found mock response
+##vso[task.debug]terraform arg: output
+##vso[task.debug]terraform arg: -json
+##vso[task.debug]terraform arg: -no-color
+##vso[task.debug]exec tool: terraform
+##vso[task.debug]Arguments:
+##vso[task.debug]   output
+##vso[task.debug]   -json
+##vso[task.debug]   -no-color
+##vso[task.debug]ignoreTempPath=undefined
+##vso[task.debug]tempPath=undefined
+TF_OUT_SOME_STRING = some-string-value
+##vso[task.debug]executed command 'output'
