@@ -1,0 +1,43 @@
+parameters:
+  stage: ''
+
+jobs:
+- job: plan_has_changes_${{ parameters.stage }}
+  steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: download terraform templates
+      inputs: 
+        artifact: terraform_templates
+        path: $(terraform_extension_dir)
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+      displayName: install terraform
+      inputs:
+        terraformVersion: 0.15.0
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: 'terraform init'
+      inputs:
+        command: init
+        workingDirectory: $(terraform_templates_dir)
+        backendType: azurerm
+        backendServiceArm: 'env_test'
+        ensureBackend: true
+        backendAzureRmResourceGroupName: rg-trfrm-${{ parameters.stage }}-eus-czp
+        backendAzureRmResourceGroupLocation: eastus
+        backendAzureRmStorageAccountName: sttrfrm${{ parameters.stage }}eusczp
+        backendAzureRmStorageAccountSku: Standard_RAGRS
+        backendAzureRmContainerName: azure-pipelines-terraform
+        backendAzureRmKey: publish_plan_results.tfstate
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: 'terraform plan'
+      inputs:
+        command: plan
+        workingDirectory: $(terraform_templates_dir)
+        environmentServiceName: 'env_test'
+        secureVarsFile: $(tf_variables_secure_file)
+        commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode'
+    - task: PowerShell@2
+      displayName: 'Set variable output_terraform_plan_has_changes'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Write-Host "Terraform changes detected: $(TERRAFORM_PLAN_HAS_CHANGES)"

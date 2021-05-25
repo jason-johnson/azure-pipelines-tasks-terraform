@@ -26,5 +26,4 @@ stages:
     parameters:
       stage: alpha
       scenarios:
-        - smoke_test.yml
-        - switch_workspaces.yml
+        - plan_has_changes.yml
