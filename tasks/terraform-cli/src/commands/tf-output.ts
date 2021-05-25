@@ -32,6 +32,15 @@ export class TerraformOutput implements ICommand {
                     else if (ctx.outputType = "json") {
                         ctx.setVariable(`TF_OUT_${key.toUpperCase()}`, JSON.stringify(outputVariable), outputVariable.sensitive, true);
                     }
+                    if ( outputVariable.sensitive ) {
+                        console.log(`TF_OUT_${key.toUpperCase()}`, "=", "********* (sensitive)");
+                    }
+                    else {
+                        console.log(`TF_OUT_${key.toUpperCase()}`, "=", outputVariable.value);
+                    }
+                }
+                else {
+                    this.logger.warning(`Currently only keys of type \"string\", \"number\", and \"bool\" will returned. The key \"${key}\" is not supported!`)
                 }
             }
         }

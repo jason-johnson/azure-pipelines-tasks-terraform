@@ -8,14 +8,12 @@ import { CommandResponse } from "../../commands";
 import { ITaskContext } from "../../context";
 import intercept from 'intercept-stdout';
 import TaskLogger from "../../logger/task-logger";
-import MockLogger from "../../logger/mock-logger";
 
 export default class TaskRunner {
     error?: Error;
     response?: CommandResponse;
     logs: string[] = [];
     public readonly taskAgent: MockTaskAgent;
-    public logger?: MockLogger;
 
     constructor() {        
         this.taskAgent = new MockTaskAgent();
@@ -23,14 +21,14 @@ export default class TaskRunner {
 
     public async run(taskContext: ITaskContext, taskAnswers: ma.TaskLibAnswers) {        
         const toolFactory = new MockToolFactory();
-        this.logger = new MockLogger(new TaskLogger(taskContext, tasks));
-        const runner = new AzdoRunner(toolFactory, this.logger);
-        const task = new Task(taskContext, runner, this.taskAgent, this.logger);
+        const logger = new TaskLogger(taskContext, tasks);
+        const runner = new AzdoRunner(toolFactory, logger);
+        const task = new Task(taskContext, runner, this.taskAgent, logger);
         setAnswers(taskAnswers);
         try{
             //separate the stdout from task and cucumbers test
             const unhook_intercept = intercept((text: string) => {
-                this.logs.push(text);
+                this.logs.push(this.stripColoring(this.convertCRLFtoLF(text)));
                 return '';
             })
             this.response = await task.exec();
@@ -39,5 +37,13 @@ export default class TaskRunner {
         catch(error){
             this.error = error;
         }
+    }
+
+    private convertCRLFtoLF(text: string){
+        return text.replace(/\r\n/g,'\n');
+    }
+
+    private stripColoring(text: string){
+        return text.replace(/\x1B\[(\d+(;\d+)?)?[m|K]/g,'');
     }
 }
