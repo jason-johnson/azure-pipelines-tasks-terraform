@@ -1,0 +1,13 @@
+jobs:
+- job: plan_has_changes_output_${{ parameters.stage }}
+  dependsOn: plan_has_changes_${{ parameters.stage }}
+  variables:
+      TERRAFORM_PLAN_HAS_CHANGES: $[ dependencies.plan_has_changes_${{ parameters.stage }}.outputs['plan_has_changes_${{ parameters.stage }}.TERRAFORM_PLAN_HAS_CHANGES'] ]
+  steps:
+    - task: PowerShell@2
+      displayName: 'Set variable output_terraform_plan_has_changes'
+      inputs:
+        targetType: 'inline'
+        script: |
+          Write-Host "Terraform changes detected: $(TERRAFORM_PLAN_HAS_CHANGES)"
+

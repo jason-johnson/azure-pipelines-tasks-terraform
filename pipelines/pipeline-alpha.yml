@@ -27,3 +27,4 @@ stages:
       stage: alpha
       scenarios:
         - plan_has_changes.yml
+        - plan_has_changes_output.yml
