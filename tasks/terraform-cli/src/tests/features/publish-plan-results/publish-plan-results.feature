@@ -29,7 +29,7 @@ Feature: publish plan results
         |Plan 'test_deploy.tfplan' is going to create 0 resources.|
         |Plan 'test_deploy.tfplan' is going to update 0 resources.|
         |Plan 'test_deploy.tfplan' is going to destroy 0 resources.|
-        And the following warnings are logged
+        And the following info messages are logged
         |Plan 'test_deploy.tfplan' has no changes. Infrastructure is up-to-date.|
 
     Scenario: publish plan results not specified

@@ -66,7 +66,7 @@ export class TerraformPlan implements ICommand {
             switch (result.exitCode) {
                 case terraformPlanOkNoChanges:
                     content = this.parsePlanOutput(result.stdout, planHasNoChangesRe, ctx.publishPlanResults);
-                    this.logger.warning(`Plan '${ctx.publishPlanResults}' has no changes. Infrastructure is up-to-date.`)
+                    console.log(`Plan '${ctx.publishPlanResults}' has no changes. Infrastructure is up-to-date.`)
                     break;
                 case terraformPlanOkHasChanges:
                     content = this.parsePlanOutput(result.stdout, planHasChangesRe, ctx.publishPlanResults)
