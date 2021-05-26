@@ -34,7 +34,7 @@ export interface ITaskContext {
     publishPlanResults: string;
     workspaceSubCommand: string;
     workspaceName: string;
-    setVariable: (name: string, val: string, secret?: boolean | undefined, isOutput?: boolean | undefined) => void;
+    setVariable: (name: string, val: string, secret?: boolean | undefined) => void;
     runTime: number;
     finished: () => void;
     terraformVersionFull?: string;

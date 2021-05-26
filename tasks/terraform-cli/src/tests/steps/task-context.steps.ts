@@ -115,19 +115,6 @@ export class TaskContextSteps {
         }
     }
 
-    @then("pipeline variable {string} is set to {string} as output")
-    public pipelineVariableIsSetAsOutput(key: string, value: string){
-        const variable = this.ctx.variables[key];
-        expect(variable).to.not.be.undefined;
-        if(variable){
-            expect(variable.val.toString()).to.eq(value);
-            expect(variable.secret).to.satisfy((isSecret: boolean | undefined) => {
-                return !isSecret;
-            });
-            expect(variable.isOutput).to.be.true;
-        }
-    }
-
     @then("pipeline secret {string} is set to {string}")
     public pipelineSecretIsSet(key: string, value: string){
         const variable = this.ctx.variables[key];
@@ -137,19 +124,6 @@ export class TaskContextSteps {
             expect(variable.secret).to.satisfy((isSecret: boolean | undefined) => {
                 return isSecret === true;
             });
-        }
-    }
-
-    @then("pipeline secret {string} is set to {string} as output")
-    public pipelineSecretIsSetAsOutput(key: string, value: string){
-        const variable = this.ctx.variables[key];
-        expect(variable).to.not.be.undefined;
-        if(variable){
-            expect(variable.val).to.eq(value);
-            expect(variable.secret).to.satisfy((isSecret: boolean | undefined) => {
-                return isSecret === true;
-            });
-            expect(variable.isOutput).to.be.true;
         }
     }
 

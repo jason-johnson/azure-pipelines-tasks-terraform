@@ -10,7 +10,7 @@ Feature: terraform show
         When the terraform cli task is run
         Then the terraform cli task executed command "terraform show -json show.tfstate"
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
         And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is not set
 
         Scenario: show without plan or state file
@@ -20,7 +20,7 @@ Feature: terraform show
         When the terraform cli task is run
         Then the terraform cli task executed command "terraform show -json"
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
         And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is not set
 
         Scenario: show tf plan file with destroy operations
@@ -31,8 +31,8 @@ Feature: terraform show
         When the terraform cli task is run
         Then the terraform cli task executed command "terraform show -json show.plan"
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
-        And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is set to "true" as output
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+        And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is set to "true"
 
         Scenario: show tf plan file without destroy operations
         Given terraform exists
@@ -42,8 +42,8 @@ Feature: terraform show
         When the terraform cli task is run
         Then the terraform cli task executed command "terraform show -json show.plan"
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
-        And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is set to "false" as output
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+        And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is set to "false"
 
         Scenario: show tf plan file with destroy and EOL characters
         Given terraform exists
@@ -53,8 +53,8 @@ Feature: terraform show
         When the terraform cli task is run
         Then the terraform cli task executed command "terraform show -json show.plan"
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
-        And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is set to "true" as output
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+        And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is set to "true"
 
         Scenario: show tf state file with secure env file
         Given terraform exists
@@ -68,7 +68,7 @@ Feature: terraform show
             | TF_VAR_region         | eastus |
             | TF_VAR_env-short-name | dev    |
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
         And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is not set
 
         Scenario: show tf state file with secure var file
@@ -79,7 +79,7 @@ Feature: terraform show
         And running command "terraform show -json show.tfstate" returns successful result with stdout from file "./src/tests/stdout_tf_show_tfstate_version_only.json"
         When the terraform cli task is run
         And the terraform cli task fails with message "terraform show command supports only env files, no tfvars are allowed during this stage."
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "1" as output
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "1"
         And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is not set
 
         Scenario: show tf plan file with output only
@@ -90,5 +90,5 @@ Feature: terraform show
         When the terraform cli task is run
         Then the terraform cli task executed command "terraform show -json show.plan"
         And the terraform cli task is successful
-        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
-        And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is set to "false" as output
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+        And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is set to "false"
