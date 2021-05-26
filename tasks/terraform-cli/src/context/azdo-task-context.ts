@@ -146,8 +146,8 @@ export default class AzdoTaskContext implements ITaskContext {
     setVariable(name: string, val: string, secret?: boolean | undefined, isOutput?: boolean | undefined){
         if(isOutput){
             // set as variable so its still accessible via `variable[]` syntax and `output[]` syntax
-            this.setVariable(name, val, secret, false);
-            this.setVariable(name, val, secret, true);            
+            //this.setVariable(name, val, secret, true);            
         }
+        this.setVariable(name, val, secret, false);
     }
 }
