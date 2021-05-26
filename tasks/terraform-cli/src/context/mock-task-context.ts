@@ -49,10 +49,14 @@ export default class MockTaskContext implements ITaskContext {
         this.startedAt = process.hrtime();
     }
 
-    public readonly variables: { [key: string]: { val: string, secret?: boolean, isOutput?: boolean }} = {};
+    public readonly variables: { [key: string]: { val: string, secret?: boolean }} = {};
+    public readonly outputs: { [key: string]: { val: string, secret?: boolean }} = {};
 
     public setVariable(name: string, val: string, secret?: boolean, isOutput?: boolean){
-        this.variables[name] = { val, secret, isOutput};
+        if(isOutput){
+            this.outputs[name] = { val, secret};
+        }
+        this.variables[name] = { val, secret};
     }
 
     get finishedAt(){

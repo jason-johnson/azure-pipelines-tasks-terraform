@@ -9,7 +9,7 @@ export default class AzdoTaskContext implements ITaskContext {
     private getEndpointAuthorizationParameter: (id: string, key: string, optional: boolean) => string;
     private getSecureFileName: (id: string) => string;
     public getVariable: (name: string) => string | undefined;
-    public setVariable: (name: string, val: string, secret?: boolean | undefined, isOutput?: boolean | undefined) => void;
+    // public setVariable: (name: string, val: string, secret?: boolean | undefined, isOutput?: boolean | undefined) => void;
     public startedAt: [number, number];
     public finishedAt: [number, number] | undefined;
     public runTime: number = 0;
@@ -24,7 +24,7 @@ export default class AzdoTaskContext implements ITaskContext {
         this.getEndpointDataParameter = <(id: string, key: string, optional: boolean) => string>tasks.getEndpointDataParameter;
         this.getEndpointAuthorizationParameter = <(id: string, key: string, optional: boolean) => string>tasks.getEndpointAuthorizationParameter;
         this.getVariable = tasks.getVariable;
-        this.setVariable = tasks.setVariable;
+        // this.setVariable = tasks.setVariable;
         this.getSecureFileName = <(id: string) => string>tasks.getSecureFileName;
         this.startedAt = process.hrtime();
     }
@@ -142,5 +142,12 @@ export default class AzdoTaskContext implements ITaskContext {
         this.terraformVersionMajor = major;
         this.terraformVersionMinor = minor;
         this.terraformVersionPatch = patch;
+    }
+    setVariable(name: string, val: string, secret?: boolean | undefined, isOutput?: boolean | undefined){
+        if(isOutput){
+            // set as variable so its still accessible via `variable[]` syntax and `output[]` syntax
+            this.setVariable(name, val, secret, false);
+            this.setVariable(name, val, secret, true);            
+        }
     }
 }

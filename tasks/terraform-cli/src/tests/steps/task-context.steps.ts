@@ -115,17 +115,14 @@ export class TaskContextSteps {
         }
     }
 
-    @then("pipeline variable {string} is set to {string} as output")
-    public pipelineVariableIsSetAsOutput(key: string, value: string){
-        const variable = this.ctx.variables[key];
-        expect(variable).to.not.be.undefined;
-        if(variable){
-            expect(variable.val.toString()).to.eq(value);
-            expect(variable.secret).to.satisfy((isSecret: boolean | undefined) => {
-                return !isSecret;
-            });
-            expect(variable.isOutput).to.be.true;
-        }
+    @then("pipeline output {string} is set to {string}")
+    public pipelineOutputIsSet(key: string, value: string){
+        const output = this.ctx.outputs[key];
+        expect(output).to.not.be.undefined;
+        expect(output.val.toString()).to.eq(value);
+        expect(output.secret).to.satisfy((isSecret: boolean | undefined) => {
+            return !isSecret;
+        });
     }
 
     @then("pipeline secret {string} is set to {string}")
@@ -140,17 +137,14 @@ export class TaskContextSteps {
         }
     }
 
-    @then("pipeline secret {string} is set to {string} as output")
-    public pipelineSecretIsSetAsOutput(key: string, value: string){
-        const variable = this.ctx.variables[key];
-        expect(variable).to.not.be.undefined;
-        if(variable){
-            expect(variable.val).to.eq(value);
-            expect(variable.secret).to.satisfy((isSecret: boolean | undefined) => {
-                return isSecret === true;
-            });
-            expect(variable.isOutput).to.be.true;
-        }
+    @then("pipeline output secret {string} is set to {string}")
+    public pipelineOutputSecretIsSet(key: string, value: string){
+        const output = this.ctx.outputs[key];
+        expect(output).to.not.be.undefined;
+        expect(output.val).to.eq(value);
+        expect(output.secret).to.satisfy((isSecret: boolean | undefined) => {
+            return isSecret === true;
+        });
     }
 
     @then("no pipeline variables starting with {string} are set")
@@ -161,10 +155,24 @@ export class TaskContextSteps {
         })
     }
 
+    @then("no pipeline outputs starting with {string} are set")
+    public noPipelineOutputsStartingWithAreSet(prefix: string){
+        const names = Object.keys(this.ctx.outputs);
+        names.forEach(name => {
+            expect(name).to.satisfy((n: string) => !n.startsWith(prefix));
+        })
+    }
+
     @then("pipeline variable {string} is not set")
     public pipelineVariableIsNotSet(key: string){
         const variable = this.ctx.variables[key];
         expect(variable).to.be.undefined;
+    }
+
+    @then("pipeline output {string} is not set")
+    public pipelineOutputIsNotSet(key: string){
+        const output = this.ctx.outputs[key];
+        expect(output).to.be.undefined;
     }
 
     @then("the resolved terraform version is")
