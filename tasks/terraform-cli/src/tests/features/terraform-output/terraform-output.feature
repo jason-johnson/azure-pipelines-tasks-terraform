@@ -46,7 +46,9 @@ Feature: terraform output
         When the terraform cli task is run
         Then the terraform cli task executed command "terraform output -json -no-color"
         And the terraform cli task is successful
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
+        And pipeline variable "TF_OUT_SOME_STRING" is set to "some-string-value"
         And pipeline variable "TF_OUT_SOME_STRING" is set to "some-string-value" as output
         And the following info messages are logged
             | TF_OUT_SOME_STRING = some-string-value |
