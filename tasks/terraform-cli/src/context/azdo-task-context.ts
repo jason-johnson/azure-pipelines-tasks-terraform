@@ -9,10 +9,10 @@ export default class AzdoTaskContext implements ITaskContext {
     private getEndpointAuthorizationParameter: (id: string, key: string, optional: boolean) => string;
     private getSecureFileName: (id: string) => string;
     public getVariable: (name: string) => string | undefined;
-    public setVariable: (name: string, val: string, secret?: boolean | undefined, isOutput?: boolean | undefined) => void;
+    public setVariable: (name: string, val: string, secret?: boolean | undefined) => void;
     public startedAt: [number, number];
     public finishedAt: [number, number] | undefined;
-    public runTime: number = 0;
+    public runTime: number = 0;    
     public terraformVersionFull?: string;
     public terraformVersionMajor?: number;
     public terraformVersionMinor?: number;
@@ -117,7 +117,7 @@ export default class AzdoTaskContext implements ITaskContext {
     }
     get lockId() {
         return this.getInput("lockID");
-    }
+    }    
     get planOrStateFilePath() {
         return this.getInput("inputTargetPlanOrStateFilePath");
     }

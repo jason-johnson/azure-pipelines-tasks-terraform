@@ -1,7 +1,7 @@
 import { ITaskContext } from ".";
 
 export default class MockTaskContext implements ITaskContext {
-
+    
     name: string = "";
     cwd: string = "";
     commandOptions?: string | undefined;
@@ -21,7 +21,7 @@ export default class MockTaskContext implements ITaskContext {
     backendServiceArmTenantId: string = "";
     backendServiceArmClientId: string = "";
     backendServiceArmClientSecret: string = "";
-    environmentServiceName?: string | undefined;
+    environmentServiceName?: string | undefined;    
     environmentServiceArmAuthorizationScheme: string = "";
     environmentServiceArmClientId: string = "";
     environmentServiceArmClientSecret: string = "";
@@ -39,7 +39,7 @@ export default class MockTaskContext implements ITaskContext {
     workspaceName: string = "";
     public readonly startedAt: [number, number];
     private _finishedAt: [number, number] | undefined;
-    runTime: number = 0;
+    runTime: number = 0;    
     terraformVersionFull?: string;
     terraformVersionMajor?: number;
     terraformVersionMinor?: number;
@@ -49,10 +49,10 @@ export default class MockTaskContext implements ITaskContext {
         this.startedAt = process.hrtime();
     }
 
-    public readonly variables: { [key: string]: { val: string, secret?: boolean, isOutput?: boolean }} = {};
+    public readonly variables: { [key: string]: { val: string, secret?: boolean }} = {};    
 
-    public setVariable(name: string, val: string, secret?: boolean, isOutput?: boolean){
-        this.variables[name] = { val, secret, isOutput};
+    public setVariable(name: string, val: string, secret?: boolean){
+        this.variables[name] = { val, secret };
     }
 
     get finishedAt(){
@@ -63,7 +63,7 @@ export default class MockTaskContext implements ITaskContext {
         this._finishedAt = process.hrtime(this.startedAt);
         this.runTime = this._finishedAt[1] / 1000000
     }
-
+    
     setTerraformVersion(full: string, major: number, minor: number, patch: number){
         this.terraformVersionFull = full;
         this.terraformVersionMajor = major;

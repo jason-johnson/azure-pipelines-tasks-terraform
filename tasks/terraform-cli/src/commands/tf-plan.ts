@@ -58,7 +58,7 @@ export class TerraformPlan implements ICommand {
             .build();
         const result = await this.runner.exec(options);
 
-        ctx.setVariable("TERRAFORM_PLAN_HAS_CHANGES", this.planHasChanges(options, result).toString(), false, true);
+        ctx.setVariable("TERRAFORM_PLAN_HAS_CHANGES", this.planHasChanges(options, result).toString());
 
         if (publishPlanResults.length > 0) {
             this.logger.debug("Publish plan results requested. Parsing plan output first...")
