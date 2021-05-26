@@ -25,6 +25,7 @@ export class TerraformOutput implements ICommand {
                 const outputVariable = outputVariables[key];
                 if(["string", "number", "bool"].includes(outputVariable.type)){
                     // set pipeline variable so its available to subsequent steps
+                    ctx.setVariable(`TF_OUT_${key.toUpperCase()}`, outputVariable.value, outputVariable.sensitive, false);
                     ctx.setVariable(`TF_OUT_${key.toUpperCase()}`, outputVariable.value, outputVariable.sensitive, true);
                     if ( outputVariable.sensitive ) {
                         console.log(`TF_OUT_${key.toUpperCase()}`, "=", "********* (sensitive)");
