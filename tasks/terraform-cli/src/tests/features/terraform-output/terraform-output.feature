@@ -12,7 +12,7 @@ Feature: terraform output
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
         And pipeline variable "TF_OUT_SOME_BOOL" is set to "true"
         And pipeline variable "TF_OUT_SOME_STRING" is set to "some-string-value"
-        And pipeline secret "TF_OUT_SOME_SECRET_STRING" is set to "some-string-value"
+        And pipeline secret "TF_OUT_SOME_SECRET_STRING" is set to "some-secret-string-value"
         And pipeline variable "TF_OUT_SOME_NUMBER" is set to "1"
 
     Scenario: output with no variables defined
