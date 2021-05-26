@@ -26,7 +26,7 @@ jobs:
         backendAzureRmStorageAccountName: sttrfrm${{ parameters.stage }}eusczp
         backendAzureRmStorageAccountSku: Standard_RAGRS
         backendAzureRmContainerName: azure-pipelines-terraform
-        backendAzureRmKey: publish_plan_results.tfstate
+        backendAzureRmKey: plan_has_changes.tfstate
     - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform plan'
       inputs:
