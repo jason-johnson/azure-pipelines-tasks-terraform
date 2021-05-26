@@ -9,10 +9,15 @@ Feature: terraform output
         When the terraform cli task is run
         Then the terraform cli task executed command "terraform output -json"
         And the terraform cli task is successful
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
+        And pipeline variable "TF_OUT_SOME_BOOL" is set to "true"
         And pipeline variable "TF_OUT_SOME_BOOL" is set to "true" as output
+        And pipeline variable "TF_OUT_SOME_STRING" is set to "some-string-value"
         And pipeline variable "TF_OUT_SOME_STRING" is set to "some-string-value" as output
+        And pipeline secret "TF_OUT_SOME_SECRET_STRING" is set to "some-secret-string-value"
         And pipeline secret "TF_OUT_SOME_SECRET_STRING" is set to "some-secret-string-value" as output
+        And pipeline variable "TF_OUT_SOME_NUMBER" is set to "1"
         And pipeline variable "TF_OUT_SOME_NUMBER" is set to "1" as output
         And the following warnings are logged
             | Currently only keys of type "string", "number", and "bool" will returned. The key "some_tuple" is not supported! |
@@ -30,6 +35,7 @@ Feature: terraform output
         When the terraform cli task is run
         Then the terraform cli task executed command "terraform output -json"
         And the terraform cli task is successful
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0" as output
         And no pipeline variables starting with "TF_OUT" are set
 
