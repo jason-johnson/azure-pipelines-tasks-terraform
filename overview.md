@@ -353,3 +353,20 @@ The task supports managing workspaces within pipelines. The following workspace 
     workspaceSubCommand: new
     workspaceName: foo
 ```
+
+## **Importing resources**
+
+The task supports importing existing resources.
+
+### Import
+
+```yaml
+- task: TerraformCLI@0
+  displayName: 'terraform import env'
+  inputs:
+    command: import
+    workingDirectory: $(terraform_templates_dir)
+    resourceAddress: azurerm_resource_group.myrg  # The resource type and name in your .tf file
+    resourceId: "/subscriptions/000-...-0000/resourceGroups/MyRG"  # The Azure object id for the Resource Group (see with `az group list` in Powershell)
+```
+
