@@ -24,6 +24,10 @@ The views contained within this extension are:
 
 - [Terraform Plan](/views/terraform-plan/README.md)
 
+## Telemetry Collection
+
+The software may collect information about you and your use of the software and send to the repository owner. The repository owner may use this information to provide services and improve our products and services. You may turn off the telemetry as described below. 
+
 ### Disabling Telemetry Collection
 
 Telemetry collection can be disabled by setting the `allowTelemetryCollection` property to `false`.
