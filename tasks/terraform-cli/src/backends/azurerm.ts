@@ -21,7 +21,7 @@ export default class AzureRMBackend implements ITerraformBackend {
         }
 
         //use the arm_* prefix config only for versions before 0.12.0
-        if(ctx.terraformVersionMinor && ctx.terraformVersionMinor < 12){
+        if(ctx.terraformVersionMajor === 0 && typeof(ctx.terraformVersionMinor) == 'number' && ctx.terraformVersionMinor < 12){
             backendConfig.arm_subscription_id = ctx.backendServiceArmSubscriptionId;
             backendConfig.arm_tenant_id = ctx.backendServiceArmTenantId;
             backendConfig.arm_client_id = ctx.backendServiceArmClientId;
