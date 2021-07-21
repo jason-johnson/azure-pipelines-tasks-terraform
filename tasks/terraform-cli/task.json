@@ -63,6 +63,7 @@
                 "plan": "plan",
                 "apply": "apply",
                 "destroy": "destroy",
+                "fmt":"fmt",
                 "show": "show",
                 "refresh": "refresh",
                 "import": "import",
