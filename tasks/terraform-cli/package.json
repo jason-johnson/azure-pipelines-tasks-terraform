@@ -53,7 +53,7 @@
     "cucumber-pretty": "^6.0.0",
     "cucumber-tsflow": "^3.4.1",
     "nyc": "^15.1.0",
-    "tfx-cli": "^0.6.4",
+    "tfx-cli": "^0.9.2",
     "ts-node": "^9.0.0",
     "typescript": "^4.3.5"
   }
