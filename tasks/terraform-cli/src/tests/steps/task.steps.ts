@@ -5,7 +5,7 @@ chaiUse(assertArrays);
 import TaskRunner from './task-runner';
 import { TaskAnswers } from './task-answers.steps';
 import { requestedAnswers } from './mock-answer-spy';
-import { TableDefinition } from 'cucumber';
+import { DataTable } from '@cucumber/cucumber';
 import { MockTaskContext } from '../../context';
 import { CommandStatus } from '../../commands';
 import { _startsWith } from 'azure-pipelines-task-lib/internal';
@@ -38,7 +38,7 @@ export class TerraformSteps {
     }
 
     @then("terraform is initialized with the following options")
-    public assertTerraformInitializedWithOptions(table: TableDefinition){
+    public assertTerraformInitializedWithOptions(table: DataTable){
         this.assertExecutedCommandWithOptions("terraform init", table);
     }
 
@@ -56,12 +56,12 @@ export class TerraformSteps {
     }
 
     @then("azure login is executed with the following options")
-    public assertAzureLoginExecutedWithOptions(table: TableDefinition){
+    public assertAzureLoginExecutedWithOptions(table: DataTable){
         this.assertExecutedCommandWithOptions("az login", table);
     }
 
     @then("an azure storage account is created with the following options")
-    public assertAzureStorageAccountCreatedWithOptions(table: TableDefinition){
+    public assertAzureStorageAccountCreatedWithOptions(table: DataTable){
         this.assertExecutedCommandWithOptions("az storage account create", table);
     }
 
@@ -74,12 +74,12 @@ export class TerraformSteps {
     }
 
     @then("an azure storage container is created with the following options")
-    public assertAzureStorageContainerCreatedWithOptions(table: TableDefinition){
+    public assertAzureStorageContainerCreatedWithOptions(table: DataTable){
         this.assertExecutedCommandWithOptions("az storage container create", table);
     }
 
     @then("the terraform cli task executed command {string} with the following options")
-    public assertExecutedCommandWithOptions(command: string, table: TableDefinition){
+    public assertExecutedCommandWithOptions(command: string, table: DataTable){
         const args = table.rows();
         const expected = `${command} ${args.join(' ')}`
 
@@ -88,7 +88,7 @@ export class TerraformSteps {
     }
 
     @then("the terraform cli task executed command {string} with the following environment variables")
-    public assertExecutedCommandWithEnvironmentVariables(command: string, table: TableDefinition){
+    public assertExecutedCommandWithEnvironmentVariables(command: string, table: DataTable){
         this.assertExecutedCommand(command);
         const expectedEnv = table.rowsHash();
         for(let key in expectedEnv){
@@ -154,19 +154,19 @@ export class TerraformSteps {
     }
 
     @then("the following warnings are logged")
-    public warningsAreLogged(table: TableDefinition){
+    public warningsAreLogged(table: DataTable){
         const warningsExpected = this.tableToWarnings(table);
         expect(this.test.logs).to.be.containingAllOf(warningsExpected);
     }
 
     @then("the following warnings are not logged")
-    public warningsAreNotLogged(table: TableDefinition){
+    public warningsAreNotLogged(table: DataTable){
         const warningsNotExpected = this.tableToWarnings(table);
             expect(this.test.logs).not.to.be.containingAllOf(warningsNotExpected);
     }
 
     @then("the following info messages are logged")
-    public infoMessagesAreLogged(table: TableDefinition){
+    public infoMessagesAreLogged(table: DataTable){
         const infosExpected = this.tableToLogs(table);
         expect(this.test.logs).to.be.containingAllOf(infosExpected);
     }
@@ -179,18 +179,18 @@ export class TerraformSteps {
         return content;
     }
 
-    private tableToArray(table: TableDefinition){
+    private tableToArray(table: DataTable){
         let values: string[] = [];
         const rows = table.raw();
         rows.forEach(row => values.push(row[0]));
         return values;
     }
 
-    private tableToLogs(table: TableDefinition) {
+    private tableToLogs(table: DataTable) {
         return this.tableToArray(table).map(log => log + '\n');
     }
 
-    private tableToWarnings(table: TableDefinition){
+    private tableToWarnings(table: DataTable){
         return this.tableToLogs(table).map(log => util.format(vsoWarningFormat, log));
     }
 
