@@ -1,0 +1,25 @@
+{
+	"name": " Codespace",
+	"image": "mcr.microsoft.com/vscode/devcontainers/javascript-node:0.202.3-16",
+	"settings": {
+		"workbench.colorTheme": "Default Dark+"
+	},
+	"extensions": [
+		"eamodio.gitlens",
+		"cschleiden.vscode-github-actions",
+		"redhat.vscode-yaml",
+		"bierner.markdown-preview-github-styles",
+		"coenraads.bracket-pair-colorizer",
+		"vscode-icons-team.vscode-icons",
+		"editorconfig.editorconfig",
+		"dbaeumer.vscode-eslint",
+		"ms-vscode.vscode-typescript-next",
+		"ecmel.vscode-html-css",
+		"streetsidesoftware.code-spell-checker",
+		"alexkrechik.cucumberautocomplete",
+		"4ops.terraform"
+	],
+	"postCreateCommand": "npm install -g typescript && npm install",
+}
+
+// Built with ❤ by [Pipeline Foundation](https://pipeline.foundation)
