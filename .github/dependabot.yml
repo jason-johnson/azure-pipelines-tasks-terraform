@@ -2,7 +2,7 @@ version: 2
 updates:
   - package-ecosystem: 'npm'
     directory: ''
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 2
     schedule:
       interval: 'daily'
     # target-branch: 'develop'
@@ -13,7 +13,7 @@ updates:
 
   - package-ecosystem: 'npm'
     directory: 'tasks/terraform-cli'
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 2
     schedule:
       interval: 'daily'
     # target-branch: 'develop'
@@ -24,7 +24,7 @@ updates:
 
   - package-ecosystem: 'npm'
     directory: 'tasks/terraform-installer'
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 2
     schedule:
       interval: 'daily'
     # target-branch: 'develop'
@@ -35,7 +35,7 @@ updates:
 
   - package-ecosystem: 'npm'
     directory: 'views/terraform-plan'
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 2
     schedule:
       interval: 'daily'
     # target-branch: 'develop'
@@ -46,7 +46,7 @@ updates:
 
   - package-ecosystem: 'terraform'
     directory: 'templates'
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 2
     schedule:
       interval: 'daily'
     # target-branch: 'develop'
@@ -57,7 +57,7 @@ updates:
 
   - package-ecosystem: 'terraform'
     directory: 'templates/local-exec-az-cli'
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 2
     schedule:
       interval: 'daily'
     # target-branch: 'develop'
@@ -68,7 +68,7 @@ updates:
 
   - package-ecosystem: 'terraform'
     directory: 'templates/version11'
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 2
     schedule:
       interval: 'daily'
     # target-branch: 'develop'
