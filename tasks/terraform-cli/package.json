@@ -29,10 +29,10 @@
   },
   "homepage": "https://github.com/charleszipp/azure-pipelines-tasks-terraform#readme",
   "dependencies": {
-    "applicationinsights": "^1.8.8",
+    "applicationinsights": "^2.1.4",
     "azure-devops-node-api": "^11.0.1",
-    "azure-pipelines-task-lib": "^3.0.6-preview.0",
-    "dotenv": "^8.2.0",
+    "azure-pipelines-task-lib": "^3.1.5",
+    "dotenv": "^10.0.0",
     "intercept-stdout": "^0.1.2",
     "mock-require": "^3.0.3",
     "q": "^1.5.1"
@@ -44,7 +44,7 @@
     "@types/intercept-stdout": "^0.1.0",
     "@types/mock-require": "^2.0.0",
     "@types/node": "^16.4.1",
-    "@types/q": "^1.5.4",
+    "@types/q": "^1.5.5",
     "chai": "^4.2.0",
     "chai-arrays": "^2.2.0",
     "copyfiles": "^2.4.0",
