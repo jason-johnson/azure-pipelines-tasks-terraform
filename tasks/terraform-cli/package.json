@@ -43,7 +43,7 @@
     "@types/cucumber": "^6.0.1",
     "@types/intercept-stdout": "^0.1.0",
     "@types/mock-require": "^2.0.0",
-    "@types/node": "^14.14.6",
+    "@types/node": "^16.4.1",
     "@types/q": "^1.5.4",
     "chai": "^4.2.0",
     "chai-arrays": "^2.2.0",
