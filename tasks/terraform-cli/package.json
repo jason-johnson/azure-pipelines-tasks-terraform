@@ -38,7 +38,7 @@
     "q": "^1.5.1"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.14",
+    "@types/chai": "^4.2.21",
     "@types/chai-arrays": "^2.0.0",
     "@types/cucumber": "^6.0.1",
     "@types/intercept-stdout": "^0.1.0",
