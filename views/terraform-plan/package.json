@@ -59,7 +59,7 @@
     "rimraf": "^2.6.3",
     "sass-loader": "^12.1.0",
     "style-loader": "^0.23.1",
-    "tfx-cli": "^0.8.3",
+    "tfx-cli": "^0.6.4",
     "ts-jest": "^27.0.4",
     "ts-loader": "^9.2.3",
     "typescript": "^4.3.5",
