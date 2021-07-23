@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/charleszipp/azure-pipelines-tasks-terraform#readme",
   "dependencies": {
-    "applicationinsights": "^1.8.8",
+    "applicationinsights": "^2.1.4",
     "azure-devops-node-api": "^11.0.1",
     "azure-pipelines-task-lib": "^3.0.6-preview.0",
     "dotenv": "^10.0.0",
