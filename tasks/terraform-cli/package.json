@@ -32,7 +32,7 @@
     "applicationinsights": "^1.8.8",
     "azure-devops-node-api": "^11.0.1",
     "azure-pipelines-task-lib": "^3.0.6-preview.0",
-    "dotenv": "^8.2.0",
+    "dotenv": "^10.0.0",
     "intercept-stdout": "^0.1.2",
     "mock-require": "^3.0.3",
     "q": "^1.5.1"
