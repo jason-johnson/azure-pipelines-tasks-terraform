@@ -29,21 +29,21 @@
   },
   "homepage": "https://github.com/charleszipp/azure-pipelines-tasks-terraform#readme",
   "dependencies": {
-    "applicationinsights": "^1.8.8",
-    "azure-devops-node-api": "^10.2.2",
-    "azure-pipelines-task-lib": "^3.0.6-preview.0",
-    "dotenv": "^8.2.0",
+    "applicationinsights": "^2.1.4",
+    "azure-devops-node-api": "^11.0.1",
+    "azure-pipelines-task-lib": "^3.1.5",
+    "dotenv": "^10.0.0",
     "intercept-stdout": "^0.1.2",
     "mock-require": "^3.0.3",
     "q": "^1.5.1"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.14",
+    "@types/chai": "^4.2.21",
     "@types/chai-arrays": "^2.0.0",
-    "@types/cucumber": "^6.0.1",
+    "@types/cucumber": "^7.0.0",
     "@types/intercept-stdout": "^0.1.0",
     "@types/mock-require": "^2.0.0",
-    "@types/node": "^14.14.6",
+    "@types/node": "^16.4.1",
     "@types/q": "^1.5.4",
     "chai": "^4.2.0",
     "chai-arrays": "^2.2.0",
@@ -53,8 +53,8 @@
     "cucumber-pretty": "^6.0.0",
     "cucumber-tsflow": "^3.4.1",
     "nyc": "^15.1.0",
-    "tfx-cli": "^0.6.4",
+    "tfx-cli": "^0.9.2",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.5"
+    "typescript": "^4.3.5"
   }
 }
