@@ -56,7 +56,7 @@
     "jest-junit": "^12.0.0",
     "node-sass": "^6.0.1",
     "prettier": "^2.3.2",
-    "rimraf": "^2.6.3",
+    "rimraf": "^3.0.2",
     "sass-loader": "^12.1.0",
     "style-loader": "^0.23.1",
     "tfx-cli": "^0.6.4",
