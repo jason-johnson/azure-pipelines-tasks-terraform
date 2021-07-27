@@ -1,7 +1,7 @@
 import { binding, given, then } from 'cucumber-tsflow';
 import { expect } from 'chai';
 import { MockTaskContext } from '../../context';
-import { TableDefinition } from 'cucumber';
+import { DataTable } from '@cucumber/cucumber';
 import { BackendTypes } from '../../backends';
 
 @binding([MockTaskContext])
@@ -27,7 +27,7 @@ export class TaskContextSteps {
     }  
     
     @given("azurerm backend service connection {string} exists as")
-    public inputAzureRmBackendServiceEndpoint(backendServiceName: string, table: TableDefinition){
+    public inputAzureRmBackendServiceEndpoint(backendServiceName: string, table: DataTable){
         var endpoint = table.rowsHash();        
         this.ctx.backendServiceArm = backendServiceName;
         this.ctx.backendServiceArmAuthorizationScheme = endpoint.scheme;
@@ -38,7 +38,7 @@ export class TaskContextSteps {
     }
 
     @given("azurerm service connection {string} exists as")
-    public inputAzureRmServiceEndpoint(environmentServiceName: string, table: TableDefinition){
+    public inputAzureRmServiceEndpoint(environmentServiceName: string, table: DataTable){
         var endpoint = table.rowsHash();        
         this.ctx.environmentServiceName = environmentServiceName;
         this.ctx.environmentServiceArmAuthorizationScheme = endpoint.scheme;
@@ -49,7 +49,7 @@ export class TaskContextSteps {
     }
 
     @given("azurerm backend type selected with the following storage account")
-    public inputAzureRmBackend(table: TableDefinition){
+    public inputAzureRmBackend(table: DataTable){
         var backend = table.rowsHash();
         this.ctx.backendType = BackendTypes.azurerm;
         this.ctx.backendAzureRmResourceGroupName = backend.resourceGroup;
@@ -64,7 +64,7 @@ export class TaskContextSteps {
     }
 
     @given("azurerm ensure backend is checked with the following")
-    public inputAzureRmEnsureBackend(table: TableDefinition){
+    public inputAzureRmEnsureBackend(table: DataTable){
         const backend = table.rowsHash();
         this.ctx.ensureBackend = true;
         this.ctx.backendAzureRmResourceGroupLocation = backend.location;
@@ -142,7 +142,7 @@ export class TaskContextSteps {
     }
 
     @then("the resolved terraform version is")
-    public theResolvedTerraformVersionIs(table: TableDefinition){
+    public theResolvedTerraformVersionIs(table: DataTable){
         const segments = table.rowsHash();
         expect(this.ctx.terraformVersionFull).to.equal(segments["full"]);
         expect(this.ctx.terraformVersionMajor).to.equal(Number.parseInt(segments["major"]));

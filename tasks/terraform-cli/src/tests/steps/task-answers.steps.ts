@@ -1,5 +1,5 @@
 import { TaskLibAnswerExecResult, TaskLibAnswers } from 'azure-pipelines-task-lib/mock-answer';
-import { TableDefinition } from 'cucumber';
+import { DataTable } from '@cucumber/cucumber'
 import { after, binding, given } from 'cucumber-tsflow';
 import fs from 'fs';
 import mock from 'mock-require';
@@ -69,7 +69,7 @@ export class TaskAnswersSteps {
     }
 
     @given("running command {string} with the following options returns successful result")
-    public runningCommandWithOptionsReturnsSuccessfulResult(command: string, table: TableDefinition){
+    public runningCommandWithOptionsReturnsSuccessfulResult(command: string, table: DataTable){
         const args = table.rows();
         command = `${command} ${args.join(' ')}`
 
@@ -128,7 +128,7 @@ export class TaskAnswersSteps {
     }
 
     @given("running command {string} returns the following result")
-    public runningCommandReturnsTheFollowingResult(command: string, table: TableDefinition){
+    public runningCommandReturnsTheFollowingResult(command: string, table: DataTable){
         const result = table.rowsHash();
         
         this.answers.exec[command] = <TaskLibAnswerExecResult>{
