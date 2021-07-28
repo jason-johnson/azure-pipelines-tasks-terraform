@@ -5,6 +5,8 @@ updates:
     open-pull-requests-limit: 2
     schedule:
       interval: 'daily'
+    ignore:
+      - dependency-name: 'tfx-cli'
     # target-branch: 'develop'
     # assignees:
     #   - assignee_one
@@ -16,6 +18,8 @@ updates:
     open-pull-requests-limit: 2
     schedule:
       interval: 'daily'
+    ignore:
+      - dependency-name: 'tfx-cli'
     # target-branch: 'develop'
     # assignees:
     #   - assignee_one
@@ -27,6 +31,8 @@ updates:
     open-pull-requests-limit: 2
     schedule:
       interval: 'daily'
+    ignore:
+      - dependency-name: 'tfx-cli'
     # target-branch: 'develop'
     # assignees:
     #   - assignee_one
@@ -38,6 +44,8 @@ updates:
     open-pull-requests-limit: 2
     schedule:
       interval: 'daily'
+    ignore:
+      - dependency-name: 'tfx-cli'
     # target-branch: 'develop'
     # assignees:
     #   - assignee_one
