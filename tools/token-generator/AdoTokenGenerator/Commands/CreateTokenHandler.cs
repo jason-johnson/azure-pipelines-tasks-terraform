@@ -22,6 +22,7 @@ namespace AdoTokenGenerator.Commands
                 var token = new SessionToken()
                 {
                     TargetAccounts = new List<Guid>() { command.Organization },
+                    // Scopes documented here: https://docs.microsoft.com/en-us/azure/devops/integrate/get-started/authentication/oauth?view=azure-devops#scopes
                     Scope = "vso.gallery_publish vso.gallery_acquire vso.extension_manage",
                     DisplayName = command.Name,
                     ValidTo = DateTime.Now.AddDays(command.Expiration)
