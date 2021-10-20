@@ -9,7 +9,7 @@ service_url=
 attempts=0
 max=25
 
-while getopts t:s:c: flag; do
+while getopts t:s:c:e:p: flag; do
     case "${flag}" in
         t) token="${OPTARG}";;
         s) service_url="${OPTARG}";;
