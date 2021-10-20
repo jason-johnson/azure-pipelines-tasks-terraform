@@ -14,10 +14,19 @@ while getopts t:s:c: flag; do
         t) token="${OPTARG}";;
         s) service_url="${OPTARG}";;
         c) task_id="${OPTARG}";;
+        e) extension_id="${OPTARG}";;
+        p) publisher_id="${OPTARG}";;
     esac
 done
 
-until $(npx tfx build tasks list --service-url $service_url -t $token --no-color --json |  jq -r --arg t "$task_id" '.[] | select(.id == $t) | .id' | grep -q "$task_id");
+if az extension show --name azure-devops --output none ; then
+  echo "azure-devops az extension installed"
+else
+  az extension add --name azure-devops
+fi
+
+echo "$token" | az devops login --org $service_url
+until $(az devops extension show --extension-id $extension_id --publisher-id $publisher_id | grep -q "$task_id")
 do
     if [ $attempts -gt $max ]
     then
@@ -30,3 +39,4 @@ do
 done
 
 echo "task is available!"
+az devops logout
