@@ -50,7 +50,7 @@ stages:
             name: publish
             inputs:
               connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace_charleszipp'
+              connectedServiceName: 'marketplace_charleszipp_publish'
               cwd: $(terraform_extension_dir)
               extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch)            
               shareWith: $(marketplace_share_with)
@@ -61,7 +61,7 @@ stages:
             name: install
             inputs:
               connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace_charleszipp'
+              connectedServiceName: 'azure-pipelines-terraform-beta-extensions'
               publisherId: $(marketplace_publisher)
               extensionId: azure-pipelines-tasks-terraform-${{ parameters.stage }}
               accounts: $(ado_service_url)
