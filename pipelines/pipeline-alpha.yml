@@ -13,6 +13,9 @@ variables:
   marketplace_publisher: charleszipp
   ado_service_url: https://dev.azure.com/azure-pipelines-terraform-alpha
 
+pool:
+  vmImage: ubuntu-latest
+
 name: $(GitVersion.FullSemVer)
 
 stages:
