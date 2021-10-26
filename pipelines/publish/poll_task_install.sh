@@ -19,11 +19,7 @@ while getopts t:s:c:e:p: flag; do
     esac
 done
 
-if az extension show --name azure-devops --output none ; then
-  echo "azure-devops az extension installed"
-else
-  az extension add --name azure-devops
-fi
+sleep 30s
 
 echo "$token" | az devops login --org $service_url
 until $(az devops extension show --extension-id $extension_id --publisher-id $publisher_id | grep -q "$task_id")
