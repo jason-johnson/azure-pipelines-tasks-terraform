@@ -18,55 +18,55 @@ jobs:
       inputs:
         command: version
         workingDirectory: $(terraform_templates_dir)
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-      displayName: 'terraform init'
-      inputs:
-        command: init
-        workingDirectory: $(terraform_templates_dir)
-        backendType: azurerm
-        backendServiceArm: 'env_test'
-        ensureBackend: true
-        backendAzureRmResourceGroupName: rg-trfrm-${{ parameters.stage }}-eus-czp
-        backendAzureRmResourceGroupLocation: eastus
-        backendAzureRmStorageAccountName: sttrfrm${{ parameters.stage }}eusczp
-        backendAzureRmStorageAccountSku: Standard_RAGRS
-        backendAzureRmContainerName: azure-pipelines-terraform
-        backendAzureRmKey: test_1.tfstate
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-      displayName: 'terraform validate'
-      inputs:
-        workingDirectory: $(terraform_templates_dir)
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-      displayName: 'terraform plan'
-      inputs:
-        command: plan
-        workingDirectory: $(terraform_templates_dir)
-        environmentServiceName: 'env_test'
-        secureVarsFile: $(tf_variables_secure_file)
-        publishPlanResults: smoke_test_${{ parameters.stage }}
-        commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode'
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-      displayName: 'terraform apply'
-      inputs:
-        command: apply
-        workingDirectory: $(terraform_templates_dir)
-        environmentServiceName: 'env_test'
-        commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-      displayName: 'terraform output'
-      inputs:
-        command: output
-        workingDirectory: $(terraform_templates_dir)
-    - bash: |
-        echo 'some_string is $(TF_OUT_SOME_STRING)'
-        echo 'some_bool is $(TF_OUT_SOME_BOOL)'
-        echo 'some_number is $(TF_OUT_SOME_NUMBER)'
-        echo 'some_sensitive_string is $(TF_OUT_SOME_SENSITIVE_STRING)'
-      displayName: echo tf output vars
-    - task: TerraformCLI@0
-      displayName: 'terraform destroy'
-      inputs:
-        command: destroy
-        workingDirectory: $(terraform_templates_dir)
-        environmentServiceName: 'env_test'
-        secureVarsFile: $(tf_variables_secure_file)
+    # - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    #   displayName: 'terraform init'
+    #   inputs:
+    #     command: init
+    #     workingDirectory: $(terraform_templates_dir)
+    #     backendType: azurerm
+    #     backendServiceArm: 'env_test'
+    #     ensureBackend: true
+    #     backendAzureRmResourceGroupName: rg-trfrm-${{ parameters.stage }}-eus-czp
+    #     backendAzureRmResourceGroupLocation: eastus
+    #     backendAzureRmStorageAccountName: sttrfrm${{ parameters.stage }}eusczp
+    #     backendAzureRmStorageAccountSku: Standard_RAGRS
+    #     backendAzureRmContainerName: azure-pipelines-terraform
+    #     backendAzureRmKey: test_1.tfstate
+    # - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    #   displayName: 'terraform validate'
+    #   inputs:
+    #     workingDirectory: $(terraform_templates_dir)
+    # - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    #   displayName: 'terraform plan'
+    #   inputs:
+    #     command: plan
+    #     workingDirectory: $(terraform_templates_dir)
+    #     environmentServiceName: 'env_test'
+    #     secureVarsFile: $(tf_variables_secure_file)
+    #     publishPlanResults: smoke_test_${{ parameters.stage }}
+    #     commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode'
+    # - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    #   displayName: 'terraform apply'
+    #   inputs:
+    #     command: apply
+    #     workingDirectory: $(terraform_templates_dir)
+    #     environmentServiceName: 'env_test'
+    #     commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
+    # - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    #   displayName: 'terraform output'
+    #   inputs:
+    #     command: output
+    #     workingDirectory: $(terraform_templates_dir)
+    # - bash: |
+    #     echo 'some_string is $(TF_OUT_SOME_STRING)'
+    #     echo 'some_bool is $(TF_OUT_SOME_BOOL)'
+    #     echo 'some_number is $(TF_OUT_SOME_NUMBER)'
+    #     echo 'some_sensitive_string is $(TF_OUT_SOME_SENSITIVE_STRING)'
+    #   displayName: echo tf output vars
+    # - task: TerraformCLI@0
+    #   displayName: 'terraform destroy'
+    #   inputs:
+    #     command: destroy
+    #     workingDirectory: $(terraform_templates_dir)
+    #     environmentServiceName: 'env_test'
+    #     secureVarsFile: $(tf_variables_secure_file)
