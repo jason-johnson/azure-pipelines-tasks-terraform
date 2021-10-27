@@ -33,6 +33,17 @@ Feature: terraform show
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
         And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is set to "true"
+        
+        Scenario: show tf plan file with destroy operations - apiManagement
+        Given terraform exists
+        And terraform command is "show"
+        And running command "terraform show -json show.plan" returns successful result with stdout from file "./src/tests/stdout_tf_show_tfplan_with_destroy_apimanagement.json"
+        And the target plan or state file is "show.plan"
+        When the terraform cli task is run
+        Then the terraform cli task executed command "terraform show -json show.plan"
+        And the terraform cli task is successful
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+        And pipeline variable "TERRAFORM_PLAN_HAS_DESTROY_CHANGES" is set to "true"
 
         Scenario: show tf plan file without destroy operations
         Given terraform exists
