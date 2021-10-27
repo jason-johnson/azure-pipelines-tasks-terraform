@@ -19,6 +19,8 @@ variables:
   marketplace_publisher: charleszipp
   ado_service_url: https://dev.azure.com/azure-pipelines-terraform-ga
 
+pool:
+  vmImage: ubuntu-latest
 
 name: $(GitVersion.FullSemVer)
 
