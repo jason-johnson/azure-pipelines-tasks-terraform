@@ -1,8 +1,7 @@
 name: CodeQL Analysis
 
 on:
-  push:    
-    branches-ignore: [dependabot/**]
+  push:
   pull_request:
   schedule:
     - cron: '0 8 * * *'
