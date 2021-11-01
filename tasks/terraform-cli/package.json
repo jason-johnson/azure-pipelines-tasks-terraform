@@ -10,8 +10,6 @@
     "test:report": "mkdir -p .tests && cucumber-js -p report | grep -Ev '^##vso|^\\[command]|^[a-zA-Z0-9]' | cucumber-junit > ./.tests/results.xml",
     "start": "ts-node -r dotenv/config ./src/index.ts",
     "pack": "copyfiles package.json task.json icon.png \".bin/*.js\" \".bin/**/*.js\" -e \".bin/tests/*\" .dist && cd .dist && npm install --only=prod",
-    "upload": "tfx build tasks upload --task-path .dist",
-    "delete": "tfx build tasks delete --task-id 721c3f90-d938-11e8-9d92-09d7594721b5"
   },
   "repository": {
     "type": "git",
@@ -53,7 +51,6 @@
     "cucumber-pretty": "^6.0.0",
     "cucumber-tsflow": "^3.4.1",
     "nyc": "^15.1.0",
-    "tfx-cli": "^0.6.4",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.5"
   }
