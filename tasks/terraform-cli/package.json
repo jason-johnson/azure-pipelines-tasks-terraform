@@ -9,7 +9,7 @@
     "test:coverage": "nyc -r cobertura -r html \"cucumber-js\" \"-p\" \"default\"",
     "test:report": "mkdir -p .tests && cucumber-js -p report | grep -Ev '^##vso|^\\[command]|^[a-zA-Z0-9]' | cucumber-junit > ./.tests/results.xml",
     "start": "ts-node -r dotenv/config ./src/index.ts",
-    "pack": "copyfiles package.json task.json icon.png \".bin/*.js\" \".bin/**/*.js\" -e \".bin/tests/*\" .dist && cd .dist && npm install --only=prod",
+    "pack": "copyfiles package.json task.json icon.png \".bin/*.js\" \".bin/**/*.js\" -e \".bin/tests/*\" .dist && cd .dist && npm install --only=prod"
   },
   "repository": {
     "type": "git",
