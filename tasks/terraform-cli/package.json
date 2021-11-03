@@ -48,7 +48,6 @@
     "chai-arrays": "^2.2.0",
     "copyfiles": "^2.4.0",
     "cucumber-junit": "^1.5.0",
-    "cucumber-pretty": "^6.0.0",
     "cucumber-tsflow": "^4.0.0-rc.1",
     "nyc": "^15.1.0",
     "ts-node": "^9.0.0",
