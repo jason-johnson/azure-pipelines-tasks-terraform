@@ -14,7 +14,7 @@ module.exports = (env) => {
     devtool: "source-map",
     devServer: {
       port: 3000,
-      contentBase: path.resolve(__dirname, "./.bin")
+      static: path.resolve(__dirname, "./.bin")
     },
     resolve: {
       extensions: [".ts", ".tsx", ".js"],

@@ -6,8 +6,6 @@
   "scripts": {
     "build": "tsc --build",
     "pack": "copyfiles package.json task.json icon.png \".bin/*.js\" .dist && cd .dist && npm install --only=prod",
-    "delete": "tfx build tasks delete --task-id 11645770-d18e-11e8-8f5b-1b8b62612b3b",
-    "upload": "tfx build tasks upload --task-path .dist",
     "start": "ts-node --require dotenv/config ./src/index.ts"
   },
   "repository": {
@@ -30,7 +28,6 @@
     "@types/q": "^1.5.4",
     "copyfiles": "^2.4.0",
     "dotenv": "^8.2.0",
-    "tfx-cli": "^0.6.4",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.5"
   },
