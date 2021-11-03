@@ -30,12 +30,12 @@ jobs:
         workingDir: $(views_terraform_plan_dir)
         command: custom
         customCommand: run test
-    - task: PublishCodeCoverageResults@1
-      displayName: test - publish coverage
-      inputs:
-        codeCoverageTool: cobertura
-        summaryFileLocation: $(views_terraform_plan_dir)/.tests/coverage/cobertura-coverage.xml
-        reportDirectory: $(views_terraform_plan_dir)/.tests/coverage
+    # - task: PublishCodeCoverageResults@1
+    #   displayName: test - publish coverage
+    #   inputs:
+    #     codeCoverageTool: cobertura
+    #     summaryFileLocation: $(views_terraform_plan_dir)/.tests/coverage/cobertura-coverage.xml
+    #     reportDirectory: $(views_terraform_plan_dir)/.tests/coverage
     - task: PublishTestResults@2
       displayName: test - publish results
       inputs:
