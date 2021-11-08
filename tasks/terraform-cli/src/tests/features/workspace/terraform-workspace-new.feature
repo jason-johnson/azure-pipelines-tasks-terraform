@@ -28,3 +28,12 @@ Feature: terraform workspace new
     When the terraform cli task is run
     Then the terraform cli task executed command "terraform workspace new bar"
     And the terraform cli task fails with message "\u001b[31mWorkspace \"bar\" already exists\u001b[0m\u001b[0m\n"
+
+    Scenario: new workspace already exists but it's allowed
+    Given terraform exists
+    And terraform command is "workspace"
+    And workspace command is "new" with name "bar" and command is set to succeed if existing
+    And running command "terraform workspace new bar" returns successful result with stdout from file "./src/tests/features/workspace/stdout-new-workspace-bar-skipExisting.txt"
+    When the terraform cli task is run
+    Then the terraform cli task executed command "terraform workspace new bar"
+        And the terraform cli task is successful

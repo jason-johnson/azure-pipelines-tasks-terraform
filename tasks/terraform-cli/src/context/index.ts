@@ -42,6 +42,7 @@ export interface ITaskContext {
     terraformVersionMinor?: number;
     terraformVersionPatch?: number;
     setTerraformVersion: (full: string, major: number, minor: number, patch: number) => void;
+    skipExistingWorkspace?: boolean;
 }
 
 export { default as AzdoTaskContext } from './azdo-task-context';
