@@ -44,6 +44,7 @@ export default class MockTaskContext implements ITaskContext {
     terraformVersionMajor?: number;
     terraformVersionMinor?: number;
     terraformVersionPatch?: number;
+    skipExistingWorkspace?: boolean = false;
 
     constructor() {
         this.startedAt = process.hrtime();

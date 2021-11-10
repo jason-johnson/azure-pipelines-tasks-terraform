@@ -103,6 +103,13 @@ export class TaskContextSteps {
         this.ctx.workspaceName = name;
     }
 
+    @given("workspace command is {string} with name {string} and command is set to succeed if existing")
+    public workspaceCommandIsForNameWithSkipExisting(subCommand: string, name: string){
+        this.ctx.workspaceSubCommand = subCommand;
+        this.ctx.workspaceName = name;
+        this.ctx.skipExistingWorkspace = true;
+    }
+
     @then("pipeline variable {string} is set to {string}")
     public pipelineVariableIsSet(key: string, value: string){
         const variable = this.ctx.variables[key];
