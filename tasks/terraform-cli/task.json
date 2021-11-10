@@ -278,6 +278,15 @@
             "required": false,
             "visibleRule": "workspaceSubCommand = select",
             "helpMarkDown": "The name of the target workspace"
+        },
+        {
+            "name": "skipExistingWorkspace",
+            "type": "boolean",
+            "label": "Skip Create If Exists",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "Skip attempting to create existing workspaces",
+            "visibleRule": "workspaceSubCommand = new"
         }
     ],
     "execution": {
