@@ -23,7 +23,7 @@ export class TerraformWorkspaceNew implements ICommand {
         return new CommandResponse(
             skipExistingWorkspace ? CommandStatus.Success : command_result.status,
             command_result.message,
-            skipExistingWorkspace ? 1 : command_result.lastExitCode,
+            skipExistingWorkspace ? 0 : command_result.lastExitCode,
         );
     }
 }
