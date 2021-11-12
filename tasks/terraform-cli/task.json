@@ -291,7 +291,7 @@
         }
     ],
     "execution": {
-        "Node": {
+        "Node10": {
             "target": ".bin/index.js",
             "argumentFormat": ""
         }
