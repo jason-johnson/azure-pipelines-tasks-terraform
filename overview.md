@@ -80,6 +80,10 @@ When executing commands that interact with Azure such as `plan`, `apply`, and `d
         environmentServiceName: 'My Azure Service Connection'
 ```
 
+### Configuring Other Cloud Providers
+
+Other cloud providers such as **Amazon Web Services (AWS)** and **Google Cloud (GCP)** can be configured using [secure env files](#secure-env-files). See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
+
 ### Execute Azure CLI From Local-Exec Provisioner
 
 When an azure service connection is provided and `runAzLogin` is set to `true`, the terraform cli task will run `az login` using the service connection credentials. This is intended to enable templates to execute az cli commands from a `local-exec` provisioner.
