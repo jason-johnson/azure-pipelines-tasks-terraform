@@ -3,6 +3,8 @@ parameters:
 
 jobs:
 - job: aws_self_configured_${{ parameters.stage }}
+  variables: 
+    test_templates_dir: $(terraform_templates_dir)/aws
   steps:
     - task: DownloadPipelineArtifact@2
       displayName: download terraform templates
@@ -17,7 +19,7 @@ jobs:
       displayName: 'terraform init'
       inputs:
         command: init
-        workingDirectory: $(terraform_templates_dir)
+        workingDirectory: $(test_templates_dir)
         backendType: self-configured
         commandOptions: -backend-config=bucket=s3-trfrm-${{ parameters.stage }}-eus-czp -backend-config=key=azure-pipelines-terraform/aws-self-config
         secureVarsFile: self-configured-aws.env
