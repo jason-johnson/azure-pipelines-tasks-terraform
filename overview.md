@@ -147,6 +147,8 @@ The task currently supports the following backend configurations
 - azurerm - State is stored in a blob container within a specified Azure Storage Account.
 - self-configured - State configuration will be provided using environment variables or command options. Environment files can be provided using Secure Files Library in AzDO and specified in Secure Files configuration field. Command options such as `-backend-config=` flag can be provided in the Command Options configuration field.
 
+> NOTE: `self-configured` can be used to execute deployments for other cloud providers such as **Amazon Web Services (AWS)** & **Google Cloud (GCP)**. See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
+
 If azurerm selected, the task will prompt for a service connection and storage account details to use for the backend.
 
 ```yaml
