@@ -82,7 +82,7 @@ When executing commands that interact with Azure such as `plan`, `apply`, and `d
 
 ### Configuring Other Cloud Providers
 
-Other cloud providers such as **Amazon Web Services (AWS)** and **Google Cloud (GCP)** can be configured using [secure env files](#secure-env-files). See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
+Other cloud providers such as **Amazon Web Services (AWS)** and **Google Cloud (GCP)** can be configured using [secure env files](#secure-variable-secrets). See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
 
 ### Execute Azure CLI From Local-Exec Provisioner
 
@@ -190,8 +190,22 @@ There are multiple methods to provide secrets within the vars provided to terraf
     inputs:
         command: plan
         environmentServiceName: 'My Azure Service Connection'
-        # guid for the secure file to use. Can be standard terraform vars file or .env file.
+        # guid of the secure file to use. Can be standard terraform vars file or .env file.
         secureVarsFile: 446e8878-994d-4069-ab56-5b302067a869
+        # specify a variable input via pipeline variable
+        commandOptions: '-var secret=$(mySecretPipelineVar)'
+```
+
+The name of the secure file can also be used.
+
+```yaml
+- task: TerraformCLI@0
+    displayName: 'terraform plan'
+    inputs:
+        command: plan
+        environmentServiceName: 'My Azure Service Connection'
+        # name of the secure file to use. Can be standard terraform vars file or .env file.
+        secureVarsFile: my-secure-file.env
         # specify a variable input via pipeline variable
         commandOptions: '-var secret=$(mySecretPipelineVar)'
 ```
