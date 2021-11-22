@@ -22,6 +22,9 @@ jobs:
         workingDirectory: $(test_templates_dir)
         backendType: self-configured
         commandOptions: -backend-config=bucket=s3-trfrm-${{ parameters.stage }}-eus-czp -backend-config=key=azure-pipelines-terraform/aws-self-config
+        # The secure env file contains the following vars
+        # AWS_DEFAULT_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+        # see also https://www.terraform.io/docs/language/settings/backends/s3.html#configuration
         secureVarsFile: self-configured-aws.env
     - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform validate'
