@@ -30,4 +30,4 @@ stages:
       stage: alpha
       scenarios:
         - smoke_test.yml
-        - switch_workspaces.yml
+        - aws_self_configured.yml
