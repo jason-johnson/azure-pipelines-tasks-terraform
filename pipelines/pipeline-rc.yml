@@ -55,5 +55,4 @@ stages:
         - init_with_ensure_backend_no_storage_account.yml
         - init_with_self_configured_backend.yml
         - switch_workspaces.yml
-        # removing for now as it appears the compatible azurerm plugin is no longer available
-        # - init_with_version_11.yml
+        - aws_self_configured.yml
