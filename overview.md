@@ -250,7 +250,12 @@ Pipeline configuration to run terraform `output` command
     displayName: 'terraform output'
     inputs:
         command: output
+        # ensure working directory targets same directory as apply step
+        # if not specified $(System.DefaultWorkingDirectory) will be used
+        # workingDirectory: $(my_terraform_templates_dir)
 ```
+
+> NOTE: `workingDirectory` must be set to the same working directory that is used to execute other operations such as `apply`. The default for `workingDirectory` is `$(System.DefaultWorkingDirectory)` when not specified.
 
 Use output variables as pipeline variables
 
