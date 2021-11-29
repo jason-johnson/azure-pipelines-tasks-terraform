@@ -136,6 +136,24 @@ export default class AzdoTaskContext implements ITaskContext {
     get skipExistingWorkspace() {
         return this.getBoolInput("skipExistingWorkspace", false )
     }
+    get backendServiceAws() {
+      return this.getInput("backendServiceAws");
+    }
+    get backendServiceAwsAccessKey() {
+      return this.getEndpointAuthorizationParameter(this.backendServiceAws, "username", true )
+    }
+    get backendServiceAwsSecretKey() {
+      return this.getEndpointAuthorizationParameter(this.backendServiceAws, "password", true )
+    }
+    get backendAwsBucket(){
+      return this.getInput("backendAwsBucket", false)
+    }
+    get backendAwsKey(){
+      return this.getInput("backendAwsKey", false)
+    }
+    get backendAwsRegion(){
+      return this.getInput("backendAwsRegion", false)
+    }
     finished() {
         this.finishedAt = process.hrtime(this.startedAt);
         this.runTime = this.finishedAt[1] / 1000000;

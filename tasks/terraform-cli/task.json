@@ -23,6 +23,11 @@
             "displayName": "AzureRM Backend Configuration",
             "isExpanded": false,
             "visibleRule": "command = init && backendType = azurerm"
+        },{
+          "name": "backendAws",
+          "displayName": "AWS Backend Configuration",
+          "isExpanded": false,
+          "visibleRule": "command = init && backendType = aws"
         },
         {
             "name": "importArguments",
@@ -142,7 +147,8 @@
             "options": {
                 "local": "local",
                 "azurerm": "azurerm",
-                "selfConfigured": "self-configured"
+                "selfConfigured": "self-configured",
+                "aws": "aws"
             },
             "properties": {
                 "EditableOptions": "False"
@@ -288,6 +294,38 @@
             "required": false,
             "helpMarkDown": "Skip attempting to create existing workspaces",
             "visibleRule": "workspaceSubCommand = new"
+        },
+        {
+            "name": "backendServiceAws",
+            "type": "connectedService:AWSServiceEndpoint",
+            "label": "Backend AWS Service Connection",
+            "required": false,
+            "helpMarkDown": "Select an AWS service connection for the terraform backend configuration",
+            "groupName": "backendAws"
+        },
+        {
+            "name": "backendAwsRegion",
+            "type": "string",
+            "label": "Region",
+            "required": false,
+            "helpMarkDown": "The bucket's assigned region. If left empty, this is assumed to be self-configured.",
+            "groupName": "backendAws"
+        },
+        {
+            "name": "backendAwsBucket",
+            "type": "string",
+            "label": "Bucket",
+            "required": false,
+            "helpMarkDown": "The bucket's name. If left empty, this is assumed to be self-configured.",
+            "groupName": "backendAws"
+        },
+        {
+            "name": "backendAwsKey",
+            "type": "string",
+            "label": "Key",
+            "required": false,
+            "helpMarkDown": "The path of the state file inside the bucket. If left empty, this is assumed to be self-configured.",
+            "groupName": "backendAws"
         }
     ],
     "execution": {

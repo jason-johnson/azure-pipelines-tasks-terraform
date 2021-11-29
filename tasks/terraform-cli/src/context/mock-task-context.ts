@@ -45,6 +45,12 @@ export default class MockTaskContext implements ITaskContext {
     terraformVersionMinor?: number;
     terraformVersionPatch?: number;
     skipExistingWorkspace?: boolean = false;
+    backendServiceAws: string = "";
+    backendServiceAwsAccessKey: string = "";
+    backendServiceAwsSecretKey: string = "";
+    backendAwsBucket?: string;
+    backendAwsKey?: string;
+    backendAwsRegion?: string;
 
     constructor() {
         this.startedAt = process.hrtime();
