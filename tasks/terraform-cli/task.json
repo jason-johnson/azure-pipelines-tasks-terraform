@@ -297,7 +297,7 @@
         },
         {
             "name": "backendServiceAws",
-            "type": "connectedService:AWSServiceEndpoint",
+            "type": "connectedService:AWS",
             "label": "Backend AWS Service Connection",
             "required": false,
             "helpMarkDown": "Select an AWS service connection for the terraform backend configuration",
