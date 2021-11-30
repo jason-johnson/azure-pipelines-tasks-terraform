@@ -19,9 +19,9 @@ pool:
 name: $(GitVersion.FullSemVer)
 
 stages:
-  # - template: build/build.yml
-  #   parameters:
-  #     stage: alpha
+  - template: build/build.yml
+    parameters:
+      stage: alpha
   # - template: publish/publish_private.yml
   #   parameters:
   #     stage: alpha
