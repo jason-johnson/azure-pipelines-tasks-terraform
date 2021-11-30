@@ -19,15 +19,15 @@ pool:
 name: $(GitVersion.FullSemVer)
 
 stages:
-  - template: build/build.yml
-    parameters:
-      stage: alpha
-  - template: publish/publish_private.yml
-    parameters:
-      stage: alpha
-  # - template: test/test.yml
+  # - template: build/build.yml
   #   parameters:
   #     stage: alpha
-  #     scenarios:
-  #       # - smoke_test.yml
-  #       - aws_service_connection.yml
+  # - template: publish/publish_private.yml
+  #   parameters:
+  #     stage: alpha
+  - template: test/test.yml
+    parameters:
+      stage: alpha
+      scenarios:
+        # - smoke_test.yml
+        - aws_service_connection.yml
