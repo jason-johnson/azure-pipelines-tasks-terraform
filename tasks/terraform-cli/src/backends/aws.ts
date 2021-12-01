@@ -16,7 +16,7 @@ export default class AwsBackend implements ITerraformBackend {
     }
 
     for(var config in backendConfig){
-      if(config){
+      if(backendConfig[config]){
         result.args.push(`-backend-config=${config}=${backendConfig[config]}`);
       }
     }
