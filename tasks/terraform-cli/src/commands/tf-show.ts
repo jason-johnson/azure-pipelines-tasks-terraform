@@ -40,7 +40,7 @@ export class TerraformShow implements ICommand {
 
     private detectDestroyChanges(ctx: ITaskContext, result: string): void
     {
-        let jsonResult = {};
+        let jsonResult : any;
         
         try {                  
             const resultNoEol = result.replace(/(\r\n|\r|\n|\\n|\t|\\")/gm, "");
