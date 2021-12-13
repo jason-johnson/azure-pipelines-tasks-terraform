@@ -40,8 +40,15 @@ export class TerraformShow implements ICommand {
 
     private detectDestroyChanges(ctx: ITaskContext, result: string): void
     {
-        const resultNoEol = result.replace(/(\r\n|\r|\n|\\n|\t|\\")/gm, "");
-        let jsonResult = JSON.parse(resultNoEol);
+        let jsonResult = {};
+        
+        try {                  
+            const resultNoEol = result.replace(/(\r\n|\r|\n|\\n|\t|\\")/gm, "");
+            jsonResult =JSON.parse(resultNoEol);
+        } catch { //SyntaxError: Unexpected token Bug #61
+            jsonResult =JSON.parse(result); 
+        }
+        
         const deleteValue = "delete";
 
         if(jsonResult.resource_changes){
