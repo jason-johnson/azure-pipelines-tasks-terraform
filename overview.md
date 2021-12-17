@@ -18,7 +18,17 @@ The Terraform CLI task supports executing the following commands
 - output
 - force-unlock
 - fmt
-- **workspace (NEW)**
+- workspace
+
+## Supported Backends
+
+The Terraform CLI task supports the following terraform backends
+
+- local
+- azurerm
+- **aws (NEW)**
+
+> NOTE: It is possible to leverage other backends by providing configuration via environment variables using [secure files](#secure-variable-secrets) or, `-backend-config=key=value` within `commandOptions` input.
 
 ## Compatible with Linux Build Agents
 
@@ -149,9 +159,12 @@ The task currently supports the following backend configurations
 
 - local (default for terraform) - State is stored on the agent file system.
 - azurerm - State is stored in a blob container within a specified Azure Storage Account.
+- **aws (NEW)** - State is stored in a S3 bucket
 - self-configured - State configuration will be provided using environment variables or command options. Environment files can be provided using Secure Files Library in AzDO and specified in Secure Files configuration field. Command options such as `-backend-config=` flag can be provided in the Command Options configuration field.
 
 > NOTE: `self-configured` can be used to execute deployments for other cloud providers such as **Amazon Web Services (AWS)** & **Google Cloud (GCP)**. See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
+
+### AzureRM
 
 If azurerm selected, the task will prompt for a service connection and storage account details to use for the backend.
 
@@ -174,6 +187,28 @@ If azurerm selected, the task will prompt for a service connection and storage a
         backendAzureRmContainerName: 'my-backend-blob-container'
         # azure blob file name
         backendAzureRmKey: infrax.tfstate
+```
+
+### **AWS S3 (NEW)**
+
+If aws selected, the task allows for configuring a service connection as well as the bucket details to use for the backend.
+
+```yaml
+- task: TerraformCLI@0
+  displayName: 'terraform init'
+  inputs:
+    command: init
+    workingDirectory: $(my_terraform_templates_dir)
+    # set to `aws` to use aws backend
+    backendType: aws
+    # service connection name, required if backendType = aws
+    backendServiceAws: env_test_aws
+    # s3 bucket's region, optional if provided elsewhere (i.e. inside terraform template or command options)
+    backendAwsRegion: us-east-1
+    # s3 bucket name, optional if provided elsewhere (i.e. inside terraform template or command options)
+    backendAwsBucket: s3-trfrm-dev-eus-czp
+    # s3 path to state file, optional if provided elsewhere (i.e. inside terraform template or command options)
+    backendAwsKey: 'my-env-infrax/dev-infrax'
 ```
 
 ### Automated Remote Backend Creation
@@ -394,4 +429,3 @@ The task supports importing existing resources.
     resourceAddress: azurerm_resource_group.myrg  # The resource type and name in your .tf file
     resourceId: "/subscriptions/000-...-0000/resourceGroups/MyRG"  # The Azure object id for the Resource Group (see with `az group list` in Powershell)
 ```
-

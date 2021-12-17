@@ -37,6 +37,14 @@ export class TaskContextSteps {
         this.ctx.backendServiceArmTenantId = endpoint.tenantId;
     }
 
+    @given("aws backend service connection {string} exists as")
+    public inputAwsBackendServiceEndpoint(backendServiceName: string, table: DataTable){
+        var endpoint = table.rowsHash();        
+        this.ctx.backendServiceAws = backendServiceName;
+        this.ctx.backendServiceAwsAccessKey = endpoint.username;
+        this.ctx.backendServiceAwsSecretKey = endpoint.password;
+    }
+
     @given("azurerm service connection {string} exists as")
     public inputAzureRmServiceEndpoint(environmentServiceName: string, table: DataTable){
         var endpoint = table.rowsHash();        
@@ -56,6 +64,20 @@ export class TaskContextSteps {
         this.ctx.backendAzureRmStorageAccountName = backend.name;
         this.ctx.backendAzureRmContainerName = backend.container;
         this.ctx.backendAzureRmKey = backend.key;
+    }
+
+    @given("aws backend type selected with the following bucket")
+    public inputAwsBackend(table: DataTable){
+        var backend = table.rowsHash();
+        this.ctx.backendType = BackendTypes.aws;
+        this.ctx.backendAwsBucket = backend.bucket;
+        this.ctx.backendAwsKey = backend.key;
+        this.ctx.backendAwsRegion = backend.region;
+    }
+
+    @given("aws backend type selected without bucket configuration")
+    public inputAwsBackendWithoutBucketConfiguration(){
+        this.ctx.backendType = BackendTypes.aws;
     }
 
     @given("self-configured backend")

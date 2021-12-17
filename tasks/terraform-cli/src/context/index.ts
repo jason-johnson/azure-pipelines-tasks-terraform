@@ -43,6 +43,12 @@ export interface ITaskContext {
     terraformVersionPatch?: number;
     setTerraformVersion: (full: string, major: number, minor: number, patch: number) => void;
     skipExistingWorkspace?: boolean;
+    backendServiceAws: string;
+    backendServiceAwsAccessKey: string;
+    backendServiceAwsSecretKey: string;
+    backendAwsBucket?: string;
+    backendAwsKey?: string;
+    backendAwsRegion?: string;
 }
 
 export { default as AzdoTaskContext } from './azdo-task-context';

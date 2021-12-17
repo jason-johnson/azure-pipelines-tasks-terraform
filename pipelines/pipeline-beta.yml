@@ -54,4 +54,5 @@ stages:
         - init_with_ensure_backend_no_storage_account.yml
         - init_with_self_configured_backend.yml
         - switch_workspaces.yml  
-        - aws_self_configured.yml   
+        - aws_self_configured.yml  
+        - aws_service_connection.yml 

@@ -30,4 +30,4 @@ stages:
       stage: alpha
       scenarios:
         - smoke_test.yml
-        - aws_self_configured.yml
+        - aws_service_connection.yml
