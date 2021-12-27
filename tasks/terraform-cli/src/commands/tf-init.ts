@@ -37,6 +37,9 @@ export class TerraformInit implements ICommand {
             .build();
 
         const result = await this.runner.exec(options);
-        return result.toCommandResponse();
+        const customProperties = {
+          'terraform.backend.type': <string>ctx.backendType
+        }
+        return result.toCommandResponse(customProperties);
     }
 }
