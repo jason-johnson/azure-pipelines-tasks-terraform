@@ -30,4 +30,11 @@ stages:
       stage: alpha
       scenarios:
         - smoke_test.yml
-        - aws_service_connection.yml
+        - publish_plan_results.yml
+        - plan_with_command_options_var_file.yml
+        - local_exec_az_cli.yml
+        - init_with_ensure_backend_no_storage_account.yml
+        - init_with_self_configured_backend.yml
+        - switch_workspaces.yml  
+        - aws_self_configured.yml  
+        - aws_service_connection.yml 
