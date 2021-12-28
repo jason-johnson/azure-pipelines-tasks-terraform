@@ -148,7 +148,7 @@ export default class AzdoTaskContext implements ITaskContext {
     get runAzLogin() {
         return this.getBoolInput("runAzLogin");
     }
-    @trackValue("inputs.commands.plan.publish", isCommand("plan"))
+    @trackValue("inputs.commands.plan.publish", isCommand("plan"), true)
     get publishPlanResults() {
         return this.getInput("publishPlanResults");
     }
