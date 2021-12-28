@@ -5,7 +5,6 @@ import AwsProvider from './aws';
 import AzureRMProvider from './azurerm';
 
 export interface ITerraformProvider{
-    name: string;
     isDefined(): boolean;
     init(): Promise<void>;
 }
@@ -23,13 +22,10 @@ export class TerraformProviderContext {
   }
 
   async init(): Promise<void>{
-    const initializedProviders = [];
     for(let i = 0; i < this.providers.length; i++){
       if(this.providers[i].isDefined()){
         await this.providers[i].init();
-        initializedProviders.push(this.providers[i].name);
       }
     }
-    this.logger.properties["terraform.providers"] = initializedProviders.join(",");
   }
 }

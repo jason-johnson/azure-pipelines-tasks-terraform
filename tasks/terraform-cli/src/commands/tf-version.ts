@@ -20,10 +20,6 @@ export class TerraformVersion implements ICommand {
         const result = await this.runner.exec(options);
         const version = result.stdout.match(versionRe);
         if(version){
-          this.logger.properties["terraform.version"] = version[0];
-          this.logger.properties["terraform.version.major"] = version[1];
-          this.logger.properties["terraform.version.minor"] = version[2];
-          this.logger.properties["terraform.version.minor"] = version[3];
           ctx.setTerraformVersion(version[0], Number.parseInt(version[1]), Number.parseInt(version[2]), Number.parseInt(version[3]))
         }
         if(ctx.name === "version"){

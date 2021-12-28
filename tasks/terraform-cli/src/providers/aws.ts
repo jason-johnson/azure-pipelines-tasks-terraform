@@ -12,10 +12,6 @@ export default class AwsProvider implements ITerraformProvider {
   constructor(private readonly config: AwsProviderConfiguration) {
   }
 
-  get name() {
-    return "aws";
-  }
-
   isDefined(): boolean{
     if(this.config.providerServiceAws){
       return true;

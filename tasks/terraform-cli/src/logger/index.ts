@@ -1,5 +1,4 @@
 export interface ILogger {
-    properties: { [key: string]: string };
     command(success: boolean, duration: number, customProperties?: { [key:string]: string }): void;
     error(error: string | Error, properties?: any): void;
     warning(message: string): void;

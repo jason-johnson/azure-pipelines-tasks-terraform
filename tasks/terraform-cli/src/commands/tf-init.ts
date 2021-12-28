@@ -20,7 +20,6 @@ export class TerraformInit implements ICommand {
 
     private getBackend(ctx: ITaskContext): ITerraformBackend | undefined{        
         let backend: ITerraformBackend | undefined;
-        this.logger.properties["terraform.backend.type"] = <string>ctx.backendType;
         switch(ctx.backendType){
             case BackendTypes.azurerm:
               backend = new AzureRMBackend(this.runner);
