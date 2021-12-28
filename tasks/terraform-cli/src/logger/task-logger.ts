@@ -7,12 +7,13 @@ export default class TaskLogger implements ILogger {
         private readonly tasks: any){
     }
 
-    command(success: boolean, duration: number): void {
+    command(success: boolean, duration: number, customProperties?: { [key:string]: string }): void {
         this.tasks.debug(`executed command '${this.ctx.name}'`, {
             name: this.ctx.name,
             success: success,
             resultCode: success ? 200 : 500,
-            duration: duration
+            duration: duration,
+            properties: customProperties
         })
     }
 

@@ -10,13 +10,17 @@ export default class ApplicationInsightsLogger implements ILogger{
         private readonly telemetry: TelemetryClient){
     }
 
-    command(success: boolean, duration: number): void {
+    command(success: boolean, duration: number, customProperties?: { [key:string]: string }): void {
         if(this.ctx.allowTelemetryCollection){
-            const properties: { [key: string]: any } = {
+            let properties: { [key: string]: any } = {
                 "terraform.version" : this.ctx.terraformVersionFull,
                 "terraform.version.major" : this.ctx.terraformVersionMajor,
                 "terraform.version.minor" : this.ctx.terraformVersionMinor,
                 "terraform.version.patch" : this.ctx.terraformVersionPatch,
+            }
+
+            if(customProperties){
+              properties = { ...properties, ...customProperties };
             }
 
             this.telemetry.trackRequest(<RequestTelemetry>{
@@ -27,7 +31,7 @@ export default class ApplicationInsightsLogger implements ILogger{
                 properties
             });
         }        
-        this.logger.command(success, duration);
+        this.logger.command(success, duration, customProperties);
     }
     error(error: string | Error, properties: any): void {
         if(this.ctx.allowTelemetryCollection){            
