@@ -30,6 +30,12 @@
           "visibleRule": "command = init && backendType = aws"
         },
         {
+            "name": "providers",
+            "displayName": "Providers",
+            "isExpanded": false,
+            "visibleRule": "command = plan || command = apply || command = destroy || command = refresh || command = import"
+        },
+        {
             "name": "importArguments",
             "displayName": "Import Arguments",
             "isExpanded": false,
@@ -91,10 +97,11 @@
         {
             "name": "environmentServiceName",
             "type": "connectedService:AzureRM",
-            "label": "Environment Azure Subscription (select if not configured inside terraform code)",
+            "label": "AzureRM Provider Service Connection",
             "required": false,
             "visibleRule": "command = plan || command = apply || command = destroy || command = refresh || command = import",
-            "helpMarkDown": "Select an Azure service connection if you would like the azurerm provider configured for you (using the service principal credentials configured in the selected service connection). **This field is optional.** Leave empty should you choose to self-configure the provider(s) used. Provider environment variables can be configured securely by selecting an env file from the `Secured Variables File` pick list."
+            "helpMarkDown": "Select an Azure service connection if you would like the azurerm provider configured for you (using the service principal credentials configured in the selected service connection). **This field is optional.** Leave empty should you choose to self-configure the provider(s) used or the provider is not used. Provider environment variables can be configured securely by selecting an env file from the `Secured Variables File` pick list.",
+            "groupName": "providers"
         },
         {
             "name": "runAzLogin",
@@ -326,6 +333,22 @@
             "required": false,
             "helpMarkDown": "The path of the state file inside the bucket. If left empty, this is assumed to be self-configured.",
             "groupName": "backendAws"
+        },
+        {
+            "name": "providerServiceAws",
+            "type": "connectedService:AWS",
+            "label": "AWS Provider Service Connection",
+            "required": false,
+            "helpMarkDown": "Select an AWS service connection if you would like the aws provider configured for you (using the credentials configured in the selected service connection). **This field is optional.** Leave empty should you choose to self-configure the provider(s) used. Provider environment variables can be configured securely by selecting an env file from the `Secured Variables File` pick list.",
+            "groupName": "providers"
+        },
+        {
+            "name": "providerAwsRegion",
+            "type": "string",
+            "label": "AWS Provider default region",
+            "required": false,
+            "helpMarkDown": "The default region for the AWS Provider configuration. Sets env ARM_DEFAULT_REGION to the value provided.",
+            "groupName": "providers"
         }
     ],
     "execution": {

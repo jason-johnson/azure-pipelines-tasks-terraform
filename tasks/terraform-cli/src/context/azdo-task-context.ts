@@ -154,6 +154,18 @@ export default class AzdoTaskContext implements ITaskContext {
     get backendAwsRegion(){
       return this.getInput("backendAwsRegion", false)
     }
+    get providerServiceAws() {
+      return this.getInput("providerServiceAws");
+    }
+    get providerServiceAwsAccessKey() {
+      return this.getEndpointAuthorizationParameter(this.providerServiceAws, "username", true )
+    }    
+    get providerServiceAwsSecretKey() {
+      return this.getEndpointAuthorizationParameter(this.providerServiceAws, "password", true )
+    }    
+    get providerAwsRegion() {
+      return this.getInput("backendAwsRegion", false);
+    }
     finished() {
         this.finishedAt = process.hrtime(this.startedAt);
         this.runTime = this.finishedAt[1] / 1000000;

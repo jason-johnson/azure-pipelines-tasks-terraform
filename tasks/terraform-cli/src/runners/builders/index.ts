@@ -20,7 +20,6 @@ export { default as RunWithJsonOutput } from './run-with-json-output';
 export { default as RunWithLockId } from './run-with-lock-id';
 export { default as RunWithOptions } from './run-with-options';
 export { default as RunWithPlanOrStateFile } from './run-with-plan-or-state-file';
-export { default as RunWithProvider } from './run-with-provider';
 export { default as RunWithRawOutputs } from "./run-with-raw-outputs";
 export { default as RunWithResourceTarget } from './run-with-resource-target';
 export { default as RunWithSecureVarFile } from './run-with-secure-var-file';

@@ -49,6 +49,10 @@ export interface ITaskContext {
     backendAwsBucket?: string;
     backendAwsKey?: string;
     backendAwsRegion?: string;
+    providerServiceAws?: string;
+    providerServiceAwsAccessKey: string;
+    providerServiceAwsSecretKey: string;
+    providerAwsRegion?: string;
 }
 
 export { default as AzdoTaskContext } from './azdo-task-context';
