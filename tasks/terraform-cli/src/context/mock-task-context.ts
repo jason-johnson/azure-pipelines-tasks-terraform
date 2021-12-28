@@ -54,7 +54,7 @@ export default class MockTaskContext implements ITaskContext {
     providerServiceAws?: string;
     providerServiceAwsAccessKey: string = "";
     providerServiceAwsSecretKey: string = "";
-    providerAwsRegion?: string;
+    providerAwsRegion: string = "";
 
     constructor() {
         this.startedAt = process.hrtime();

@@ -54,7 +54,7 @@ export interface ITaskContext {
     providerServiceAws?: string;
     providerServiceAwsAccessKey: string;
     providerServiceAwsSecretKey: string;
-    providerAwsRegion?: string;
+    providerAwsRegion: string;
 }
 
 export const TRACKED_CONTEXT_PROPERTIES_METADATA_KEY = Symbol("propLogMetadata");

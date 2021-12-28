@@ -24,8 +24,6 @@ export default class AwsProvider implements ITerraformProvider {
   async init(): Promise<void> {
       process.env['AWS_ACCESS_KEY_ID']  = this.config.providerServiceAwsAccessKey;
       process.env['AWS_SECRET_ACCESS_KEY'] = this.config.providerServiceAwsSecretKey;
-      if(this.config.providerAwsRegion){
-        process.env['AWS_DEFAULT_REGION'] = this.config.providerAwsRegion;
-      }
+      process.env['AWS_REGION'] = this.config.providerAwsRegion;
   }
 }
