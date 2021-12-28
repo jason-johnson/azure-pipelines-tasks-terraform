@@ -14,13 +14,14 @@ export class Task {
       taskAgent: ITaskAgent, 
       private readonly logger: ILogger){
         const providers = new TerraformProviderContext(
+          logger,
           new AzureRmProvider(runner, ctx),
           new AwsProvider(ctx)
         )
         this.commands = {    
           "version": new commands.VersionCommandHandler(runner, logger),
           "validate": new commands.ValidateCommandHandler(taskAgent, runner),
-          "init": new commands.InitCommandHandler(taskAgent, runner),
+          "init": new commands.InitCommandHandler(taskAgent, runner, logger),
           "plan": new commands.PlanCommandHandler(taskAgent, runner,logger, providers),
           "apply": new commands.ApplyCommandHandler(taskAgent, runner, providers),
           "destroy": new commands.DestroyCommandHandler(taskAgent, runner, providers),
@@ -58,7 +59,7 @@ export class Task {
         }
         finally{
             this.ctx.finished();
-            this.logger.command(response?.status !== commands.CommandStatus.Failed, this.ctx.runTime, response?.customProperties);
+            this.logger.command(response?.status !== commands.CommandStatus.Failed, this.ctx.runTime);
             if(response && response.lastExitCode !== undefined){
                 this.ctx.setVariable("TERRAFORM_LAST_EXITCODE", response.lastExitCode.toString());
             }

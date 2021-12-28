@@ -9,6 +9,10 @@ export default class AzureRMProvider implements ITerraformProvider {
         private readonly ctx: ITaskContext){
     }
 
+    get name() {
+      return "azurerm";
+    }
+
     isDefined(): boolean{
       if(this.ctx.environmentServiceName){
         return true;
