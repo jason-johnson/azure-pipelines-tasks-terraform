@@ -197,7 +197,7 @@ export default class AzdoTaskContext implements ITaskContext {
     }    
     @trackValue("inputs.providers.aws.region", usesProviderAws)
     get providerAwsRegion() {
-      return this.getInput("backendAwsRegion", true);
+      return this.getInput("providerAwsRegion", true);
     }
     finished() {
         this.finishedAt = process.hrtime(this.startedAt);
