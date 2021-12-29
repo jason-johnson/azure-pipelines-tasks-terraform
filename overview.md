@@ -20,6 +20,15 @@ The Terraform CLI task supports executing the following commands
 - fmt
 - workspace
 
+## Supported Public Cloud Providers
+
+The Terraform CLI task support the following [Public Cloud](https://registry.terraform.io/browse/providers?category=public-cloud) providers
+
+- azurerm
+- **aws (NEW)**
+
+> NOTE: It is possible to leverage other providers by providing configuration via environment variables using [secure files](#secure-variable-secrets) or, `-backend-config=key=value` within `commandOptions` input.
+
 ## Supported Backends
 
 The Terraform CLI task supports the following terraform backends
@@ -78,7 +87,14 @@ The task supports running `terraform version` individually. When run, if the ver
 
 When running the other commands, `terraform version` is also run so that the version is recorded to the build log. However, warnings regarding out of date versions will be suppressed to reduce noise.
 
-## Azure Service Connection / Service Principal Integration
+## Public Cloud Terraform Provider Integrations
+
+The TerraformCLI task supports configuring the following public cloud providers. The task supports configuring multiple providers simultaneously to support multi-cloud deployments.
+
+- azurerm - Authenticates via Azure Resource Manager Service Connection included within Azure DevOps.
+- **aws (NEW)** - Authenticates via AWS Service Connection made available via the [AWS Toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.aws-vsts-tools) extension.
+
+### Azure Service Connection / Service Principal Integration
 
 When executing commands that interact with Azure such as `plan`, `apply`, and `destroy`, the task will utilize an Azure Service Connection to authorize operations against the target subscription. This is specified via the `environmentServiceName` input
 
@@ -90,11 +106,7 @@ When executing commands that interact with Azure such as `plan`, `apply`, and `d
         environmentServiceName: 'My Azure Service Connection'
 ```
 
-### Configuring Other Cloud Providers
-
-Other cloud providers such as **Amazon Web Services (AWS)** and **Google Cloud (GCP)** can be configured using [secure env files](#secure-variable-secrets). See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
-
-### Execute Azure CLI From Local-Exec Provisioner
+#### Execute Azure CLI From Local-Exec Provisioner
 
 When an azure service connection is provided and `runAzLogin` is set to `true`, the terraform cli task will run `az login` using the service connection credentials. This is intended to enable templates to execute az cli commands from a `local-exec` provisioner.
 
@@ -153,6 +165,25 @@ resource "azurerm_storage_account" "st_core" {
 }
 ```
 
+### Amazon Web Services (AWS) Service Connection / IAM User Integration
+
+When executing commands that interact with AWS such as `plan`, `apply`, and `destroy`, the task can utilize AWS Service Connection to authorize operations. This is specified via the `providerServiceAws` input. The region can also be provided via `providerAwsRegion` input.
+
+```yaml
+- task: TerraformCLI
+    displayName: 'terraform apply'
+    inputs:
+        command: apply
+        providerServiceAws: 'My AWS Service Connection'
+        providerAwsRegion: us-east-1
+```
+
+> NOTE: This depends on the AWS Service Connection included with the [AWS Toolkit]([AWS Toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.aws-vsts-tools) extension.
+
+### Configuring Other Cloud Providers
+
+Other cloud providers such as **Google Cloud (GCP)** can be configured using [secure env files](#secure-variable-secrets). See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
+
 ## Remote, Local and Self-configured Backend State Support
 
 The task currently supports the following backend configurations
@@ -162,7 +193,7 @@ The task currently supports the following backend configurations
 - **aws (NEW)** - State is stored in a S3 bucket
 - self-configured - State configuration will be provided using environment variables or command options. Environment files can be provided using Secure Files Library in AzDO and specified in Secure Files configuration field. Command options such as `-backend-config=` flag can be provided in the Command Options configuration field.
 
-> NOTE: `self-configured` can be used to execute deployments for other cloud providers such as **Amazon Web Services (AWS)** & **Google Cloud (GCP)**. See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
+> NOTE: `self-configured` can be used to execute deployments for other cloud providers such as **Google Cloud (GCP)**. See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
 
 ### AzureRM
 

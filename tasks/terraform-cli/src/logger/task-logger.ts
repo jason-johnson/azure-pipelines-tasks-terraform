@@ -1,19 +1,19 @@
 import { ILogger } from ".";
-import { ITaskContext } from "../context";
+import { ITaskContext, getTrackedProperties } from "../context";
 
 export default class TaskLogger implements ILogger {    
     constructor(
         private readonly ctx: ITaskContext, 
         private readonly tasks: any){
-    }
+    }    
 
-    command(success: boolean, duration: number, customProperties?: { [key:string]: string }): void {
+    command(success: boolean, duration: number): void {
         this.tasks.debug(`executed command '${this.ctx.name}'`, {
             name: this.ctx.name,
             success: success,
             resultCode: success ? 200 : 500,
             duration: duration,
-            properties: customProperties
+            properties: getTrackedProperties(this.ctx)
         })
     }
 

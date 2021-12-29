@@ -1,51 +1,55 @@
 import * as commands from "./commands";
 import { ITaskContext } from "./context";
 import { ILogger } from "./logger";
+import { AwsProvider, AzureRmProvider, TerraformProviderContext } from "./providers";
 import { IRunner } from "./runners";
 import { ITaskAgent } from "./task-agent";
 
 export class Task {
-    private readonly runner: IRunner;
-    private readonly taskAgent: ITaskAgent;
-    private readonly ctx: ITaskContext;
-    private readonly logger: ILogger;
+    private readonly commands: { [name: string]: commands.ICommand };
 
-    private readonly commandResolvers: { [key: string]: string} = {
-        "version": "version",
-        "validate": "validate",
-        "init": "init",
-        "plan": "plan",
-        "apply": "apply",
-        "destroy": "destroy",
-        "import": "import",
-        "refresh": "refresh",
-        "output": "output",
-        "forceunlock": "forceUnlock",
-        "show": "show",
-        "fmt": "fmt",
-        "workspace" : "workspace"
-    }
-
-    constructor(ctx: ITaskContext, runner: IRunner, taskAgent: ITaskAgent, logger: ILogger){
-        this.ctx = ctx;
-        this.runner = runner;
-        this.taskAgent = taskAgent;
-        this.logger = logger;
+    constructor(
+      private readonly ctx: ITaskContext,
+      runner: IRunner, 
+      taskAgent: ITaskAgent, 
+      private readonly logger: ILogger){
+        const providers = new TerraformProviderContext(
+          logger,
+          new AzureRmProvider(runner, ctx),
+          new AwsProvider(ctx)
+        )
+        this.commands = {    
+          "version": new commands.VersionCommandHandler(runner, logger),
+          "validate": new commands.ValidateCommandHandler(taskAgent, runner),
+          "init": new commands.InitCommandHandler(taskAgent, runner, logger),
+          "plan": new commands.PlanCommandHandler(taskAgent, runner,logger, providers),
+          "apply": new commands.ApplyCommandHandler(taskAgent, runner, providers),
+          "destroy": new commands.DestroyCommandHandler(taskAgent, runner, providers),
+          "import": new commands.ImportCommandHandler(taskAgent, runner, providers),
+          "refresh": new commands.RefreshCommandHandler(taskAgent, runner, providers),
+          "output": new commands.OutputCommandHandler(runner, logger),
+          "forceunlock": new commands.ForceUnlockCommandHandler(taskAgent, runner, providers),
+          "show": new commands.ShowCommandHandler(taskAgent, runner, logger),
+          "fmt": new commands.FormatCommandHandler(runner),
+          "workspace": new commands.WorkspaceCommandHandler({
+            "select": new commands.WorkspaceSelectCommandHandler(runner),
+            "new": new commands.WorkspaceNewCommandHandler(runner)
+          })
+        }
     }
 
     async exec(): Promise<commands.CommandResponse> {
-        let handlerName = this.commandResolvers[this.ctx.name];
+      let command = this.commands[this.ctx.name];
 
-        if(!handlerName){
+        if(!command){
             throw new Error(`Support for command "${this.ctx.name}" is not implemented`);
         }
 
         let response: commands.CommandResponse | undefined;
         try{
-            const command = <commands.ICommand>(<any>this)[handlerName]();
-
             if(this.ctx.name !== 'version'){
-                response = await this.version().exec(this.ctx);
+                let version = this.commands['version'];
+                response = await version.exec(this.ctx);
             }
             response = await command.exec(this.ctx);
         }
@@ -55,70 +59,11 @@ export class Task {
         }
         finally{
             this.ctx.finished();
-            this.logger.command(response?.status !== commands.CommandStatus.Failed, this.ctx.runTime, response?.customProperties);
+            this.logger.command(response?.status !== commands.CommandStatus.Failed, this.ctx.runTime);
             if(response && response.lastExitCode !== undefined){
                 this.ctx.setVariable("TERRAFORM_LAST_EXITCODE", response.lastExitCode.toString());
             }
         }
         return response;
-    }
-
-    version(): commands.ICommand {
-        return new commands.VersionCommandHandler(this.runner, this.logger);
-    }
-
-    init(): commands.ICommand {
-        return new commands.InitCommandHandler(this.taskAgent, this.runner);
-    }
-
-    validate(): commands.ICommand {
-        return new commands.ValidateCommandHandler(this.taskAgent, this.runner);
-    }
-
-    plan(): commands.ICommand {
-        return new commands.PlanCommandHandler(this.taskAgent, this.runner,this.logger);
-    }
-
-    apply(): commands.ICommand {
-        return new commands.ApplyCommandHandler(this.taskAgent, this.runner);
-    }
-
-    destroy(): commands.ICommand {
-        return new commands.DestroyCommandHandler(this.taskAgent, this.runner);
-    }
-
-    import(): commands.ICommand {
-        return new commands.ImportCommandHandler(this.taskAgent, this.runner);
-    }
-
-    output(): commands.ICommand {
-        return new commands.OutputCommandHandler(this.runner, this.logger);
-    }
-
-    refresh(): commands.ICommand {
-        return new commands.RefreshCommandHandler(this.taskAgent, this.runner);
-    }
-
-    forceUnlock(): commands.ICommand {
-        return new commands.ForceUnlockCommandHandler(this.taskAgent, this.runner);
-    }
-
-    show(): commands.ICommand {
-        return new commands.ShowCommandHandler(this.taskAgent, this.runner, this.logger);
-    }
-
-    fmt(): commands.ICommand {
-        return new commands.FormatCommandHandler(this.runner);
-    }
-
-    workspace(): commands.ICommand {
-        switch(this.ctx.workspaceSubCommand){
-            case "select":
-                return new commands.WorkspaceSelectCommandHandler(this.runner);
-            case "new":
-                return new commands.WorkspaceNewCommandHandler(this.runner);
-            default:
-                throw new Error(`Workspace sub-command "${this.ctx.workspaceSubCommand}" is not supported`);
-        }
     }
 }

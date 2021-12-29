@@ -97,6 +97,15 @@ export class TerraformSteps {
         }
     }
 
+    @then("the terraform cli task executed command {string} without the following environment variables")
+    public assertExecutedCommandWithoutEnvironmentVariables(command: string, table: DataTable){
+        this.assertExecutedCommand(command);
+        const expectedEnv = table.rowsHash;
+        for(let key in expectedEnv){
+            expect(process.env[key]).to.be.undefined;
+        }
+    }
+
     @then("the terraform cli task is successful")
     public terraformCliTaskIsSuccessful(){
         if(this.test.error){

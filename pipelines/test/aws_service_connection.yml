@@ -34,18 +34,21 @@ jobs:
       inputs:
         command: plan
         workingDirectory: $(test_templates_dir)
-        secureVarsFile: self-configured-aws.env
+        providerServiceAws: env_test_aws
+        providerAwsRegion: us-east-1
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
     - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform apply'
       inputs:
         command: apply
         workingDirectory: $(test_templates_dir)
-        secureVarsFile: self-configured-aws.env
+        providerServiceAws: env_test_aws
+        providerAwsRegion: us-east-1
         commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
     - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform destroy'
       inputs:
         command: destroy
         workingDirectory: $(test_templates_dir)
-        secureVarsFile: self-configured-aws.env
+        providerServiceAws: env_test_aws
+        providerAwsRegion: us-east-1

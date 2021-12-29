@@ -20,7 +20,7 @@ export class TerraformVersion implements ICommand {
         const result = await this.runner.exec(options);
         const version = result.stdout.match(versionRe);
         if(version){
-            ctx.setTerraformVersion(version[0], Number.parseInt(version[1]), Number.parseInt(version[2]), Number.parseInt(version[3]))
+          ctx.setTerraformVersion(version[0], Number.parseInt(version[1]), Number.parseInt(version[2]), Number.parseInt(version[3]))
         }
         if(ctx.name === "version"){
             const outOfDate = result.stdout.match(versionOutOfDate);

@@ -9,8 +9,7 @@ export class CommandResponse {
     constructor(
         public readonly status: CommandStatus, 
         public readonly message?: string,
-        public readonly lastExitCode?: number,
-        public readonly customProperties?: { [key:string]: string }        
+        public readonly lastExitCode?: number      
     ){}
 }
 
@@ -55,20 +54,21 @@ export { TerraformRefresh as RefreshCommandHandler } from './tf-refresh';
 export { TerraformForceUnlock as ForceUnlockCommandHandler } from './tf-force-unlock';
 export { TerraformShow as ShowCommandHandler } from './tf-show';
 export { TerraformFormat as FormatCommandHandler } from './tf-fmt';
+export { TerraformWorkspace as WorkspaceCommandHandler } from './tf-workspace';
 export { TerraformWorkspaceSelect as WorkspaceSelectCommandHandler } from './tf-workspace-select';
 export { TerraformWorkspaceNew as WorkspaceNewCommandHandler } from './tf-workspace-new';
 
 declare module '../runners'{
     interface RunnerResult{
-        toCommandResponse(this: RunnerResult, customProperties?: { [key:string]: string }) : CommandResponse;
+        toCommandResponse(this: RunnerResult) : CommandResponse;
     }
 }
 
-RunnerResult.prototype.toCommandResponse = function(this: RunnerResult, customProperties?: { [key:string]: string }): CommandResponse {
+RunnerResult.prototype.toCommandResponse = function(this: RunnerResult): CommandResponse {
     if(this.successfulExitCodes.includes(this.exitCode)){
-        return new CommandResponse(CommandStatus.Success, undefined, this.exitCode, customProperties);
+        return new CommandResponse(CommandStatus.Success, undefined, this.exitCode);
     }
     else{
-        return new CommandResponse(CommandStatus.Failed, this.stderr, this.exitCode, customProperties);
+        return new CommandResponse(CommandStatus.Failed, this.stderr, this.exitCode);
     }
 }
