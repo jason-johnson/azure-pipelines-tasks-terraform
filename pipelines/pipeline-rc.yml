@@ -57,3 +57,4 @@ stages:
         - switch_workspaces.yml
         - aws_self_configured.yml
         - aws_service_connection.yml
+        - init_without_location.yml

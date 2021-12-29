@@ -1,0 +1,27 @@
+parameters:
+  stage: ''
+
+jobs:
+- job: init_without_location_${{ parameters.stage }}
+  steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: download terraform templates
+      inputs: 
+        artifact: terraform_templates
+        path: $(terraform_extension_dir)
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+      displayName: install terraform
+      inputs:
+        terraformVersion: 1.0.10
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: 'terraform init'
+      inputs:
+        command: init
+        workingDirectory: $(terraform_templates_dir)
+        backendType: azurerm
+        backendServiceArm: 'env_test'
+        backendAzureRmResourceGroupName: rg-trfrm-${{ parameters.stage }}-eus-czp
+        backendAzureRmStorageAccountName: sttrfrm${{ parameters.stage }}eusczp
+        backendAzureRmStorageAccountSku: Standard_RAGRS
+        backendAzureRmContainerName: azure-pipelines-terraform
+        backendAzureRmKey: init_without_location.tfstate
