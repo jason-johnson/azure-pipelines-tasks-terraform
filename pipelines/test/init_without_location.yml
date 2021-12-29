@@ -2,9 +2,7 @@ parameters:
   stage: ''
 
 jobs:
-- job: init_without_location${{ parameters.stage }}
-  variables: 
-    test_templates_dir: $(terraform_templates_dir)/version11
+- job: init_without_location_${{ parameters.stage }}
   steps:
     - task: DownloadPipelineArtifact@2
       displayName: download terraform templates
@@ -19,7 +17,7 @@ jobs:
       displayName: 'terraform init'
       inputs:
         command: init
-        workingDirectory: $(test_templates_dir)
+        workingDirectory: $(terraform_templates_dir)
         backendType: azurerm
         backendServiceArm: 'env_test'
         backendAzureRmResourceGroupName: rg-trfrm-${{ parameters.stage }}-eus-czp
