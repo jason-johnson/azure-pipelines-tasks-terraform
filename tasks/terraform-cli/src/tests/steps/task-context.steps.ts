@@ -45,6 +45,19 @@ export class TaskContextSteps {
         this.ctx.backendServiceAwsSecretKey = endpoint.password;
     }
 
+    @given("aws provider service connection {string} exists as")
+    public inputAwsProviderServiceEndpoint(providerServiceName: string, table: DataTable){
+        var endpoint = table.rowsHash();        
+        this.ctx.providerServiceAws = providerServiceName;
+        this.ctx.providerServiceAwsAccessKey = endpoint.username;
+        this.ctx.providerServiceAwsSecretKey = endpoint.password;
+    }
+
+    @given("aws provider region is configured as {string}")
+    public inputAwsProviderRegion(providerAwsRegion: string){
+        this.ctx.providerAwsRegion = providerAwsRegion;
+    }
+
     @given("azurerm service connection {string} exists as")
     public inputAzureRmServiceEndpoint(environmentServiceName: string, table: DataTable){
         var endpoint = table.rowsHash();        
