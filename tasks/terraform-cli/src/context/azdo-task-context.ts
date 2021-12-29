@@ -72,7 +72,7 @@ export default class AzdoTaskContext implements ITaskContext {
     get backendAzureRmResourceGroupName() {
         return this.getInput("backendAzureRmResourceGroupName", true);
     }
-    @trackValue("inputs.backends.azurerm.rg.location", usesBackend(BackendTypes.azurerm))
+    @trackValue("inputs.backends.azurerm.rg.location", (ctx: ITaskContext) => isCommand("init") && ctx.backendType == BackendTypes.azurerm && ctx.ensureBackend === true)
     get backendAzureRmResourceGroupLocation() {
         return this.getInput("backendAzureRmResourceGroupLocation", true);
     }
