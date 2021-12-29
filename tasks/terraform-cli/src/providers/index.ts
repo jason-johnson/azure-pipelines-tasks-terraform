@@ -1,8 +1,4 @@
-import { ITaskContext } from '../context';
 import { ILogger } from '../logger';
-import { IRunner } from '../runners';
-import AwsProvider from './aws';
-import AzureRMProvider from './azurerm';
 
 export interface ITerraformProvider{
     isDefined(): boolean;

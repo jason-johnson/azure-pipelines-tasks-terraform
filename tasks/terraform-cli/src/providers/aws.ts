@@ -1,4 +1,3 @@
-import { ForkOptions } from "child_process";
 import { ITerraformProvider } from ".";
 
 interface AwsProviderConfiguration{
