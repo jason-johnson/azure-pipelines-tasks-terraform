@@ -59,7 +59,7 @@
     },
     
     "tags" : [
-        "terraform", "azurerm", "azure", "infrastructure as code", "iac", "cloud", "deploy"
+        "terraform", "azurerm", "azure", "aws", "infrastructure as code", "iac", "cloud", "deploy"
     ],
     "scopes": [
         "vso.build"
