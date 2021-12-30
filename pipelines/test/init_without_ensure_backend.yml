@@ -2,7 +2,7 @@ parameters:
   stage: ''
 
 jobs:
-- job: init_without_location_${{ parameters.stage }}
+- job: init_without_ensure_backend_${{ parameters.stage }}
   steps:
     - task: DownloadPipelineArtifact@2
       displayName: download terraform templates
@@ -22,6 +22,5 @@ jobs:
         backendServiceArm: 'env_test'
         backendAzureRmResourceGroupName: rg-trfrm-${{ parameters.stage }}-eus-czp
         backendAzureRmStorageAccountName: sttrfrm${{ parameters.stage }}eusczp
-        backendAzureRmStorageAccountSku: Standard_RAGRS
         backendAzureRmContainerName: azure-pipelines-terraform
-        backendAzureRmKey: init_without_location.tfstate
+        backendAzureRmKey: init_without_ensure_backend.tfstate

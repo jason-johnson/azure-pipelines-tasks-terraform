@@ -39,7 +39,9 @@ export default class AzureRMBackend implements ITerraformBackend {
         };
 
         for (var config in backendConfig) {
-            result.args.push(`-backend-config=${config}=${backendConfig[config]}`);
+            if(backendConfig[config]){
+              result.args.push(`-backend-config=${config}=${backendConfig[config]}`);
+            }            
         }
 
         if (ctx.ensureBackend === true) {
