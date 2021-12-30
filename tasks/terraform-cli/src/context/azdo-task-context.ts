@@ -70,27 +70,27 @@ export default class AzdoTaskContext implements ITaskContext {
     }
     @trackValue("inputs.backends.azurerm.rg", usesBackend(BackendTypes.azurerm), true)
     get backendAzureRmResourceGroupName() {
-        return this.getInput("backendAzureRmResourceGroupName", true);
+        return this.getInput("backendAzureRmResourceGroupName");
     }
     @trackValue("inputs.backends.azurerm.rg.location", (ctx: ITaskContext) => isCommand("init") && ctx.backendType == BackendTypes.azurerm && ctx.ensureBackend === true)
     get backendAzureRmResourceGroupLocation() {
-        return this.getInput("backendAzureRmResourceGroupLocation", true);
+        return this.getInput("backendAzureRmResourceGroupLocation");
     }
     @trackValue("inputs.backends.azurerm.storage", usesBackend(BackendTypes.azurerm), true)
     get backendAzureRmStorageAccountName() {
-        return this.getInput("backendAzureRmStorageAccountName", true);
+        return this.getInput("backendAzureRmStorageAccountName");
     }
-    @trackValue("inputs.backends.azurerm.storage.sku", usesBackend(BackendTypes.azurerm))
+    @trackValue("inputs.backends.azurerm.storage.sku", (ctx: ITaskContext) => isCommand("init") && ctx.backendType == BackendTypes.azurerm && ctx.ensureBackend === true)
     get backendAzureRmStorageAccountSku() {
-        return this.getInput("backendAzureRmStorageAccountSku", true);
+        return this.getInput("backendAzureRmStorageAccountSku");
     }
     @trackValue("inputs.backends.azurerm.storage.container", usesBackend(BackendTypes.azurerm), true)
     get backendAzureRmContainerName() {
-        return this.getInput("backendAzureRmContainerName", true);
+        return this.getInput("backendAzureRmContainerName");
     }
     @trackValue("inputs.backends.azurerm.storage.key", usesBackend(BackendTypes.azurerm), true)
     get backendAzureRmKey() {
-        return this.getInput("backendAzureRmKey", true);
+        return this.getInput("backendAzureRmKey");
     }
     get backendServiceArmAuthorizationScheme() {
         return this.getEndpointAuthorizationScheme(this.backendServiceArm, true);
