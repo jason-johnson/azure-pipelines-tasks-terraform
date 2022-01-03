@@ -24,7 +24,13 @@ export class TaskContextSteps {
         this.ctx.secureVarsFileId = id;
         this.ctx.secureVarsFileName = name;
         process.env[`SECUREFILE_NAME_${id}`] = name;
-    }  
+    }
+    
+    @given("gcs backend credential file specified with id {string} and name {string}")
+    public inputGcpCredentialFileFile(id: string, name: string){
+        this.ctx.backendGcsCredentials = id;
+        process.env[`SECUREFILE_NAME_${id}`] = name;
+    }
     
     @given("azurerm backend service connection {string} exists as")
     public inputAzureRmBackendServiceEndpoint(backendServiceName: string, table: DataTable){
@@ -86,6 +92,14 @@ export class TaskContextSteps {
         this.ctx.backendAwsBucket = backend.bucket;
         this.ctx.backendAwsKey = backend.key;
         this.ctx.backendAwsRegion = backend.region;
+    }
+
+    @given("gcs backend type selected with the following bucket")
+    public inputGcsBackend(table: DataTable){
+        var backend = table.rowsHash();
+        this.ctx.backendType = BackendTypes.gcs;
+        this.ctx.backendGcsBucket = backend.bucket;
+        this.ctx.backendGcsPrefix = backend.prefix;
     }
 
     @given("aws backend type selected without bucket configuration")

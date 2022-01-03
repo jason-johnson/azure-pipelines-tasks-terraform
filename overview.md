@@ -25,7 +25,7 @@ The Terraform CLI task supports executing the following commands
 The Terraform CLI task support the following [Public Cloud](https://registry.terraform.io/browse/providers?category=public-cloud) providers
 
 - azurerm
-- **aws (NEW)**
+- aws
 
 > NOTE: It is possible to leverage other providers by providing configuration via environment variables using [secure files](#secure-variable-secrets) or, `-backend-config=key=value` within `commandOptions` input.
 
@@ -35,7 +35,8 @@ The Terraform CLI task supports the following terraform backends
 
 - local
 - azurerm
-- **aws (NEW)**
+- aws
+- gcs
 
 > NOTE: It is possible to leverage other backends by providing configuration via environment variables using [secure files](#secure-variable-secrets) or, `-backend-config=key=value` within `commandOptions` input.
 
@@ -190,10 +191,11 @@ The task currently supports the following backend configurations
 
 - local (default for terraform) - State is stored on the agent file system.
 - azurerm - State is stored in a blob container within a specified Azure Storage Account.
-- **aws (NEW)** - State is stored in a S3 bucket
+- aws - State is stored in a S3 bucket
+- gcs - State is stored in Google Cloud Storage bucket
 - self-configured - State configuration will be provided using environment variables or command options. Environment files can be provided using Secure Files Library in AzDO and specified in Secure Files configuration field. Command options such as `-backend-config=` flag can be provided in the Command Options configuration field.
 
-> NOTE: `self-configured` can be used to execute deployments for other cloud providers such as **Google Cloud (GCP)**. See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
+> NOTE: `self-configured` can be used to execute deployments for other cloud providers. See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
 
 ### AzureRM
 
@@ -220,7 +222,11 @@ If azurerm selected, the task will prompt for a service connection and storage a
         backendAzureRmKey: infrax.tfstate
 ```
 
-### **AWS S3 (NEW)**
+#### Automated Remote Backend Creation for Azure Storage
+
+The task supports automatically creating the resource group, storage account, and container for remote azurerm backend. To enable this, set the `ensureBackend` input to `true` and provide the resource group, location, and storage account sku. The defaults are 'eastus' and 'Standard_RAGRS' respectively. The task will utilize AzureCLI to create the resource group, storage account, and container as specified in the backend configuration.
+
+### AWS S3
 
 If aws selected, the task allows for configuring a service connection as well as the bucket details to use for the backend.
 
@@ -242,9 +248,24 @@ If aws selected, the task allows for configuring a service connection as well as
     backendAwsKey: 'my-env-infrax/dev-infrax'
 ```
 
-### Automated Remote Backend Creation
+### Google Cloud Storage Bucket
 
-The task supports automatically creating the resource group, storage account, and container for remote azurerm backend. To enable this, set the `ensureBackend` input to `true` and provide the resource group, location, and storage account sku. The defaults are 'eastus' and 'Standard_RAGRS' respectively. The task will utilize AzureCLI to create the resource group, storage account, and container as specified in the backend configuration.
+If gcp selected, the task allows for defining gcs backend configuration. The authentication is done via a key in json file format provided by Google Cloud IAM. The key file can be uploaded to Secure Files in Azure DevOps and referenced from the task. The task will then use the key file for authentication.
+
+```yaml
+- task: TerraformCLI@0
+  displayName: 'terraform init'
+  inputs:
+    command: init
+    workingDirectory: $(test_templates_dir)
+    backendType: gcs
+    # Google Credentials (i.e. for service account) in JSON file format in Azure DevOps Secure Files
+    backendGcsCredentials: gcs-backend-key.json
+    # GCS bucket name
+    backendGcsBucket: gcs-trfrm-alpha-eus-czp
+    # GCS Bucket path to state file
+    backendGcsPrefix: 'azure-pipelines-terraform/infrax'
+```
 
 ## Secure Variable Secrets
 
