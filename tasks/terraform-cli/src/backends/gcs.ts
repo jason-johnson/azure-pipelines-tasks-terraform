@@ -7,7 +7,7 @@ export default class GcsBackend implements ITerraformBackend {
   }
 
   async init(ctx: ITaskContext): Promise<TerraformBackendInitResult> {
-    const credentials = this.agent.downloadSecureFile(ctx.backendGcsCredentials);
+    const credentials = await this.agent.downloadSecureFile(ctx.backendGcsCredentials);
 
     let backendConfig: any = {
       bucket: ctx.backendGcsBucket,
