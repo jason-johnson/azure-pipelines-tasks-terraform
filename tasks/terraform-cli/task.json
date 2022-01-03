@@ -23,11 +23,18 @@
             "displayName": "AzureRM Backend Configuration",
             "isExpanded": false,
             "visibleRule": "command = init && backendType = azurerm"
-        },{
+        },
+        {
           "name": "backendAws",
           "displayName": "AWS Backend Configuration",
           "isExpanded": false,
           "visibleRule": "command = init && backendType = aws"
+        },
+        {
+          "name": "backendGcs",
+          "displayName": "GCS Backend Configuration",
+          "isExpanded": false,
+          "visibleRule": "command = init && backendType = gcs"
         },
         {
             "name": "providers",
@@ -155,7 +162,8 @@
                 "local": "local",
                 "azurerm": "azurerm",
                 "selfConfigured": "self-configured",
-                "aws": "aws"
+                "aws": "aws",
+                "gcs": "gcs"
             },
             "properties": {
                 "EditableOptions": "False"
@@ -349,6 +357,30 @@
             "required": false,
             "helpMarkDown": "The default region for the AWS Provider configuration. Sets env ARM_DEFAULT_REGION to the value provided.",
             "groupName": "providers"
+        },
+        {
+            "name": "backendGcsCredentials",
+            "type": "secureFile",
+            "label": "Google Credentials JSON File",
+            "required": false,
+            "helpMarkDown": "Secure file containing GCP account credentials in JSON format.",
+            "groupName": "backendGcs"
+        },
+        {
+            "name": "backendGcsBucket",
+            "type": "string",
+            "label": "Bucket",
+            "required": false,
+            "helpMarkDown": "The bucket's name. If left empty, this is assumed to be self-configured.",
+            "groupName": "backendGcs"
+        },
+        {
+            "name": "backendGcsPrefix",
+            "type": "string",
+            "label": "Prefix",
+            "required": false,
+            "helpMarkDown": "The GCS prefix inside the bucket. If left empty, this is assumed to be self-configured.",
+            "groupName": "backendGcs"
         }
     ],
     "execution": {

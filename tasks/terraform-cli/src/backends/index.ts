@@ -10,7 +10,8 @@ export enum BackendTypes{
     local = "local",
     azurerm = "azurerm",
     selfConfigured = "self-configured",
-    aws = "aws"
+    aws = "aws",
+    gcs = "gcs"
 }
 
 export { default as AzureRMBackend } from './azurerm';

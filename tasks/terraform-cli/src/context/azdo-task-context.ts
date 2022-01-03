@@ -198,7 +198,19 @@ export default class AzdoTaskContext implements ITaskContext {
     @trackValue("inputs.providers.aws.region", usesProviderAws)
     get providerAwsRegion() {
       return this.getInput("providerAwsRegion", true);
-    }
+    }    
+    @trackValue("inputs.backends.gcs.credentials", usesBackend(BackendTypes.gcs), true)
+    get backendGcsCredentials(){
+      return this.getInput("backendGcsCredentials");
+    };
+    @trackValue("inputs.backends.gcs.bucket", usesBackend(BackendTypes.gcs), true)
+    get backendGcsBucket(){
+      return this.getInput("backendGcsBucket");
+    };
+    @trackValue("inputs.backends.gcs.prefix", usesBackend(BackendTypes.gcs), true)
+    get backendGcsPrefix(){
+      return this.getInput("backendGcsPrefix");
+    };
     finished() {
         this.finishedAt = process.hrtime(this.startedAt);
         this.runTime = this.finishedAt[1] / 1000000;

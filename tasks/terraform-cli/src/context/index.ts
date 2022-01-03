@@ -55,6 +55,9 @@ export interface ITaskContext {
     providerServiceAwsAccessKey: string;
     providerServiceAwsSecretKey: string;
     providerAwsRegion: string;
+    backendGcsCredentials: string;
+    backendGcsBucket: string;
+    backendGcsPrefix: string;
 }
 
 export const TRACKED_CONTEXT_PROPERTIES_METADATA_KEY = Symbol("propLogMetadata");

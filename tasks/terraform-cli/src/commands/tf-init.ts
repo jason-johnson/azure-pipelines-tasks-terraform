@@ -6,6 +6,7 @@ import { ITaskContext } from "../context";
 import { ITaskAgent } from "../task-agent";
 import AwsBackend from "../backends/aws";
 import { ILogger } from "../logger";
+import GcsBackend from "../backends/gcs";
 
 export class TerraformInit implements ICommand {
     private readonly runner: IRunner;    
@@ -26,6 +27,9 @@ export class TerraformInit implements ICommand {
               break;
             case BackendTypes.aws:
               backend = new AwsBackend();
+              break;
+            case BackendTypes.gcs:
+              backend = new GcsBackend(this.taskAgent);
               break;
         }
         return backend
