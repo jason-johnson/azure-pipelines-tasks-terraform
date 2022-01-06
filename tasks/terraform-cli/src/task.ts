@@ -18,7 +18,7 @@ export class Task {
           logger,
           new AzureRmProvider(runner, ctx),
           new AwsProvider(ctx),
-          new GoogleProvider(ctx)
+          new GoogleProvider(taskAgent, ctx)
         )
         this.commands = {    
           "version": new commands.VersionCommandHandler(runner, logger),

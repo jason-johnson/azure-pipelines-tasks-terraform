@@ -1,4 +1,5 @@
 import { ITerraformProvider } from ".";
+import { ITaskAgent } from "../task-agent";
 
 interface GoogleProviderConfiguration{
   providerGoogleCredentials?: string,
@@ -7,7 +8,9 @@ interface GoogleProviderConfiguration{
 }
 
 export default class GoogleProvider implements ITerraformProvider {
-  constructor(private readonly config: GoogleProviderConfiguration) {
+  constructor(
+    private readonly agent: ITaskAgent,
+    private readonly config: GoogleProviderConfiguration) {
   }
 
   isDefined(): boolean{
@@ -23,8 +26,9 @@ export default class GoogleProvider implements ITerraformProvider {
   }
   
   async init(): Promise<void> {
-    if(this.config.providerGoogleCredentials){
-      process.env['GOOGLE_CREDENTIALS'] = this.config.providerGoogleCredentials;
+    if(this.config.providerGoogleCredentials){      
+      const credentials = await this.agent.downloadSecureFile(this.config.providerGoogleCredentials);
+      process.env['GOOGLE_CREDENTIALS'] = credentials;
     }
     if(this.config.providerGoogleProject){
       process.env['GOOGLE_PROJECT'] = this.config.providerGoogleProject;
