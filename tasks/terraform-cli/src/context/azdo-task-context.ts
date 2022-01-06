@@ -202,15 +202,27 @@ export default class AzdoTaskContext implements ITaskContext {
     @trackValue("inputs.backends.gcs.credentials", usesBackend(BackendTypes.gcs), true)
     get backendGcsCredentials(){
       return this.getInput("backendGcsCredentials");
-    };
+    }
     @trackValue("inputs.backends.gcs.bucket", usesBackend(BackendTypes.gcs), true)
     get backendGcsBucket(){
       return this.getInput("backendGcsBucket");
-    };
+    }
     @trackValue("inputs.backends.gcs.prefix", usesBackend(BackendTypes.gcs), true)
     get backendGcsPrefix(){
       return this.getInput("backendGcsPrefix");
-    };
+    }
+    @trackValue("inputs.providers.google.creds", usesProvider, true)
+    get providerGoogleCredentials() {
+      return this.getInput("providerGoogleCredentials");
+    }
+    @trackValue("inputs.providers.google.project", usesProvider, true)
+    get providerGoogleProject() {
+      return this.getInput("providerGoogleProject");
+    }
+    @trackValue("inputs.providers.google.region", usesProvider, true)
+    get providerGoogleRegion() {
+      return this.getInput("providerGoogleRegion");
+    }
     finished() {
         this.finishedAt = process.hrtime(this.startedAt);
         this.runTime = this.finishedAt[1] / 1000000;

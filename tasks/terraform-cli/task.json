@@ -381,6 +381,30 @@
             "required": false,
             "helpMarkDown": "The GCS prefix inside the bucket. If left empty, this is assumed to be self-configured.",
             "groupName": "backendGcs"
+        },
+        {
+            "name": "providerGoogleCredentials",
+            "type": "secureFile",
+            "label": "Google Credentials JSON File",
+            "required": false,
+            "helpMarkDown": "Secure file containing GCP account credentials in JSON format.",
+            "groupName": "providers"
+        },
+        {
+            "name": "providerGoogleProject",
+            "type": "string",
+            "label": "Project",
+            "required": false,
+            "helpMarkDown": "The default project name where resources are managed. Defining project on a resource takes precedence over this.",
+            "groupName": "providers"
+        },
+        {
+            "name": "providerGoogleRegion",
+            "type": "string",
+            "label": "Region",
+            "required": false,
+            "helpMarkDown": "The default region where resources are managed. Defining region on a resource takes precedence over this.",
+            "groupName": "providers"
         }
     ],
     "execution": {

@@ -26,6 +26,7 @@ The Terraform CLI task support the following [Public Cloud](https://registry.ter
 
 - azurerm
 - aws
+- google
 
 > NOTE: It is possible to leverage other providers by providing configuration via environment variables using [secure files](#secure-variable-secrets) or, `-backend-config=key=value` within `commandOptions` input.
 
@@ -93,7 +94,8 @@ When running the other commands, `terraform version` is also run so that the ver
 The TerraformCLI task supports configuring the following public cloud providers. The task supports configuring multiple providers simultaneously to support multi-cloud deployments.
 
 - azurerm - Authenticates via Azure Resource Manager Service Connection included within Azure DevOps.
-- **aws (NEW)** - Authenticates via AWS Service Connection made available via the [AWS Toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.aws-vsts-tools) extension.
+- aws - Authenticates via AWS Service Connection made available via the [AWS Toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.aws-vsts-tools) extension.
+- google - Authenticates via service account JSON formatted key file uploaded to Azure DevOps secure files.
 
 ### Azure Service Connection / Service Principal Integration
 
@@ -181,9 +183,27 @@ When executing commands that interact with AWS such as `plan`, `apply`, and `des
 
 > NOTE: This depends on the AWS Service Connection included with the [AWS Toolkit]([AWS Toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.aws-vsts-tools) extension.
 
+### Google Cloud Platform (GCP) Key File / Service Account Integration
+
+When executing commands that interact with GCP such as `plan`, `apply`, and `destroy`, the task can utilize a JSON formatted key file uploaded to Azure DevOps Secure Files to authorize operations. This is specified via the `providerGoogleCredentials` input. This input should be the name of the secure file containing the JSON formatted key.
+
+```yaml
+- task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+  displayName: 'terraform plan'
+  inputs:
+    command: plan
+    workingDirectory: $(test_templates_dir)
+    # Google Credentials (i.e. for service account) in JSON file format in Azure DevOps Secure Files
+    providerGoogleCredentials: gcp-service-account-key.json
+    # The default project name where resources are managed. Defining project on a resource takes precedence over this.
+    providerGoogleProject: gcs-trfrm-${{ parameters.stage }}-eus-czp
+    # The default region where resources are managed. Defining region on a resource takes precedence over this.
+    providerGoogleRegion: 'us-east-1'
+```
+
 ### Configuring Other Cloud Providers
 
-Other cloud providers such as **Google Cloud (GCP)** can be configured using [secure env files](#secure-variable-secrets). See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
+Other cloud providers can be configured using [secure env files](#secure-variable-secrets). See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
 
 ## Remote, Local and Self-configured Backend State Support
 
@@ -438,7 +458,7 @@ Skip apply if destroy operations
         commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
 ```
 
-## **Workspaces (NEW)**
+## Workspaces
 
 The task supports managing workspaces within pipelines. The following workspace subcommands are supported.
 
