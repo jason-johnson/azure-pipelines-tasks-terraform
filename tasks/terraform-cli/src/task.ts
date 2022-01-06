@@ -2,6 +2,7 @@ import * as commands from "./commands";
 import { ITaskContext } from "./context";
 import { ILogger } from "./logger";
 import { AwsProvider, AzureRmProvider, TerraformProviderContext } from "./providers";
+import GoogleProvider from "./providers/google";
 import { IRunner } from "./runners";
 import { ITaskAgent } from "./task-agent";
 
@@ -16,7 +17,8 @@ export class Task {
         const providers = new TerraformProviderContext(
           logger,
           new AzureRmProvider(runner, ctx),
-          new AwsProvider(ctx)
+          new AwsProvider(ctx),
+          new GoogleProvider(ctx)
         )
         this.commands = {    
           "version": new commands.VersionCommandHandler(runner, logger),

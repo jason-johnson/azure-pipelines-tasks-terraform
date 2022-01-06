@@ -58,6 +58,9 @@ export interface ITaskContext {
     backendGcsCredentials: string;
     backendGcsBucket: string;
     backendGcsPrefix: string;
+    providerGoogleCredentials?: string;
+    providerGoogleProject?: string;
+    providerGoogleRegion?: string;
 }
 
 export const TRACKED_CONTEXT_PROPERTIES_METADATA_KEY = Symbol("propLogMetadata");

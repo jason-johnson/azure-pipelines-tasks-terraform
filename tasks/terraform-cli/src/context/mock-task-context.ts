@@ -58,6 +58,9 @@ export default class MockTaskContext implements ITaskContext {
     backendGcsCredentials: string = "";
     backendGcsBucket: string = "";
     backendGcsPrefix: string = "";
+    providerGoogleCredentials?: string;
+    providerGoogleProject?: string;
+    providerGoogleRegion?: string;
 
     constructor() {
         this.startedAt = process.hrtime();
