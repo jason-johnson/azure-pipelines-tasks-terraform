@@ -68,6 +68,10 @@ export default class AzdoTaskContext implements ITaskContext {
     get backendServiceArm() {
         return this.getInput("backendServiceArm");
     }
+    @trackValue("inputs.backends.azurerm.sub", usesBackend(BackendTypes.azurerm), true)
+    get backendAzureRmSubscriptionId() {
+        return this.getInput("backendAzureRmSubscriptionId");
+    }
     @trackValue("inputs.backends.azurerm.rg", usesBackend(BackendTypes.azurerm), true)
     get backendAzureRmResourceGroupName() {
         return this.getInput("backendAzureRmResourceGroupName");
