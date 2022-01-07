@@ -33,29 +33,3 @@ jobs:
         backendAzureRmStorageAccountSku: Standard_RAGRS
         backendAzureRmContainerName: azure-pipelines-terraform
         backendAzureRmKey: azurerm_mgmt_group_service_connection.tfstate
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-      displayName: 'terraform validate'
-      inputs:
-        workingDirectory: $(terraform_templates_dir)
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-      displayName: 'terraform plan'
-      inputs:
-        command: plan
-        workingDirectory: $(terraform_templates_dir)
-        environmentServiceName: 'env_test_mgmt'
-        secureVarsFile: $(tf_variables_secure_file)
-        commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode'
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-      displayName: 'terraform apply'
-      inputs:
-        command: apply
-        workingDirectory: $(terraform_templates_dir)
-        environmentServiceName: 'env_test_mgmt'
-        commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
-    - task: TerraformCLI@0
-      displayName: 'terraform destroy'
-      inputs:
-        command: destroy
-        workingDirectory: $(terraform_templates_dir)
-        environmentServiceName: 'env_test_mgmt'
-        secureVarsFile: $(tf_variables_secure_file)
