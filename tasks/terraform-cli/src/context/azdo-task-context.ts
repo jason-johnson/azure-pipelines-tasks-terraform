@@ -93,6 +93,7 @@ export default class AzdoTaskContext implements ITaskContext {
         return this.getInput("backendAzureRmKey");
     }
     get backendServiceArmAuthorizationScheme() {
+        console.log(tasks.getEndpointAuthorization(this.backendServiceArm, true));
         return this.getEndpointAuthorizationScheme(this.backendServiceArm, true);
     }
     get backendServiceArmSubscriptionId() {
