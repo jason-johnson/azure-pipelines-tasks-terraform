@@ -219,7 +219,9 @@ The task currently supports the following backend configurations
 
 ### AzureRM
 
-If azurerm selected, the task will prompt for a service connection and storage account details to use for the backend.
+If azurerm selected, the task will prompt for a service connection and storage account details to use for the backend. *The task supports both Subscription and Management Group scoped service connections*
+
+> Note: If using a management group scoped service connection, ensure the subscription id of the target backend is defined via the `backendAzureRmSubscriptionId` input.
 
 ```yaml
 - task: TerraformCLI
@@ -227,7 +229,11 @@ If azurerm selected, the task will prompt for a service connection and storage a
     inputs:
         command: init
         backendType: azurerm
+        # Service connection to authorize backend access. Supports Subscription & Management Group Scope
         backendServiceArm: 'My Azure Service Connection'
+        # Subscription id of the target backend. This can be used to specify the subscription when using Management Group scoped 
+        # Service connection or to override the subscription id defined in a Subscription scoped service connection
+        backendAzureRmSubscriptionId: 'my-backend-subscription-id'
         # create backend storage account if doesn't exist
         ensureBackend: true
         backendAzureRmResourceGroupName: 'my-backend-resource-group'

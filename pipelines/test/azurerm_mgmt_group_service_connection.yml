@@ -18,18 +18,18 @@ jobs:
       inputs:
         command: version
         workingDirectory: $(terraform_templates_dir)
-- task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
-  displayName: 'terraform init'
-  inputs:
-    command: init
-    workingDirectory: $(terraform_templates_dir)
-    backendType: azurerm
-    backendServiceArm: 'env_test_mgmt'
-    backendAzureRmSubscriptionId: $(azure_subscription_id)
-    ensureBackend: true
-    backendAzureRmResourceGroupName: rg-trfrm-${{ parameters.stage }}-eus-czp
-    backendAzureRmResourceGroupLocation: eastus
-    backendAzureRmStorageAccountName: sttrfrm${{ parameters.stage }}eusczp
-    backendAzureRmStorageAccountSku: Standard_RAGRS
-    backendAzureRmContainerName: azure-pipelines-terraform
-    backendAzureRmKey: azurerm_mgmt_group_service_connection.tfstate
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: 'terraform init'
+      inputs:
+        command: init
+        workingDirectory: $(terraform_templates_dir)
+        backendType: azurerm
+        backendServiceArm: 'env_test_mgmt'
+        backendAzureRmSubscriptionId: $(azure_subscription_id)
+        ensureBackend: true
+        backendAzureRmResourceGroupName: rg-trfrm-${{ parameters.stage }}-eus-czp
+        backendAzureRmResourceGroupLocation: eastus
+        backendAzureRmStorageAccountName: sttrfrm${{ parameters.stage }}eusczp
+        backendAzureRmStorageAccountSku: Standard_RAGRS
+        backendAzureRmContainerName: azure-pipelines-terraform
+        backendAzureRmKey: azurerm_mgmt_group_service_connection.tfstate
