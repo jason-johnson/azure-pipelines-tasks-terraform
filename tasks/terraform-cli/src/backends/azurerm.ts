@@ -22,13 +22,17 @@ export default class AzureRMBackend implements ITerraformBackend {
 
         //use the arm_* prefix config only for versions before 0.12.0
         if(ctx.terraformVersionMajor === 0 && typeof(ctx.terraformVersionMinor) == 'number' && ctx.terraformVersionMinor < 12){
-            backendConfig.arm_subscription_id = ctx.backendServiceArmSubscriptionId;
+            if(ctx.backendServiceArmSubscriptionId){
+              backendConfig.arm_subscription_id = ctx.backendServiceArmSubscriptionId;
+            }
             backendConfig.arm_tenant_id = ctx.backendServiceArmTenantId;
             backendConfig.arm_client_id = ctx.backendServiceArmClientId;
             backendConfig.arm_client_secret = ctx.backendServiceArmClientSecret;
         }
         else{
-            backendConfig.subscription_id = ctx.backendServiceArmSubscriptionId;
+            if(ctx.backendServiceArmSubscriptionId){
+              backendConfig.subscription_id = ctx.backendServiceArmSubscriptionId;
+            }
             backendConfig.tenant_id = ctx.backendServiceArmTenantId;
             backendConfig.client_id = ctx.backendServiceArmClientId;
             backendConfig.client_secret = ctx.backendServiceArmClientSecret;
@@ -52,12 +56,14 @@ export default class AzureRMBackend implements ITerraformBackend {
     }
 
     private async ensureBackend(ctx: ITaskContext) {
-        await new CommandPipeline(this.runner)
-            .azLogin()
-            .azAccountSet()
-            .azGroupCreate()
-            .azStorageAccountCreate()
-            .azStorageContainerCreate()
-            .exec(ctx);
+      let command = await new CommandPipeline(this.runner).azLogin();
+      if(ctx.backendServiceArmSubscriptionId){
+        command = command.azAccountSet();
+      }
+      command = command
+        .azGroupCreate()
+        .azStorageAccountCreate()
+        .azStorageContainerCreate();
+      command.exec(ctx);
     }
 }
