@@ -30,4 +30,3 @@ stages:
       stage: alpha
       scenarios:
         - smoke_test.yml
-        - gcp_credential_file.yml
