@@ -11,7 +11,7 @@ export class AzAccountSet implements ICommand {
     async exec(ctx: ITaskContext): Promise<CommandResponse>{
         const options = await new RunWithAzCli("set", ["account"]).build();
         options.addArgs(
-            "-s", ctx.backendServiceArmSubscriptionId
+            "-s", (ctx.backendAzureRmSubscriptionId || ctx.backendServiceArmSubscriptionId)
         );
         const result = await this.runner.exec(options);
         return result.toCommandResponse();

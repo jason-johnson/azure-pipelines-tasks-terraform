@@ -9,6 +9,7 @@ export interface ITaskContext {
     backendType?: string;
     ensureBackend?: boolean;
     backendServiceArm: string;
+    backendAzureRmSubscriptionId?: string;
     backendAzureRmResourceGroupName: string;
     backendAzureRmResourceGroupLocation: string;
     backendAzureRmStorageAccountName: string;

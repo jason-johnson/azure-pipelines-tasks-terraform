@@ -173,9 +173,17 @@
         {
             "name": "backendServiceArm",
             "type": "connectedService:AzureRM",
-            "label": "Backend Azure Subscription",
+            "label": "Backend Azure Service Connection",
             "required": false,
-            "helpMarkDown": "Select an Azure resource manager subscription for the terraform backend configuration",
+            "helpMarkDown": "Select an Azure Resource Manager service connection for backend authorization. Both Subscription & Management Group Scopes are supported. *If using Management Group Scoped service connection, ensure the Subscription Id is provided in the `backendAzureRmSubscriptionId` input.*",
+            "groupName": "backendAzureRm"
+        },
+        {
+            "name": "backendAzureRmSubscriptionId",
+            "type": "string",
+            "label": "Azure Subscription Id",
+            "required": false,
+            "helpMarkDown": "The subscription id where the backend should be located. If provided, this will override the subscription id defined within the service connection. This should be provided when using Management Group scoped service connection.",
             "groupName": "backendAzureRm"
         },
         {

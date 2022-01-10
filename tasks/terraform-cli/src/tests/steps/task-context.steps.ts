@@ -79,6 +79,7 @@ export class TaskContextSteps {
     public inputAzureRmBackend(table: DataTable){
         var backend = table.rowsHash();
         this.ctx.backendType = BackendTypes.azurerm;
+        this.ctx.backendAzureRmSubscriptionId = backend.subscriptionId;
         this.ctx.backendAzureRmResourceGroupName = backend.resourceGroup;
         this.ctx.backendAzureRmStorageAccountName = backend.name;
         this.ctx.backendAzureRmContainerName = backend.container;
