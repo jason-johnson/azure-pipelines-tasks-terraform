@@ -156,9 +156,9 @@ export default class AzdoTaskContext implements ITaskContext {
     get publishPlanResults() {
         return this.getInput("publishPlanResults");
     }
-    @trackValue("inputs.commands.workspace.subCommand", isCommand("workspace"))
-    get workspaceSubCommand() {
-        return this.getInput("workspaceSubCommand", true);
+    @trackValue("inputs.commands.subCommand", isCommand("workspace", "state"))
+    get subCommand() {
+        return this.getInput("subCommand", true);
     }
     get workspaceName() {
         return this.getInput("workspaceName", true);
