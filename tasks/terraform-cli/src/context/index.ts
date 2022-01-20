@@ -2,7 +2,6 @@ import "reflect-metadata";
 
 export interface ITaskContext {
     name: string;
-    subCommand: string;
     cwd: string;
     commandOptions?: string;
     secureVarsFileId: string;
@@ -36,7 +35,9 @@ export interface ITaskContext {
     planOrStateFilePath: string;
     runAzLogin?: boolean;
     publishPlanResults: string;
+    workspaceSubCommand: string;
     workspaceName: string;
+    stateSubCommand: string;
     stateAddresses: string[];
     stateMoveSource: string;
     stateMoveDestination: string;

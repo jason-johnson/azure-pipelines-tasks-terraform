@@ -150,25 +150,25 @@ export class TaskContextSteps {
 
     @given("workspace command is {string} with name {string}")
     public workspaceCommandIsForName(subCommand: string, name: string){
-        this.ctx.subCommand = subCommand;
+        this.ctx.workspaceSubCommand = subCommand;
         this.ctx.workspaceName = name;
     }
 
     @given("workspace command is {string} with name {string} and command is set to succeed if existing")
     public workspaceCommandIsForNameWithSkipExisting(subCommand: string, name: string){
-        this.ctx.subCommand = subCommand;
+        this.ctx.workspaceSubCommand = subCommand;
         this.ctx.workspaceName = name;
         this.ctx.skipExistingWorkspace = true;
     }
 
     @given("subcommand is {string}")
     public subCommand(subCommand: string){
-        this.ctx.subCommand = subCommand;
+        this.ctx.workspaceSubCommand = subCommand;
     }
 
     @given("state command is {string} with the following addresses:")
     public stateCommandWithAddresses(subCommand: string, addresses: DataTable){
-        this.ctx.subCommand = subCommand;
+        this.ctx.stateSubCommand = subCommand;
         this.ctx.stateAddresses = addresses.raw().map(r => r[0]);
     }
 

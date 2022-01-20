@@ -3,7 +3,7 @@ import * as tasks from 'azure-pipelines-task-lib/task';
 import { BackendTypes } from "../backends";
 
 const isCommand = (...commands: string[]) => (ctx: ITaskContext) => commands.includes(ctx.name);
-const isCommandWithSubCommand = (commands: string[], subCommands: string[]) => (ctx: ITaskContext) => commands.includes(ctx.name) && subCommands.includes(ctx.subCommand);
+const isCommandWithSubCommand = (commands: string[], subCommands: string[], subCommand: (ctx: ITaskContext) => string) => (ctx: ITaskContext) => commands.includes(ctx.name) && subCommands.includes(subCommand(ctx));
 const usesProvider = isCommand("plan", "apply", "destroy", "import", "refresh", "forceunlock");
 const usesProviderAzureRm = (ctx: ITaskContext) => usesProvider(ctx) && !(!ctx.environmentServiceName)
 const usesProviderAws = (ctx: ITaskContext) => usesProvider(ctx) && !(!ctx.providerServiceAws)
@@ -159,9 +159,9 @@ export default class AzdoTaskContext implements ITaskContext {
     get publishPlanResults() {
         return this.getInput("publishPlanResults");
     }
-    @trackValue("inputs.commands.subCommand", isCommand("workspace", "state"))
-    get subCommand() {
-        return this.getInput("subCommand", true);
+    @trackValue("inputs.commands.workspace.subCommand", isCommand("workspace"))
+    get workspaceSubCommand() {
+        return this.getInput("workspaceSubCommand", true);
     }
     get workspaceName() {
         return this.getInput("workspaceName", true);
@@ -171,21 +171,23 @@ export default class AzdoTaskContext implements ITaskContext {
         return this.getBoolInput("skipExistingWorkspace", false )
     }
 
-    @trackValue("inputs.commands.state.addresses", isCommandWithSubCommand(["state"], ["list", "rm"]))
+    @trackValue("inputs.commands.state.subCommand", isCommand("state"))
+    get stateSubCommand() {
+        return this.getInput("stateSubCommand", true);
+    }
+
+    @trackValue("inputs.commands.state.addresses", isCommandWithSubCommand(["state"], ["list", "rm"], (c) => c.stateSubCommand))
     get stateAddresses() {
-        let required = false;
-        if (this.name == "state" && this.subCommand == "rm") {
-            required = true
-        }
+        const required = this.name === "state" && this.stateSubCommand === "rm";
         return this.getDelimitedInput("stateSubCommandAddresses", ",", required);
     }
 
-    @trackValue("inputs.commands.state.source", isCommandWithSubCommand(["state"], ["move"]))
+    @trackValue("inputs.commands.state.source", isCommandWithSubCommand(["state"], ["move"], (c) => c.stateSubCommand))
     get stateMoveSource() {
         return this.getInput("stateMoveSource", true);
     }
 
-    @trackValue("inputs.commands.state.destination", isCommandWithSubCommand(["state"], ["move"]))
+    @trackValue("inputs.commands.state.destination", isCommandWithSubCommand(["state"], ["move"], (c) => c.stateSubCommand))
     get stateMoveDestination() {
         return this.getInput("stateMoveDestination", true);
     }

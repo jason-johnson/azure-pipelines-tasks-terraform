@@ -1,8 +1,7 @@
-import {CommandResponse, CommandStatus, ICommand} from ".";
+import {CommandResponse, ICommand} from ".";
 import { ITaskContext } from "../context";
 import { IRunner } from "../runners";
 import { RunWithTerraform } from "../runners/builders";
-import { ILogger } from "../logger";
 
 export class TerraformStateRemoveCommand implements ICommand {
     constructor(
@@ -11,7 +10,7 @@ export class TerraformStateRemoveCommand implements ICommand {
     }
 
     async exec(ctx: ITaskContext): Promise<CommandResponse> {
-        const options = await new RunWithTerraform(ctx, false, ctx.subCommand, [ctx.name])
+        const options = await new RunWithTerraform(ctx, false, ctx.stateSubCommand, [ctx.name])
             .withCommandOptions(ctx.commandOptions)
             .withResourceAddresses(ctx.stateAddresses)
             .build();

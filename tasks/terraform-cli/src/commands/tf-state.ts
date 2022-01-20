@@ -8,12 +8,11 @@ export class TerraformStateCommand implements ICommand {
     }
 
     exec(ctx: ITaskContext): Promise<CommandResponse> {
-        console.log(ctx.name);
-        const subCommand = this.subCommands[ctx.subCommand];
+        const subCommand = this.subCommands[ctx.stateSubCommand];
         if (subCommand) {
             return subCommand.exec(ctx);
         } else {
-            throw new Error(`State sub-command "${ctx.subCommand}" is not supported`);
+            throw new Error(`State sub-command "${ctx.stateSubCommand}" is not supported`);
         }
     }
 }
