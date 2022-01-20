@@ -44,7 +44,7 @@ jobs:
       inputs:
         workingDirectory: $(terraform_templates_dir)
         command: state
-        stateSubCommand: select
+        stateSubCommand: mv
         stateMoveSource: random_string.rs
         stateMoveDestination: random_string.rs_new
     - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
@@ -52,7 +52,7 @@ jobs:
       inputs:
         workingDirectory: $(terraform_templates_dir)
         command: state
-        stateSubCommand: select
+        stateSubCommand: mv
         stateMoveSource: random_string.rs_new
         stateMoveDestination: random_string.rs
     - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
