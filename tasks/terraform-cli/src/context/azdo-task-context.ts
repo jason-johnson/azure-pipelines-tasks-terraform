@@ -176,18 +176,18 @@ export default class AzdoTaskContext implements ITaskContext {
         return this.getInput("stateSubCommand", true);
     }
 
-    @trackValue("inputs.commands.state.addresses", isCommandWithSubCommand(["state"], ["list", "rm"], (c) => c.stateSubCommand))
+    @trackValue("inputs.commands.state.addresses", isCommandWithSubCommand(["state"], ["list", "rm"], (c) => c.stateSubCommand), true)
     get stateAddresses() {
         const required = this.name === "state" && this.stateSubCommand === "rm";
         return this.getDelimitedInput("stateSubCommandAddresses", ",", required);
     }
 
-    @trackValue("inputs.commands.state.source", isCommandWithSubCommand(["state"], ["move"], (c) => c.stateSubCommand))
+    @trackValue("inputs.commands.state.source", isCommandWithSubCommand(["state"], ["move"], (c) => c.stateSubCommand), true)
     get stateMoveSource() {
         return this.getInput("stateMoveSource", true);
     }
 
-    @trackValue("inputs.commands.state.destination", isCommandWithSubCommand(["state"], ["move"], (c) => c.stateSubCommand))
+    @trackValue("inputs.commands.state.destination", isCommandWithSubCommand(["state"], ["move"], (c) => c.stateSubCommand), true)
     get stateMoveDestination() {
         return this.getInput("stateMoveDestination", true);
     }
