@@ -161,12 +161,12 @@ export class TaskContextSteps {
         this.ctx.skipExistingWorkspace = true;
     }
 
-    @given("subcommand is {string}")
-    public subCommand(subCommand: string){
-        this.ctx.workspaceSubCommand = subCommand;
+    @given("state subcommand is {string}")
+    public stateSubCommand(subCommand: string){
+        this.ctx.stateSubCommand = subCommand;
     }
 
-    @given("state command is {string} with the following addresses:")
+    @given("state subcommand is {string} with the following addresses:")
     public stateCommandWithAddresses(subCommand: string, addresses: DataTable){
         this.ctx.stateSubCommand = subCommand;
         this.ctx.stateAddresses = addresses.raw().map(r => r[0]);

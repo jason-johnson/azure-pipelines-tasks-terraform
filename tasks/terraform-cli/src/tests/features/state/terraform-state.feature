@@ -5,7 +5,7 @@ Feature: terraform state
         Scenario: list all resources
         Given terraform exists
         And terraform command is "state"
-        And subcommand is "list"
+        And state subcommand is "list"
         And the target plan or state file is "./src/tests/features/state/teraform.tfstate"
         And running command "terraform state list" returns successful result with stdout from file "./src/tests/features/state/stdout-state-list-simple.txt"
         When the terraform cli task is run
@@ -15,7 +15,7 @@ Feature: terraform state
         Scenario: list some resources
         Given terraform exists
         And terraform command is "state"
-        And state command is "list" with the following addresses:
+        And state subcommand is "list" with the following addresses:
             | random_string.a |
             | random_string.b |
         And the target plan or state file is "./src/tests/features/state/teraform.tfstate"
@@ -27,7 +27,7 @@ Feature: terraform state
         Scenario: mv some resources
         Given terraform exists
         And terraform command is "state"
-        And subcommand is "mv"
+        And state subcommand is "mv"
         And state move source is "random_string.a"
         And state move destination is "random_string.d"
         And the target plan or state file is "./src/tests/features/state/teraform.tfstate"
@@ -39,7 +39,7 @@ Feature: terraform state
         Scenario: mv some inexistant resources
         Given terraform exists
         And terraform command is "state"
-        And subcommand is "mv"
+        And state subcommand is "mv"
         And state move source is "random_string.e"
         And state move destination is "random_string.a"
         And the target plan or state file is "./src/tests/features/state/teraform.tfstate"
@@ -52,7 +52,7 @@ Feature: terraform state
         Scenario: remove some resources
         Given terraform exists
         And terraform command is "state"
-        And state command is "rm" with the following addresses:
+        And state subcommand is "rm" with the following addresses:
             | random_string.a |
             | random_string.b |
         And the target plan or state file is "./src/tests/features/state/teraform.tfstate"
@@ -64,7 +64,7 @@ Feature: terraform state
         Scenario: remove inexistant resources
         Given terraform exists
         And terraform command is "state"
-        And state command is "rm" with the following addresses:
+        And state subcommand is "rm" with the following addresses:
             | random_string.e |
         And the target plan or state file is "./src/tests/features/state/teraform.tfstate"
         And running command "terraform state rm random_string.e" fails with error "Invalid target address"
