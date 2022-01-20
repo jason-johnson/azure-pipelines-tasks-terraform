@@ -3,6 +3,7 @@ import * as tasks from 'azure-pipelines-task-lib/task';
 import { BackendTypes } from "../backends";
 
 const isCommand = (...commands: string[]) => (ctx: ITaskContext) => commands.includes(ctx.name);
+const isCommandWithSubCommand = (commands: string[], subCommands: string[]) => (ctx: ITaskContext) => commands.includes(ctx.name) && subCommands.includes(ctx.subCommand);
 const usesProvider = isCommand("plan", "apply", "destroy", "import", "refresh", "forceunlock");
 const usesProviderAzureRm = (ctx: ITaskContext) => usesProvider(ctx) && !(!ctx.environmentServiceName)
 const usesProviderAws = (ctx: ITaskContext) => usesProvider(ctx) && !(!ctx.providerServiceAws)
@@ -10,6 +11,7 @@ const usesBackend = (backendType: BackendTypes) => (ctx: ITaskContext) => isComm
 
 export default class AzdoTaskContext implements ITaskContext {
     private getInput: (name: string, required?: boolean | undefined) => string;
+    private getDelimitedInput: (name: string, delim: string | RegExp, required?: boolean | undefined) => string[];
     private getBoolInput: (name: string, required?: boolean | undefined) => boolean;
     private getEndpointAuthorizationScheme: (id: string, optional: boolean) => string;
     private getEndpointDataParameter: (id: string, key: string, optional: boolean) => string;
@@ -31,6 +33,7 @@ export default class AzdoTaskContext implements ITaskContext {
     public terraformVersionPatch?: number;
     constructor() {
         this.getInput = <(name: string, required?: boolean | undefined) => string>tasks.getInput;
+        this.getDelimitedInput = <(name: string, delim: string | RegExp, required?: boolean | undefined) => string[]>tasks.getDelimitedInput;
         this.getBoolInput = tasks.getBoolInput;
         this.getEndpointAuthorizationScheme = <(id: string, optional: boolean) => string>tasks.getEndpointAuthorizationScheme;
         this.getEndpointDataParameter = <(id: string, key: string, optional: boolean) => string>tasks.getEndpointDataParameter;
@@ -167,6 +170,26 @@ export default class AzdoTaskContext implements ITaskContext {
     get skipExistingWorkspace() {
         return this.getBoolInput("skipExistingWorkspace", false )
     }
+
+    @trackValue("inputs.commands.state.addresses", isCommandWithSubCommand(["state"], ["list", "rm"]))
+    get stateAddresses() {
+        let required = false;
+        if (this.name == "state" && this.subCommand == "rm") {
+            required = true
+        }
+        return this.getDelimitedInput("stateSubCommandAddresses", ",", required);
+    }
+
+    @trackValue("inputs.commands.state.source", isCommandWithSubCommand(["state"], ["move"]))
+    get stateMoveSource() {
+        return this.getInput("stateMoveSource", true);
+    }
+
+    @trackValue("inputs.commands.state.destination", isCommandWithSubCommand(["state"], ["move"]))
+    get stateMoveDestination() {
+        return this.getInput("stateMoveDestination", true);
+    }
+
     @trackValue("inputs.backends.aws.service", usesBackend(BackendTypes.aws), true)
     get backendServiceAws() {
       return this.getInput("backendServiceAws");

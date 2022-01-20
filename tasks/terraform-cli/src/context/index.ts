@@ -37,6 +37,9 @@ export interface ITaskContext {
     runAzLogin?: boolean;
     publishPlanResults: string;
     workspaceName: string;
+    stateAddresses: string[];
+    stateMoveSource: string;
+    stateMoveDestination: string;
     setVariable: (name: string, val: string, secret?: boolean | undefined) => void;
     runTime: number;
     finished: () => void;
