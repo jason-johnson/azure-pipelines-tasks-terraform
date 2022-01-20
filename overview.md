@@ -55,25 +55,25 @@ The installer task supports installing the latest terraform version by using the
 
 ```yaml
 - task: TerraformInstaller
-    displayName: install terraform
-    inputs:
-        terraformVersion: latest
+  displayName: install terraform
+  inputs:
+    terraformVersion: latest
 ```
 
 If `terraformVersion` not provided, task defaults to `latest`
 
 ```yaml
 - task: TerraformInstaller
-    displayName: install terraform
+  displayName: install terraform
 ```
 
 ### Install Specific Version
 
 ```yaml
 - task: TerraformInstaller
-    displayName: install terraform
-    inputs:
-        terraformVersion: 0.14.3
+  displayName: install terraform
+  inputs:
+    terraformVersion: 0.14.3
 ```
 
 ## Check Terraform Version
@@ -103,10 +103,10 @@ When executing commands that interact with Azure such as `plan`, `apply`, and `d
 
 ```yaml
 - task: TerraformCLI
-    displayName: 'terraform apply'
-    inputs:
-        command: apply
-        environmentServiceName: 'My Azure Service Connection'
+  displayName: 'terraform apply'
+  inputs:
+    command: apply
+    environmentServiceName: 'My Azure Service Connection'
 ```
 
 #### Execute Azure CLI From Local-Exec Provisioner
@@ -117,36 +117,36 @@ Setting `runAzLogin` to `true` will indicate the task should execute `az login` 
 
 ```yaml
 - task: TerraformCLI
-    displayName: 'terraform apply'
-    inputs:
-        command: apply
-        environmentServiceName: 'My Azure Service Connection'
-        # indicate az login should be run as part of this command
-        runAzLogin: true
+  displayName: 'terraform apply'
+  inputs:
+    command: apply
+    environmentServiceName: 'My Azure Service Connection'
+    # indicate az login should be run as part of this command
+    runAzLogin: true
 ```
 
 Setting `runAzLogin` to `false` will indicate the task should not execute `az login` with specified service connection.
 
 ```yaml
 - task: TerraformCLI
-    displayName: 'terraform apply'
-    inputs:
-        command: apply
-        environmentServiceName: 'My Azure Service Connection'
-        # indicate az login should be run as part of this command
-        runAzLogin: true
+  displayName: 'terraform apply'
+  inputs:
+    command: apply
+    environmentServiceName: 'My Azure Service Connection'
+    # indicate az login should be run as part of this command
+    runAzLogin: true
 ```
 
 `runAzLogin`  will default to `false` when not specified; indicating the task should NOT run `az login`
 
 ```yaml
 - task: TerraformCLI
-    displayName: 'terraform apply'
-    inputs:
-        command: apply
-        environmentServiceName: 'My Azure Service Connection'
-        # indicate az login should be run as part of this command
-        runAzLogin: true
+  displayName: 'terraform apply'
+  inputs:
+    command: apply
+    environmentServiceName: 'My Azure Service Connection'
+    # indicate az login should be run as part of this command
+    runAzLogin: true
 ```
 
 This should allow the following template configuation to be run using this task
@@ -159,7 +159,7 @@ resource "azurerm_storage_account" "st_core" {
   account_kind              = "StorageV2"
   account_tier              = "Standard"
   account_replication_type  = "LRS"
-  
+
 
   # can now be run by the terraform cli task from azure pipelines
   provisioner "local-exec" {
@@ -174,11 +174,11 @@ When executing commands that interact with AWS such as `plan`, `apply`, and `des
 
 ```yaml
 - task: TerraformCLI
-    displayName: 'terraform apply'
-    inputs:
-        command: apply
-        providerServiceAws: 'My AWS Service Connection'
-        providerAwsRegion: us-east-1
+  displayName: 'terraform apply'
+  inputs:
+    command: apply
+    providerServiceAws: 'My AWS Service Connection'
+    providerAwsRegion: us-east-1
 ```
 
 > NOTE: This depends on the AWS Service Connection included with the [AWS Toolkit]([AWS Toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.aws-vsts-tools) extension.
@@ -225,27 +225,27 @@ If azurerm selected, the task will prompt for a service connection and storage a
 
 ```yaml
 - task: TerraformCLI
-    displayName: 'terraform init'
-    inputs:
-        command: init
-        backendType: azurerm
-        # Service connection to authorize backend access. Supports Subscription & Management Group Scope
-        backendServiceArm: 'My Azure Service Connection'
-        # Subscription id of the target backend. This can be used to specify the subscription when using Management Group scoped 
-        # Service connection or to override the subscription id defined in a Subscription scoped service connection
-        backendAzureRmSubscriptionId: 'my-backend-subscription-id'
-        # create backend storage account if doesn't exist
-        ensureBackend: true
-        backendAzureRmResourceGroupName: 'my-backend-resource-group'
-        # azure location shortname of the backend resource group and storage account
-        backendAzureRmResourceGroupLocation: 'eastus'
-        backendAzureRmStorageAccountName: 'my-backend-storage-account'
-        # azure storage account sku, used when creating the storage account
-        backendAzureRmStorageAccountSku: 'Standard_RAGRS'
-        # azure blob container to store the state file
-        backendAzureRmContainerName: 'my-backend-blob-container'
-        # azure blob file name
-        backendAzureRmKey: infrax.tfstate
+  displayName: 'terraform init'
+  inputs:
+    command: init
+    backendType: azurerm
+    # Service connection to authorize backend access. Supports Subscription & Management Group Scope
+    backendServiceArm: 'My Azure Service Connection'
+    # Subscription id of the target backend. This can be used to specify the subscription when using Management Group scoped
+    # Service connection or to override the subscription id defined in a Subscription scoped service connection
+    backendAzureRmSubscriptionId: 'my-backend-subscription-id'
+    # create backend storage account if doesn't exist
+    ensureBackend: true
+    backendAzureRmResourceGroupName: 'my-backend-resource-group'
+    # azure location shortname of the backend resource group and storage account
+    backendAzureRmResourceGroupLocation: 'eastus'
+    backendAzureRmStorageAccountName: 'my-backend-storage-account'
+    # azure storage account sku, used when creating the storage account
+    backendAzureRmStorageAccountSku: 'Standard_RAGRS'
+    # azure blob container to store the state file
+    backendAzureRmContainerName: 'my-backend-blob-container'
+    # azure blob file name
+    backendAzureRmKey: infrax.tfstate
 ```
 
 #### Automated Remote Backend Creation for Azure Storage
@@ -299,28 +299,28 @@ There are multiple methods to provide secrets within the vars provided to terraf
 
 ```yaml
 - task: TerraformCLI@0
-    displayName: 'terraform plan'
-    inputs:
-        command: plan
-        environmentServiceName: 'My Azure Service Connection'
-        # guid of the secure file to use. Can be standard terraform vars file or .env file.
-        secureVarsFile: 446e8878-994d-4069-ab56-5b302067a869
-        # specify a variable input via pipeline variable
-        commandOptions: '-var secret=$(mySecretPipelineVar)'
+  displayName: 'terraform plan'
+  inputs:
+    command: plan
+    environmentServiceName: 'My Azure Service Connection'
+    # guid of the secure file to use. Can be standard terraform vars file or .env file.
+    secureVarsFile: 446e8878-994d-4069-ab56-5b302067a869
+    # specify a variable input via pipeline variable
+    commandOptions: '-var secret=$(mySecretPipelineVar)'
 ```
 
 The name of the secure file can also be used.
 
 ```yaml
 - task: TerraformCLI@0
-    displayName: 'terraform plan'
-    inputs:
-        command: plan
-        environmentServiceName: 'My Azure Service Connection'
-        # name of the secure file to use. Can be standard terraform vars file or .env file.
-        secureVarsFile: my-secure-file.env
-        # specify a variable input via pipeline variable
-        commandOptions: '-var secret=$(mySecretPipelineVar)'
+  displayName: 'terraform plan'
+  inputs:
+    command: plan
+    environmentServiceName: 'My Azure Service Connection'
+    # name of the secure file to use. Can be standard terraform vars file or .env file.
+    secureVarsFile: my-secure-file.env
+    # specify a variable input via pipeline variable
+    commandOptions: '-var secret=$(mySecretPipelineVar)'
 ```
 
 ### Secure Env Files
@@ -360,12 +360,12 @@ Pipeline configuration to run terraform `output` command
 
 ```yaml
 - task: TerraformCLI@0
-    displayName: 'terraform output'
-    inputs:
-        command: output
-        # ensure working directory targets same directory as apply step
-        # if not specified $(System.DefaultWorkingDirectory) will be used
-        # workingDirectory: $(my_terraform_templates_dir)
+  displayName: 'terraform output'
+  inputs:
+    command: output
+    # ensure working directory targets same directory as apply step
+    # if not specified $(System.DefaultWorkingDirectory) will be used
+    # workingDirectory: $(my_terraform_templates_dir)
 ```
 
 > NOTE: `workingDirectory` must be set to the same working directory that is used to execute other operations such as `apply`. The default for `workingDirectory` is `$(System.DefaultWorkingDirectory)` when not specified.
@@ -374,9 +374,9 @@ Use output variables as pipeline variables
 
 ```yaml
 - bash: |
-        echo 'some_string is $(TF_OUT_SOME_STRING)'        
-        echo 'some_sensitive_string is $(TF_OUT_SOME_SENSITIVE_STRING)'
-    displayName: echo tf output vars
+    echo 'some_string is $(TF_OUT_SOME_STRING)'
+    echo 'some_sensitive_string is $(TF_OUT_SOME_SENSITIVE_STRING)'
+  displayName: echo tf output vars
 ```
 
 > **Note that `$(TF_OUT_SOME_SENSITIVE_STRING)` will be redacted as `***` in the pipeline logs.**
@@ -389,11 +389,11 @@ The extension includes a feature to render terraform plans within the pipeline r
 
 ```yaml
 - task: TerraformCLI@0
-    displayName: 'terraform plan'
-    inputs:
-        command: plan
-        environmentServiceName: 'My Azure Service Connection'
-        publishPlanResults: 'my_plan_name'
+  displayName: 'terraform plan'
+  inputs:
+    command: plan
+    environmentServiceName: 'My Azure Service Connection'
+    publishPlanResults: 'my_plan_name'
 ```
 
 ![Terraform Plan View Has Results](https://raw.githubusercontent.com/charleszipp/azure-pipelines-tasks-terraform/main/screenshots/overview-tfplan-view.jpg)
@@ -410,23 +410,23 @@ When running terraform plan with `-detailed-exitcode`, a pipeline variable will 
 
 ```yaml
 - task: TerraformCLI@0
-    displayName: 'terraform plan'
-    inputs:
-        command: plan
-        environmentServiceName: 'My Azure Service Connection'
-        commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode'
+  displayName: 'terraform plan'
+  inputs:
+    command: plan
+    environmentServiceName: 'My Azure Service Connection'
+    commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode'
 ```
 
 Run apply only if changes are detected.
 
 ```yaml
 - task: TerraformCLI@0
-    displayName: 'terraform apply'
-    condition: and(succeeded(), eq(variables['TERRAFORM_PLAN_HAS_CHANGES'], 'true'))
-    inputs:
-        command: apply
-        environmentServiceName: 'My Azure Service Connection'
-        commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
+  displayName: 'terraform apply'
+  condition: and(succeeded(), eq(variables['TERRAFORM_PLAN_HAS_CHANGES'], 'true'))
+  inputs:
+    command: apply
+    environmentServiceName: 'My Azure Service Connection'
+    commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
 ```
 
 ## Terraform Plan Destroy Detection
@@ -435,33 +435,33 @@ The task now has the ability to set a pipeline variable `TERRAFORM_PLAN_HAS_DEST
 
 ```yaml
 - task: TerraformCLI@0
-    displayName: 'terraform plan'
-    inputs:
-        command: plan
-        environmentServiceName: 'My Azure Service Connection'
-        commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
+  displayName: 'terraform plan'
+  inputs:
+    command: plan
+    environmentServiceName: 'My Azure Service Connection'
+    commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
 ```
 
 Run show to detect destroy operations
 
 ```yaml
 - task: TerraformCLI@0
-    displayName: 'terraform show'
-    inputs:
-        command: show
-        inputTargetPlanOrStateFilePath: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
+  displayName: 'terraform show'
+  inputs:
+    command: show
+    inputTargetPlanOrStateFilePath: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
 ```
 
 Skip apply if destroy operations
 
 ```yaml
 - task: TerraformCLI@0
-    displayName: 'terraform apply'
-    condition: and(succeeded(), eq(variables['TERRAFORM_PLAN_HAS_DESTROY_CHANGES'], 'false'))
-    inputs:
-        command: apply
-        environmentServiceName: 'My Azure Service Connection'
-        commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
+  displayName: 'terraform apply'
+  condition: and(succeeded(), eq(variables['TERRAFORM_PLAN_HAS_DESTROY_CHANGES'], 'false'))
+  inputs:
+    command: apply
+    environmentServiceName: 'My Azure Service Connection'
+    commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
 ```
 
 ## Workspaces
@@ -475,7 +475,7 @@ The task supports managing workspaces within pipelines. The following workspace 
   displayName: select workspace foo
   inputs:
     workingDirectory: $(terraform_templates_dir)
-    command: workspace        
+    command: workspace
     workspaceSubCommand: select
     workspaceName: foo
 ```
@@ -487,7 +487,7 @@ The task supports managing workspaces within pipelines. The following workspace 
   displayName: select workspace foo
   inputs:
     workingDirectory: $(terraform_templates_dir)
-    command: workspace        
+    command: workspace
     workspaceSubCommand: new
     workspaceName: foo
 ```
