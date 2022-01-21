@@ -108,6 +108,9 @@ When executing commands that interact with Azure such as `plan`, `apply`, and `d
   inputs:
     command: apply
     environmentServiceName: 'My Azure Service Connection'
+    # Subscription id for provider to target. This can be used to specify the subscription when using Management Group scoped
+    # Service connection or to override the subscription id defined in a Subscription scoped service connection
+    providerAzureRmSubscriptionId: 'my-backend-subscription-id'
 ```
 
 #### Execute Azure CLI From Local-Exec Provisioner
