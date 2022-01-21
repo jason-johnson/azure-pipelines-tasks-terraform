@@ -87,7 +87,8 @@
                 "import": "import",
                 "output": "output",
                 "forceunlock": "force-unlock",
-                "workspace" : "workspace"
+                "workspace" : "workspace",
+                "state" : "state"
             },
             "properties": {
                 "EditableOptions": "False"
