@@ -160,14 +160,14 @@
             "required": false,
             "helpMarkDown": "The state sub-command to run.",
             "options": {
-                "list": "select",
+                "list": "list",
                 "mv": "mv",
                 "rm": "rm"
             },
             "properties": {
                 "EditableOptions": "False"
             },
-            "visibleRule": "command = workspace"
+            "visibleRule": "command = state"
         },
         {
             "name": "commandOptions",
