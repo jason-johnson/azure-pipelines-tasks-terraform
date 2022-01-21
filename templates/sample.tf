@@ -6,6 +6,10 @@ resource "azurerm_resource_group" "rg" {
   location = var.region
 }
 
+resource "random_string" "rs" {
+  length = 12
+}
+
 output "some_string" {
   sensitive = false
   value = "somestringvalue"

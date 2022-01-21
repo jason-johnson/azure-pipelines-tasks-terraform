@@ -1,0 +1,72 @@
+parameters:
+  stage: ''
+
+jobs:
+- job: state_commands_${{ parameters.stage }}
+  steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: download terraform templates
+      inputs: 
+        artifact: terraform_templates
+        path: $(terraform_extension_dir)
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+      displayName: install terraform
+      inputs:
+        terraformVersion: 1.0.10
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: 'terraform init'
+      inputs:
+        command: init
+        workingDirectory: $(terraform_templates_dir)
+        backendType: azurerm
+        backendServiceArm: 'env_test'
+        ensureBackend: true
+        backendAzureRmResourceGroupName: rg-trfrm-${{ parameters.stage }}-eus-czp
+        backendAzureRmResourceGroupLocation: eastus
+        backendAzureRmStorageAccountName: sttrfrm${{ parameters.stage }}eusczp
+        backendAzureRmStorageAccountSku: Standard_RAGRS
+        backendAzureRmContainerName: azure-pipelines-terraform
+        backendAzureRmKey: state_commands.tfstate
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: 'terraform apply'
+      inputs:
+        command: apply
+        workingDirectory: $(terraform_templates_dir)
+        environmentServiceName: 'env_test'
+        secureVarsFile: $(tf_variables_secure_file)
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: list terraform resources
+      inputs:
+        workingDirectory: $(terraform_templates_dir)
+        command: state
+        stateSubCommand: list
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: mv terraform resource
+      inputs:
+        workingDirectory: $(terraform_templates_dir)
+        command: state
+        stateSubCommand: mv
+        stateMoveSource: random_string.rs
+        stateMoveDestination: random_string.rs_new
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: mv back terraform resource
+      inputs:
+        workingDirectory: $(terraform_templates_dir)
+        command: state
+        stateSubCommand: mv
+        stateMoveSource: random_string.rs_new
+        stateMoveDestination: random_string.rs
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+      displayName: rm terraform resource
+      inputs:
+        workingDirectory: $(terraform_templates_dir)
+        command: state
+        stateSubCommand: rm
+        stateSubCommandAddresses: random_string.rs
+    - task: TerraformCLI@0
+      displayName: 'terraform destroy'
+      inputs:
+        command: destroy
+        workingDirectory: $(terraform_templates_dir)
+        secureVarsFile: $(tf_variables_secure_file)
+        environmentServiceName: 'env_test'

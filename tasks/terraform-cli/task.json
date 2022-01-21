@@ -152,6 +152,23 @@
             "visibleRule": "command = workspace"
         },
         {
+            "name": "stateSubCommand",
+            "type": "pickList",
+            "label": "State Sub Command",
+            "defaultValue": "list",
+            "required": false,
+            "helpMarkDown": "The state sub-command to run.",
+            "options": {
+                "list": "select",
+                "mv": "mv",
+                "rm": "rm"
+            },
+            "properties": {
+                "EditableOptions": "False"
+            },
+            "visibleRule": "command = workspace"
+        },
+        {
             "name": "commandOptions",
             "type": "string",
             "label": "Command Options",
@@ -325,6 +342,30 @@
             "required": false,
             "helpMarkDown": "Skip attempting to create existing workspaces",
             "visibleRule": "workspaceSubCommand = new"
+        },
+        {
+            "name": "stateMoveSource",
+            "type": "string",
+            "label": "State Move Source",
+            "required": false,
+            "visibleRule": "stateSubCommand = mv",
+            "helpMarkDown": "The name of the source resource"
+        },
+        {
+            "name": "stateMoveDestination",
+            "type": "string",
+            "label": "State Move Destination",
+            "required": false,
+            "visibleRule": "stateSubCommand = mv",
+            "helpMarkDown": "The name of the destination resource"
+        },
+        {
+            "name": "stateAddresses",
+            "type": "string",
+            "label": "State list and rm addresses",
+            "required": false,
+            "visibleRule": "stateSubCommand = rm || stateSubCommand = list",
+            "helpMarkDown": "The list of resources"
         },
         {
             "name": "backendServiceAws",

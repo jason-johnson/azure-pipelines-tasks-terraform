@@ -19,6 +19,7 @@ The Terraform CLI task supports executing the following commands
 - force-unlock
 - fmt
 - workspace
+- state
 
 ## Supported Public Cloud Providers
 
@@ -506,4 +507,44 @@ The task supports importing existing resources.
     workingDirectory: $(terraform_templates_dir)
     resourceAddress: azurerm_resource_group.myrg  # The resource type and name in your .tf file
     resourceId: "/subscriptions/000-...-0000/resourceGroups/MyRG"  # The Azure object id for the Resource Group (see with `az group list` in Powershell)
+```
+
+## **State Management**
+
+The task supports managing state within pipelines. The following state subcommands are supported.
+
+### State List
+
+```yaml
+- task: TerraformCLI@0
+  diplayName: 'terraform state list'
+  inputs:
+    command: state
+    workingDirectory: $(terraform_templates_dir)
+    stateSubCommand: list
+    stateSubCommandAddresses: module.my_module
+```
+
+### State Move
+
+```yaml
+- task: TerraformCLI@0
+  diplayName: 'terraform state mv'
+  inputs:
+    command: state
+    workingDirectory: $(terraform_templates_dir)
+    stateSubCommand: mv
+    stateMoveSource: azurerm_resource_group.myrg
+```
+
+### State Remove
+
+```yaml
+- task: TerraformCLI@0
+  diplayName: 'terraform state rm'
+  inputs:
+    command: state
+    workingDirectory: $(terraform_templates_dir)
+    stateSubCommand: rm
+    stateSubCommandAddresses: azurerm_resource_group.myrg,azurerm_resource_group.yourrg
 ```

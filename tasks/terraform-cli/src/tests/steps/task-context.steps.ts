@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { MockTaskContext } from '../../context';
 import { DataTable } from '@cucumber/cucumber'
 import { BackendTypes } from '../../backends';
+import util from "util";
 
 @binding([MockTaskContext])
 export class TaskContextSteps {
@@ -163,6 +164,27 @@ export class TaskContextSteps {
         this.ctx.workspaceSubCommand = subCommand;
         this.ctx.workspaceName = name;
         this.ctx.skipExistingWorkspace = true;
+    }
+
+    @given("state subcommand is {string}")
+    public stateSubCommand(subCommand: string){
+        this.ctx.stateSubCommand = subCommand;
+    }
+
+    @given("state subcommand is {string} with the following addresses:")
+    public stateCommandWithAddresses(subCommand: string, addresses: DataTable){
+        this.ctx.stateSubCommand = subCommand;
+        this.ctx.stateAddresses = addresses.raw().map(r => r[0]);
+    }
+
+    @given("state move source is {string}")
+    public stateMoveSource(source: string){
+        this.ctx.stateMoveSource = source;
+    }
+
+    @given("state move destination is {string}")
+    public stateMoveDestination(destination: string){
+        this.ctx.stateMoveDestination = destination;
     }
 
     @then("pipeline variable {string} is set to {string}")

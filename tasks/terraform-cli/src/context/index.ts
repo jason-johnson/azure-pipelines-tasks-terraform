@@ -38,6 +38,10 @@ export interface ITaskContext {
     publishPlanResults: string;
     workspaceSubCommand: string;
     workspaceName: string;
+    stateSubCommand: string;
+    stateAddresses: string[];
+    stateMoveSource: string;
+    stateMoveDestination: string;
     setVariable: (name: string, val: string, secret?: boolean | undefined) => void;
     runTime: number;
     finished: () => void;

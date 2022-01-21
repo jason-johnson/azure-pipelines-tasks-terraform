@@ -32,6 +32,11 @@ export class Task {
           "output": new commands.OutputCommandHandler(runner, logger),
           "forceunlock": new commands.ForceUnlockCommandHandler(taskAgent, runner, providers),
           "show": new commands.ShowCommandHandler(taskAgent, runner, logger),
+          "state": new commands.StateCommandHandler({
+              "list": new commands.StateListCommandHandler(runner),
+              "mv": new commands.StateMoveCommandHandler(runner),
+              "rm": new commands.StateRemoveCommandHandler(runner),
+          }),
           "fmt": new commands.FormatCommandHandler(runner),
           "workspace": new commands.WorkspaceCommandHandler({
             "select": new commands.WorkspaceSelectCommandHandler(runner),
