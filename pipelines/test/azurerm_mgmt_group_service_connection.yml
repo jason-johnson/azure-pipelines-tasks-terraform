@@ -40,8 +40,7 @@ jobs:
         workingDirectory: $(terraform_templates_dir)
         environmentServiceName: 'env_test_mgmt'
         providerAzureRmSubscriptionId: $(azure_subscription_id)
-        secureVarsFile: $(tf_variables_secure_file)
-        publishPlanResults: smoke_test_${{ parameters.stage }}
+        secureVarsFile: azurerm-mgmt-group-scope.vars
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode'
     - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform apply'
@@ -58,4 +57,4 @@ jobs:
         workingDirectory: $(terraform_templates_dir)
         environmentServiceName: 'env_test_mgmt'
         providerAzureRmSubscriptionId: $(azure_subscription_id)
-        secureVarsFile: $(tf_variables_secure_file)
+        secureVarsFile: azurerm-mgmt-group-scope.vars
