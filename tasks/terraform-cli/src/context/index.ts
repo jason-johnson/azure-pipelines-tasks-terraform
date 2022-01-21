@@ -27,6 +27,7 @@ export interface ITaskContext {
     environmentServiceArmClientSecret: string;
     environmentServiceArmSubscriptionId: string;
     environmentServiceArmTenantId: string;
+    providerAzureRmSubscriptionId: string;
     aiInstrumentationKey?: string;
     allowTelemetryCollection: boolean;
     resourceAddress: string;

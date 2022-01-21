@@ -130,6 +130,10 @@ export default class AzdoTaskContext implements ITaskContext {
     get environmentServiceArmClientSecret() {
         return this.getEndpointAuthorizationParameter(this.environmentServiceName, "serviceprincipalkey", true);
     }
+    @trackValue("inputs.providers.azurerm.sub", usesProvider, true)
+    get providerAzureRmSubscriptionId() {
+        return this.getInput("providerAzureRmSubscriptionId");
+    }
     get aiInstrumentationKey() {
         return this.getInput("aiInstrumentationKey");
     }

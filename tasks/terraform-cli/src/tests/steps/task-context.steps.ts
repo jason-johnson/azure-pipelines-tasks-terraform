@@ -75,6 +75,11 @@ export class TaskContextSteps {
         this.ctx.environmentServiceArmTenantId = endpoint.tenantId;
     }
 
+    @given("azurerm subscriptionId is {string}")
+    public inputProviderAzureRmSubscriptionId(subscriptionId: string){
+      this.ctx.providerAzureRmSubscriptionId = subscriptionId;
+    }
+
     @given("azurerm backend type selected with the following storage account")
     public inputAzureRmBackend(table: DataTable){
         var backend = table.rowsHash();

@@ -63,7 +63,7 @@ jobs:
         echo 'some_number is $(TF_OUT_SOME_NUMBER)'
         echo 'some_sensitive_string is $(TF_OUT_SOME_SENSITIVE_STRING)'
       displayName: echo tf output vars
-    - task: TerraformCLI@0
+    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform destroy'
       inputs:
         command: destroy
