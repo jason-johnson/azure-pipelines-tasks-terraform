@@ -28,6 +28,7 @@ export default class MockTaskContext implements ITaskContext {
     environmentServiceArmClientSecret: string = "";
     environmentServiceArmSubscriptionId: string = "";
     environmentServiceArmTenantId: string = "";
+    providerAzureRmSubscriptionId: string = "";
     aiInstrumentationKey?: string | undefined;
     allowTelemetryCollection: boolean = true;
     resourceAddress: string = "";

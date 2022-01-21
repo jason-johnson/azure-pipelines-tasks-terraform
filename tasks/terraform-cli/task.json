@@ -107,7 +107,15 @@
             "label": "AzureRM Provider Service Connection",
             "required": false,
             "visibleRule": "command = plan || command = apply || command = destroy || command = refresh || command = import",
-            "helpMarkDown": "Select an Azure service connection if you would like the azurerm provider configured for you (using the service principal credentials configured in the selected service connection). **This field is optional.** Leave empty should you choose to self-configure the provider(s) used or the provider is not used. Provider environment variables can be configured securely by selecting an env file from the `Secured Variables File` pick list.",
+            "helpMarkDown": "Select an Azure service connection for azurerm provider authorization. Both Subscription & Management Group Scopes are supported. *If using Management Group Scoped service connection, ensure the Subscription Id is provided in the `providerAzureRmSubscriptionId` input.* **This field is optional.** Leave empty should you choose to self-configure the provider(s) used or the provider is not used. Provider environment variables can be configured securely by selecting an env file from the `Secured Variables File` pick list.",
+            "groupName": "providers"
+        },
+        {
+            "name": "providerAzureRmSubscriptionId",
+            "type": "string",
+            "label": "Azure Subscription Id",
+            "required": false,
+            "helpMarkDown": "The azure rm provider target subscription. If provided, this will override the subscription id defined within the service connection. This should be provided when using Management Group scoped service connection.",
             "groupName": "providers"
         },
         {
