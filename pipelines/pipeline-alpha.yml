@@ -30,4 +30,4 @@ stages:
       stage: alpha
       scenarios:
         - smoke_test.yml
-        - azurerm_mgmt_group_service_connection.yml
+        - state_commands.yml
