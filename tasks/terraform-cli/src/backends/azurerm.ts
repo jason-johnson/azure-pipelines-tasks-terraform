@@ -12,9 +12,8 @@ export default class AzureRMBackend implements ITerraformBackend {
         if (ctx.backendServiceArmAuthorizationScheme != "ServicePrincipal") {
             throw "Terraform backend initialization for AzureRM only support service principal authorization";
         }
-        if(!ctx.backendServiceArmSubscriptionId && !ctx.backendAzureRmSubscriptionId){
-          throw "Unable to resolve subscription id. Subscription Id must be defined either on Backend Service Connection with Subscription Id scope or, explicitly set in the `backendAzureRmSubscriptionId` input when using other scopes such as Management Group."
-        }
+        
+        const subscriptionId = ctx.backendAzureRmSubscriptionId || ctx.backendServiceArmSubscriptionId;
 
         let backendConfig: any = {
             storage_account_name: ctx.backendAzureRmStorageAccountName,
@@ -25,13 +24,17 @@ export default class AzureRMBackend implements ITerraformBackend {
 
         //use the arm_* prefix config only for versions before 0.12.0
         if(ctx.terraformVersionMajor === 0 && typeof(ctx.terraformVersionMinor) == 'number' && ctx.terraformVersionMinor < 12){
-            backendConfig.arm_subscription_id = ctx.backendAzureRmSubscriptionId || ctx.backendServiceArmSubscriptionId;
+            if(subscriptionId){
+              backendConfig.arm_subscription_id = subscriptionId
+            }
             backendConfig.arm_tenant_id = ctx.backendServiceArmTenantId;
             backendConfig.arm_client_id = ctx.backendServiceArmClientId;
             backendConfig.arm_client_secret = ctx.backendServiceArmClientSecret;
         }
         else{
-            backendConfig.subscription_id = ctx.backendAzureRmSubscriptionId || ctx.backendServiceArmSubscriptionId;
+            if(subscriptionId){
+              backendConfig.subscription_id = subscriptionId
+            }
             backendConfig.tenant_id = ctx.backendServiceArmTenantId;
             backendConfig.client_id = ctx.backendServiceArmClientId;
             backendConfig.client_secret = ctx.backendServiceArmClientSecret;
