@@ -108,7 +108,7 @@
             "label": "AzureRM Provider Service Connection",
             "required": false,
             "visibleRule": "command = plan || command = apply || command = destroy || command = refresh || command = import",
-            "helpMarkDown": "Select an Azure service connection for azurerm provider authorization. Both Subscription & Management Group Scopes are supported. *If using Management Group Scoped service connection, ensure the Subscription Id is provided in the `providerAzureRmSubscriptionId` input.* **This field is optional.** Leave empty should you choose to self-configure the provider(s) used or the provider is not used. Provider environment variables can be configured securely by selecting an env file from the `Secured Variables File` pick list.",
+            "helpMarkDown": "Select an Azure service connection for azurerm provider authorization. Both Subscription & Management Group Scopes are supported. If using Management Group Scoped service connection, the subscription id can be self configured within the template provider configuration, with environment variable, or provided in the `providerAzureRmSubscriptionId` input.* **This field is optional.** Leave empty should you choose to self-configure the provider(s) used or the provider is not used. Provider environment variables can be configured securely by selecting an env file from the `Secured Variables File` pick list.",
             "groupName": "providers"
         },
         {
@@ -201,7 +201,7 @@
             "type": "connectedService:AzureRM",
             "label": "Backend Azure Service Connection",
             "required": false,
-            "helpMarkDown": "Select an Azure Resource Manager service connection for backend authorization. Both Subscription & Management Group Scopes are supported. *If using Management Group Scoped service connection, ensure the Subscription Id is provided in the `backendAzureRmSubscriptionId` input.*",
+            "helpMarkDown": "Select an Azure Resource Manager service connection for backend authorization. Both Subscription & Management Group Scopes are supported. If using Management Group Scoped service connection, the subscription id can be self configured within the template backend configuration, with environment variable, or provided in the `backendAzureRmSubscriptionId` input.",
             "groupName": "backendAzureRm"
         },
         {
@@ -209,7 +209,7 @@
             "type": "string",
             "label": "Azure Subscription Id",
             "required": false,
-            "helpMarkDown": "The subscription id where the backend should be located. If provided, this will override the subscription id defined within the service connection. This should be provided when using Management Group scoped service connection.",
+            "helpMarkDown": "The subscription id where the backend should be located. If provided, this will override the subscription id defined within the service connection.",
             "groupName": "backendAzureRm"
         },
         {

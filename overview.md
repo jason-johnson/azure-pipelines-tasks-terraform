@@ -225,8 +225,6 @@ The task currently supports the following backend configurations
 
 If azurerm selected, the task will prompt for a service connection and storage account details to use for the backend. *The task supports both Subscription and Management Group scoped service connections*
 
-> Note: If using a management group scoped service connection, ensure the subscription id of the target backend is defined via the `backendAzureRmSubscriptionId` input.
-
 ```yaml
 - task: TerraformCLI
   displayName: 'terraform init'

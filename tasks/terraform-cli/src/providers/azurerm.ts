@@ -24,11 +24,10 @@ export default class AzureRMProvider implements ITerraformProvider {
       }
       const subscriptionId = this.ctx.providerAzureRmSubscriptionId || this.ctx.environmentServiceArmSubscriptionId;
 
-      if(!subscriptionId){
-        throw "Unable to resolve subscription id. Subscription Id must be defined either on AzureRM Provider Service Connection with Subscription Id scope or, explicitly set in the `providerAzureRmSubscriptionId` input when using other scopes such as Management Group."
+      if(subscriptionId){
+        process.env['ARM_SUBSCRIPTION_ID']  = subscriptionId;
       }      
 
-      process.env['ARM_SUBSCRIPTION_ID']  = subscriptionId;
       process.env['ARM_TENANT_ID']        = this.ctx.environmentServiceArmTenantId;
       process.env['ARM_CLIENT_ID']        = this.ctx.environmentServiceArmClientId;
       process.env['ARM_CLIENT_SECRET']    = this.ctx.environmentServiceArmClientSecret;
