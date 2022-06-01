@@ -1,3 +1,9 @@
+## NOTICE: PROJECT IN MAINTENANCE MODE
+
+As of the start of 2022, I have transitioned to a new role where I can no longer commit to improving or maintaining this project going forward. I am open to transferring the project to a new owner. If you are interested in taking ownership of the project please contact me on LinkedIn @ [charleszipp](https://www.linkedin.com/in/charleszipp/).
+
+Alternative Extension available [here](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks)
+
 # Azure Pipelines Extension for Terraform
 
 ![Build Status](https://dev.azure.com/azure-pipelines-terraform-rc/azure-pipelines-terraform-rc/_apis/build/status/charleszipp.azure-pipelines-tasks-terraform?branchName=main)

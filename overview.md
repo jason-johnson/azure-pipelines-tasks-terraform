@@ -1,5 +1,11 @@
 # Terraform Tasks for Azure Pipelines
 
+## NOTICE: PROJECT IN MAINTENANCE MODE
+
+As of the start of 2022, I have transitioned to a new role where I can no longer commit to improving or maintaining this project going forward. I am open to transferring the project to a new owner. If you are interested in taking ownership of the project please contact me on LinkedIn @ [charleszipp](https://www.linkedin.com/in/charleszipp/).
+
+Alternative Extension available [here](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks)
+
 The tasks in this extension allow for running terraform cli commands from Azure Pipelines. The motivation for this extension was to provide terraform pipeline tasks that could execute on all build agent operating systems and provide guided task configuration.
 
 ## Supported Commands
