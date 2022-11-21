@@ -9,7 +9,7 @@ import { ITaskAgent } from "../task-agent";
 
 export const publishedPlanAttachmentType = "terraform-plan-results";
 
-const planHasNoChangesRe = /^No changes. Infrastructure is up-to-date./
+const planHasNoChangesRe = /^No changes./
 const planHasChangesRe = /^Terraform will perform the following actions:/
 //Plan: 1 to add, 1 to change, 1 to destroy.
 //Plan: 0 to add, 1 to change, 1 to destroy.
