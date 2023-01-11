@@ -555,3 +555,12 @@ The task supports managing state within pipelines. The following state subcomman
     stateSubCommand: rm
     stateSubCommandAddresses: azurerm_resource_group.myrg,azurerm_resource_group.yourrg
 ```
+
+### Force Unlock
+
+```yaml
+- task: TerraformCLI@
+  displayName: 'terraform force-unlock'
+  inputs:
+    command: forceunlock
+    lockID: '6b49ea93-d4bb-6d06-4a88-63189f162bf7'
