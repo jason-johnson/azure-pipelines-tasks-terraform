@@ -29,7 +29,7 @@
   "dependencies": {
     "applicationinsights": "^1.8.8",
     "azure-devops-node-api": "^10.2.2",
-    "azure-pipelines-task-lib": "^3.1.10",
+    "azure-pipelines-task-lib": "^3.4.0",
     "dotenv": "^8.2.0",
     "intercept-stdout": "^0.1.2",
     "mock-require": "^3.0.3",
