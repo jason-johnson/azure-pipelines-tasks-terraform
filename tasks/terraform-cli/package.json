@@ -51,6 +51,7 @@
     "cucumber-junit": "^1.5.0",
     "cucumber-tsflow": "^4.0.0-rc.1",
     "nyc": "^15.1.0",
+    "tfx-cli": "^0.9.3",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.5"
   }
