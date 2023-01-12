@@ -1,0 +1,1 @@
+\u001b[31mWorkspace \"bar\" already exists\u001b[0m\u001b[0m\n

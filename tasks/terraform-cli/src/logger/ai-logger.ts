@@ -1,7 +1,7 @@
 import { TelemetryClient } from "applicationinsights";
 import { RequestTelemetry, ExceptionTelemetry } from "applicationinsights/out/Declarations/Contracts";
 import { ILogger } from ".";
-import { ITaskContext } from "../context";
+import { ITaskContext, getTrackedProperties } from "../context";
 
 export default class ApplicationInsightsLogger implements ILogger{
     constructor(
@@ -11,23 +11,16 @@ export default class ApplicationInsightsLogger implements ILogger{
     }
 
     command(success: boolean, duration: number): void {
-        if(this.ctx.allowTelemetryCollection){
-            const properties: { [key: string]: any } = {
-                "terraform.version" : this.ctx.terraformVersionFull,
-                "terraform.version.major" : this.ctx.terraformVersionMajor,
-                "terraform.version.minor" : this.ctx.terraformVersionMinor,
-                "terraform.version.patch" : this.ctx.terraformVersionPatch,
-            }
-
-            this.telemetry.trackRequest(<RequestTelemetry>{
-                name: this.ctx.name,
-                success: success,
-                resultCode: success ? 200 : 500,
-                duration: duration,
-                properties
-            });
-        }        
-        this.logger.command(success, duration);
+      if(this.ctx.allowTelemetryCollection){
+          this.telemetry.trackRequest(<RequestTelemetry>{
+              name: this.ctx.name,
+              success: success,
+              resultCode: success ? 200 : 500,
+              duration: duration,
+              properties: getTrackedProperties(this.ctx)
+          });
+      }        
+      this.logger.command(success, duration);
     }
     error(error: string | Error, properties: any): void {
         if(this.ctx.allowTelemetryCollection){            

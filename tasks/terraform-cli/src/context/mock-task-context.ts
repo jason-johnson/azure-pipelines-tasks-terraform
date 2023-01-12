@@ -10,6 +10,7 @@ export default class MockTaskContext implements ITaskContext {
     backendType: string = "";
     ensureBackend?: boolean | undefined;
     backendServiceArm: string = "";
+    backendAzureRmSubscriptionId?: string;
     backendAzureRmResourceGroupName: string = "";
     backendAzureRmResourceGroupLocation: string = "";
     backendAzureRmStorageAccountName: string = "";
@@ -27,6 +28,7 @@ export default class MockTaskContext implements ITaskContext {
     environmentServiceArmClientSecret: string = "";
     environmentServiceArmSubscriptionId: string = "";
     environmentServiceArmTenantId: string = "";
+    providerAzureRmSubscriptionId: string = "";
     aiInstrumentationKey?: string | undefined;
     allowTelemetryCollection: boolean = true;
     resourceAddress: string = "";
@@ -37,6 +39,10 @@ export default class MockTaskContext implements ITaskContext {
     publishPlanResults: string = "";
     workspaceSubCommand: string = "";
     workspaceName: string = "";
+    stateSubCommand: string = "";
+    stateAddresses: string[] = [];
+    stateMoveSource: string = "";
+    stateMoveDestination: string = "";
     public readonly startedAt: [number, number];
     private _finishedAt: [number, number] | undefined;
     runTime: number = 0;    
@@ -44,6 +50,23 @@ export default class MockTaskContext implements ITaskContext {
     terraformVersionMajor?: number;
     terraformVersionMinor?: number;
     terraformVersionPatch?: number;
+    skipExistingWorkspace?: boolean = false;
+    backendServiceAws: string = "";
+    backendServiceAwsAccessKey: string = "";
+    backendServiceAwsSecretKey: string = "";
+    backendAwsBucket?: string;
+    backendAwsKey?: string;
+    backendAwsRegion?: string;
+    providerServiceAws?: string;
+    providerServiceAwsAccessKey: string = "";
+    providerServiceAwsSecretKey: string = "";
+    providerAwsRegion: string = "";
+    backendGcsCredentials: string = "";
+    backendGcsBucket: string = "";
+    backendGcsPrefix: string = "";
+    providerGoogleCredentials?: string;
+    providerGoogleProject?: string;
+    providerGoogleRegion?: string;
 
     constructor() {
         this.startedAt = process.hrtime();

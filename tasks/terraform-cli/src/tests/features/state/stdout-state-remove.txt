@@ -1,0 +1,3 @@
+Removed random_string.a
+Removed random_string.b
+Successfully removed 2 resource instance(s).

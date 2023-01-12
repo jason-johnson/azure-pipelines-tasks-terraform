@@ -1,12 +1,8 @@
+## NOTICE: PROJECT BEING TRANSITIONED TO NEW OWNER
+
+As of the start of 2022, I have transitioned to a new role where I can no longer commit to improving or maintaining this project going forward. [@jason-johnson](https://github.com/jason-johnson) has volunteered to take over ownership of the extension. While we are working on transition you may see this extension move to [@jason-johnson](https://github.com/jason-johnson). Eventually the extension will move to his publisher as well.
+
 # Azure Pipelines Extension for Terraform
-
-## NOTE: REPO RECENTLY RECREATED
-
-This repo has recently been recreated to correct a source control issue. Please be sure to do the following:
-
-- Update any clones to use this repo.
-- Recreate any forks based on this repo. This was recreated as of 0.6.21 tag of the original repo
-- Re-star the repository
 
 ![Build Status](https://dev.azure.com/azure-pipelines-terraform-rc/azure-pipelines-terraform-rc/_apis/build/status/charleszipp.azure-pipelines-tasks-terraform?branchName=main)
 ![Visual Studio Marketplace Installs - Azure DevOps Extension](https://img.shields.io/visual-studio-marketplace/azure-devops/installs/total/charleszipp.azure-pipelines-tasks-terraform?label=marketplace%20installs)

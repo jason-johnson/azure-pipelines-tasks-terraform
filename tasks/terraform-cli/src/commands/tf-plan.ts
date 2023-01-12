@@ -1,8 +1,7 @@
 import { CommandResponse, ICommand } from ".";
 import { ITaskContext } from "../context";
 import { ILogger } from "../logger";
-import { ITerraformProvider } from "../providers";
-import AzureRMProvider from "../providers/azurerm";
+import { TerraformProviderContext } from "../providers";
 import { IRunner, RunnerOptions, RunnerResult } from "../runners";
 import { RunWithTerraform } from "../runners/builders";
 import { ITaskAgent } from "../task-agent";
@@ -10,7 +9,7 @@ import { ITaskAgent } from "../task-agent";
 
 export const publishedPlanAttachmentType = "terraform-plan-results";
 
-const planHasNoChangesRe = /^No changes. Infrastructure is up-to-date./
+const planHasNoChangesRe = /^No changes./
 const planHasChangesRe = /^Terraform will perform the following actions:/
 //Plan: 1 to add, 1 to change, 1 to destroy.
 //Plan: 0 to add, 1 to change, 1 to destroy.
@@ -30,26 +29,17 @@ export class TerraformPlan implements ICommand {
     constructor(
         private readonly taskAgent: ITaskAgent,
         private readonly runner: IRunner,
-        private readonly logger: ILogger
+        private readonly logger: ILogger,
+        private readonly providers: TerraformProviderContext
     ) {
     }
 
-    // todo: refactor this so its not repeated in all command handlers
-    private getProvider(ctx: ITaskContext): ITerraformProvider | undefined {
-        let provider: ITerraformProvider | undefined;
-        if (ctx.environmentServiceName) {
-            provider = new AzureRMProvider(this.runner);
-        }
-        return provider;
-    }
-
     async exec(ctx: ITaskContext): Promise<CommandResponse> {
-        const provider = this.getProvider(ctx);
+        await this.providers.init();
         const publishPlanResults = (ctx.publishPlanResults !== undefined ? ctx.publishPlanResults : "").trim()
         const successCodes = this.getPlanSuccessfulExitCodes(ctx.commandOptions, publishPlanResults.length > 0)
 
-        const options = await new RunWithTerraform(ctx)
-            .withProvider(ctx, provider)
+        const options = await new RunWithTerraform(ctx)            
             .withSecureVarFile(this.taskAgent, ctx.secureVarsFileId, ctx.secureVarsFileName)
             .withCommandOptions(ctx.commandOptions)
             .withForcedDetailedExitCode(ctx.commandOptions, publishPlanResults.length > 0)

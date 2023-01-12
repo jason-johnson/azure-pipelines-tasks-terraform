@@ -16,13 +16,12 @@ while getopts t:s:c: flag; do
         c) task_id="${OPTARG}";;
     esac
 done
-
-until $(npx tfx build tasks list --service-url $service_url -t $token --no-color --json |  jq -r --arg t "$task_id" '.[] | select(.id == $t) | .id' | grep -q "$task_id");
+until $(tfx build tasks list --service-url $service_url -t $token --no-color --json |  jq -r --arg t "$task_id" '.[] | select(.id == $t) | .id' | grep -q "$task_id");
 do
     if [ $attempts -gt $max ]
     then
         echo "wait limit reached! exiting..."
-        return 1;
+        exit 0;
     else
         echo "waiting for task to become available..."        
         sleep $(( attempts++ ));

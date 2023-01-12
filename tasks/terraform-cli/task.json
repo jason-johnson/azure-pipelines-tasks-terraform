@@ -25,6 +25,24 @@
             "visibleRule": "command = init && backendType = azurerm"
         },
         {
+          "name": "backendAws",
+          "displayName": "AWS Backend Configuration",
+          "isExpanded": false,
+          "visibleRule": "command = init && backendType = aws"
+        },
+        {
+          "name": "backendGcs",
+          "displayName": "GCS Backend Configuration",
+          "isExpanded": false,
+          "visibleRule": "command = init && backendType = gcs"
+        },
+        {
+            "name": "providers",
+            "displayName": "Providers",
+            "isExpanded": false,
+            "visibleRule": "command = plan || command = apply || command = destroy || command = refresh || command = import"
+        },
+        {
             "name": "importArguments",
             "displayName": "Import Arguments",
             "isExpanded": false,
@@ -69,7 +87,8 @@
                 "import": "import",
                 "output": "output",
                 "forceunlock": "force-unlock",
-                "workspace" : "workspace"
+                "workspace" : "workspace",
+                "state" : "state"
             },
             "properties": {
                 "EditableOptions": "False"
@@ -86,10 +105,19 @@
         {
             "name": "environmentServiceName",
             "type": "connectedService:AzureRM",
-            "label": "Environment Azure Subscription (select if not configured inside terraform code)",
+            "label": "AzureRM Provider Service Connection",
             "required": false,
             "visibleRule": "command = plan || command = apply || command = destroy || command = refresh || command = import",
-            "helpMarkDown": "Select an Azure service connection if you would like the azurerm provider configured for you (using the service principal credentials configured in the selected service connection). **This field is optional.** Leave empty should you choose to self-configure the provider(s) used. Provider environment variables can be configured securely by selecting an env file from the `Secured Variables File` pick list."
+            "helpMarkDown": "Select an Azure service connection for azurerm provider authorization. Both Subscription & Management Group Scopes are supported. If using Management Group Scoped service connection, the subscription id can be self configured within the template provider configuration, with environment variable, or provided in the `providerAzureRmSubscriptionId` input.* **This field is optional.** Leave empty should you choose to self-configure the provider(s) used or the provider is not used. Provider environment variables can be configured securely by selecting an env file from the `Secured Variables File` pick list.",
+            "groupName": "providers"
+        },
+        {
+            "name": "providerAzureRmSubscriptionId",
+            "type": "string",
+            "label": "Azure Subscription Id",
+            "required": false,
+            "helpMarkDown": "The azure rm provider target subscription. If provided, this will override the subscription id defined within the service connection. This should be provided when using Management Group scoped service connection.",
+            "groupName": "providers"
         },
         {
             "name": "runAzLogin",
@@ -116,12 +144,30 @@
             "required": false,
             "helpMarkDown": "The workspace sub-command to run.",
             "options": {
-                "select": "select"
+                "select": "select",
+                "new": "new"
             },
             "properties": {
                 "EditableOptions": "False"
             },
             "visibleRule": "command = workspace"
+        },
+        {
+            "name": "stateSubCommand",
+            "type": "pickList",
+            "label": "State Sub Command",
+            "defaultValue": "list",
+            "required": false,
+            "helpMarkDown": "The state sub-command to run.",
+            "options": {
+                "list": "list",
+                "mv": "mv",
+                "rm": "rm"
+            },
+            "properties": {
+                "EditableOptions": "False"
+            },
+            "visibleRule": "command = state"
         },
         {
             "name": "commandOptions",
@@ -141,7 +187,9 @@
             "options": {
                 "local": "local",
                 "azurerm": "azurerm",
-                "selfConfigured": "self-configured"
+                "selfConfigured": "self-configured",
+                "aws": "aws",
+                "gcs": "gcs"
             },
             "properties": {
                 "EditableOptions": "False"
@@ -151,9 +199,17 @@
         {
             "name": "backendServiceArm",
             "type": "connectedService:AzureRM",
-            "label": "Backend Azure Subscription",
+            "label": "Backend Azure Service Connection",
             "required": false,
-            "helpMarkDown": "Select an Azure resource manager subscription for the terraform backend configuration",
+            "helpMarkDown": "Select an Azure Resource Manager service connection for backend authorization. Both Subscription & Management Group Scopes are supported. If using Management Group Scoped service connection, the subscription id can be self configured within the template backend configuration, with environment variable, or provided in the `backendAzureRmSubscriptionId` input.",
+            "groupName": "backendAzureRm"
+        },
+        {
+            "name": "backendAzureRmSubscriptionId",
+            "type": "string",
+            "label": "Azure Subscription Id",
+            "required": false,
+            "helpMarkDown": "The subscription id where the backend should be located. If provided, this will override the subscription id defined within the service connection.",
             "groupName": "backendAzureRm"
         },
         {
@@ -278,10 +334,139 @@
             "required": false,
             "visibleRule": "workspaceSubCommand = select",
             "helpMarkDown": "The name of the target workspace"
+        },
+        {
+            "name": "skipExistingWorkspace",
+            "type": "boolean",
+            "label": "Skip Create If Exists",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "Skip attempting to create existing workspaces",
+            "visibleRule": "workspaceSubCommand = new"
+        },
+        {
+            "name": "stateMoveSource",
+            "type": "string",
+            "label": "State Move Source",
+            "required": false,
+            "visibleRule": "stateSubCommand = mv",
+            "helpMarkDown": "The name of the source resource"
+        },
+        {
+            "name": "stateMoveDestination",
+            "type": "string",
+            "label": "State Move Destination",
+            "required": false,
+            "visibleRule": "stateSubCommand = mv",
+            "helpMarkDown": "The name of the destination resource"
+        },
+        {
+            "name": "stateAddresses",
+            "type": "string",
+            "label": "State list and rm addresses",
+            "required": false,
+            "visibleRule": "stateSubCommand = rm || stateSubCommand = list",
+            "helpMarkDown": "The list of resources"
+        },
+        {
+            "name": "backendServiceAws",
+            "type": "connectedService:AWS",
+            "label": "Backend AWS Service Connection",
+            "required": false,
+            "helpMarkDown": "Select an AWS service connection for the terraform backend configuration",
+            "groupName": "backendAws"
+        },
+        {
+            "name": "backendAwsRegion",
+            "type": "string",
+            "label": "Region",
+            "required": false,
+            "helpMarkDown": "The bucket's assigned region. If left empty, this is assumed to be self-configured.",
+            "groupName": "backendAws"
+        },
+        {
+            "name": "backendAwsBucket",
+            "type": "string",
+            "label": "Bucket",
+            "required": false,
+            "helpMarkDown": "The bucket's name. If left empty, this is assumed to be self-configured.",
+            "groupName": "backendAws"
+        },
+        {
+            "name": "backendAwsKey",
+            "type": "string",
+            "label": "Key",
+            "required": false,
+            "helpMarkDown": "The path of the state file inside the bucket. If left empty, this is assumed to be self-configured.",
+            "groupName": "backendAws"
+        },
+        {
+            "name": "providerServiceAws",
+            "type": "connectedService:AWS",
+            "label": "AWS Provider Service Connection",
+            "required": false,
+            "helpMarkDown": "Select an AWS service connection if you would like the aws provider configured for you (using the credentials configured in the selected service connection). **This field is optional.** Leave empty should you choose to self-configure the provider(s) used. Provider environment variables can be configured securely by selecting an env file from the `Secured Variables File` pick list.",
+            "groupName": "providers"
+        },
+        {
+            "name": "providerAwsRegion",
+            "type": "string",
+            "label": "AWS Provider default region",
+            "required": false,
+            "helpMarkDown": "The default region for the AWS Provider configuration. Sets env ARM_DEFAULT_REGION to the value provided.",
+            "groupName": "providers"
+        },
+        {
+            "name": "backendGcsCredentials",
+            "type": "secureFile",
+            "label": "Google Credentials JSON File",
+            "required": false,
+            "helpMarkDown": "Secure file containing GCP account credentials in JSON format.",
+            "groupName": "backendGcs"
+        },
+        {
+            "name": "backendGcsBucket",
+            "type": "string",
+            "label": "Bucket",
+            "required": false,
+            "helpMarkDown": "The bucket's name. If left empty, this is assumed to be self-configured.",
+            "groupName": "backendGcs"
+        },
+        {
+            "name": "backendGcsPrefix",
+            "type": "string",
+            "label": "Prefix",
+            "required": false,
+            "helpMarkDown": "The GCS prefix inside the bucket. If left empty, this is assumed to be self-configured.",
+            "groupName": "backendGcs"
+        },
+        {
+            "name": "providerGoogleCredentials",
+            "type": "secureFile",
+            "label": "Google Credentials JSON File",
+            "required": false,
+            "helpMarkDown": "Secure file containing GCP account credentials in JSON format.",
+            "groupName": "providers"
+        },
+        {
+            "name": "providerGoogleProject",
+            "type": "string",
+            "label": "Project",
+            "required": false,
+            "helpMarkDown": "The default project name where resources are managed. Defining project on a resource takes precedence over this.",
+            "groupName": "providers"
+        },
+        {
+            "name": "providerGoogleRegion",
+            "type": "string",
+            "label": "Region",
+            "required": false,
+            "helpMarkDown": "The default region where resources are managed. Defining region on a resource takes precedence over this.",
+            "groupName": "providers"
         }
     ],
     "execution": {
-        "Node": {
+        "Node10": {
             "target": ".bin/index.js",
             "argumentFormat": ""
         }

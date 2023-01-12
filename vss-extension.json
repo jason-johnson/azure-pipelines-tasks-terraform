@@ -5,7 +5,7 @@
     "targets": [{
         "id": "Microsoft.VisualStudio.Services"
     }],
-    "description": "Tasks to execute terraform commands during Azure Pipelines",
+    "description": "Tasks to install and execute terraform with Azure Pipelines for Azure and AWS.",
     "categories": [
         "Azure Pipelines"
     ],
@@ -59,7 +59,7 @@
     },
     
     "tags" : [
-        "terraform", "azurerm", "azure", "infrastructure as code", "iac", "cloud", "deploy"
+        "terraform", "azurerm", "azure", "aws", "infrastructure as code", "iac", "cloud", "deploy"
     ],
     "scopes": [
         "vso.build"

@@ -1,0 +1,2 @@
+Move "random_string.a" to "random_string.d"
+Successfully moved 1 object(s).

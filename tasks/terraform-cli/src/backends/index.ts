@@ -9,7 +9,9 @@ export interface ITerraformBackend{
 export enum BackendTypes{
     local = "local",
     azurerm = "azurerm",
-    selfConfigured = "self-configured"
+    selfConfigured = "self-configured",
+    aws = "aws",
+    gcs = "gcs"
 }
 
 export { default as AzureRMBackend } from './azurerm';

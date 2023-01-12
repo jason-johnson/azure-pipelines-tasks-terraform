@@ -12,6 +12,8 @@ export default class AzureRMBackend implements ITerraformBackend {
         if (ctx.backendServiceArmAuthorizationScheme != "ServicePrincipal") {
             throw "Terraform backend initialization for AzureRM only support service principal authorization";
         }
+        
+        const subscriptionId = ctx.backendAzureRmSubscriptionId || ctx.backendServiceArmSubscriptionId;
 
         let backendConfig: any = {
             storage_account_name: ctx.backendAzureRmStorageAccountName,
@@ -22,13 +24,17 @@ export default class AzureRMBackend implements ITerraformBackend {
 
         //use the arm_* prefix config only for versions before 0.12.0
         if(ctx.terraformVersionMajor === 0 && typeof(ctx.terraformVersionMinor) == 'number' && ctx.terraformVersionMinor < 12){
-            backendConfig.arm_subscription_id = ctx.backendServiceArmSubscriptionId;
+            if(subscriptionId){
+              backendConfig.arm_subscription_id = subscriptionId
+            }
             backendConfig.arm_tenant_id = ctx.backendServiceArmTenantId;
             backendConfig.arm_client_id = ctx.backendServiceArmClientId;
             backendConfig.arm_client_secret = ctx.backendServiceArmClientSecret;
         }
         else{
-            backendConfig.subscription_id = ctx.backendServiceArmSubscriptionId;
+            if(subscriptionId){
+              backendConfig.subscription_id = subscriptionId
+            }
             backendConfig.tenant_id = ctx.backendServiceArmTenantId;
             backendConfig.client_id = ctx.backendServiceArmClientId;
             backendConfig.client_secret = ctx.backendServiceArmClientSecret;
@@ -39,7 +45,9 @@ export default class AzureRMBackend implements ITerraformBackend {
         };
 
         for (var config in backendConfig) {
-            result.args.push(`-backend-config=${config}=${backendConfig[config]}`);
+            if(backendConfig[config]){
+              result.args.push(`-backend-config=${config}=${backendConfig[config]}`);
+            }            
         }
 
         if (ctx.ensureBackend === true) {
@@ -50,12 +58,12 @@ export default class AzureRMBackend implements ITerraformBackend {
     }
 
     private async ensureBackend(ctx: ITaskContext) {
-        await new CommandPipeline(this.runner)
-            .azLogin()
-            .azAccountSet()
-            .azGroupCreate()
-            .azStorageAccountCreate()
-            .azStorageContainerCreate()
-            .exec(ctx);
+      await new CommandPipeline(this.runner)
+        .azLogin()
+        .azAccountSet()
+        .azGroupCreate()
+        .azStorageAccountCreate()
+        .azStorageContainerCreate()
+        .exec(ctx);
     }
 }

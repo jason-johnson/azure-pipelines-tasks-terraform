@@ -9,7 +9,7 @@ export class CommandResponse {
     constructor(
         public readonly status: CommandStatus, 
         public readonly message?: string,
-        public readonly lastExitCode?: number        
+        public readonly lastExitCode?: number      
     ){}
 }
 
@@ -53,7 +53,12 @@ export { TerraformOutput as OutputCommandHandler } from './tf-output';
 export { TerraformRefresh as RefreshCommandHandler } from './tf-refresh';
 export { TerraformForceUnlock as ForceUnlockCommandHandler } from './tf-force-unlock';
 export { TerraformShow as ShowCommandHandler } from './tf-show';
+export { TerraformStateCommand as StateCommandHandler } from './tf-state';
+export { TerraformStateListCommand as StateListCommandHandler } from './tf-state-list';
+export { TerraformStateMoveCommand as StateMoveCommandHandler } from './tf-state-move';
+export { TerraformStateRemoveCommand as StateRemoveCommandHandler } from './tf-state-remove';
 export { TerraformFormat as FormatCommandHandler } from './tf-fmt';
+export { TerraformWorkspace as WorkspaceCommandHandler } from './tf-workspace';
 export { TerraformWorkspaceSelect as WorkspaceSelectCommandHandler } from './tf-workspace-select';
 export { TerraformWorkspaceNew as WorkspaceNewCommandHandler } from './tf-workspace-new';
 

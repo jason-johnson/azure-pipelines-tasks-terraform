@@ -38,22 +38,21 @@
             "type": "node",
             "request": "launch",
             "name": "debug:tests - tasks/terraform-cli",
-            "program": "${workspaceFolder}/tasks/terraform-cli/node_modules/cucumber/bin/cucumber-js",
+            "runtimeExecutable": "npm",
             "cwd": "${workspaceFolder}/tasks/terraform-cli",
-            "args": [
-                "-p", "default"
-            ]
+            "runtimeArgs": ["run-script", "test"]
         },
         {
             "type": "node",
             "request": "launch",
             "name": "debug:test - tasks/terraform-cli",
-            "program": "${workspaceFolder}/tasks/terraform-cli/node_modules/cucumber/bin/cucumber-js",
-            "cwd": "${workspaceFolder}/tasks/terraform-cli",
-            "args": [
-                "-p", "default",
-                "--name", "${input:testScenario}"
-            ]
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+              "run-script", "test",
+              "--",
+              "--name", "${input:testScenario}"
+            ],
+            "cwd": "${workspaceFolder}/tasks/terraform-cli"
         },
         {
             "type": "node",

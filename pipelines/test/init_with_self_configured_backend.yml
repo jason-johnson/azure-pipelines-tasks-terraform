@@ -12,7 +12,7 @@ jobs:
     - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
       displayName: install terraform
       inputs:
-        terraformVersion: 0.15.0
+        terraformVersion: 1.0.10
     - task: DownloadSecureFile@1
       name: backend_config_file
       displayName: 'download backend config file'

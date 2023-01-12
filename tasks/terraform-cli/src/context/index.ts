@@ -1,3 +1,5 @@
+import "reflect-metadata";
+
 export interface ITaskContext {
     name: string;
     cwd: string;
@@ -7,6 +9,7 @@ export interface ITaskContext {
     backendType?: string;
     ensureBackend?: boolean;
     backendServiceArm: string;
+    backendAzureRmSubscriptionId?: string;
     backendAzureRmResourceGroupName: string;
     backendAzureRmResourceGroupLocation: string;
     backendAzureRmStorageAccountName: string;
@@ -24,6 +27,7 @@ export interface ITaskContext {
     environmentServiceArmClientSecret: string;
     environmentServiceArmSubscriptionId: string;
     environmentServiceArmTenantId: string;
+    providerAzureRmSubscriptionId: string;
     aiInstrumentationKey?: string;
     allowTelemetryCollection: boolean;
     resourceAddress: string;
@@ -34,6 +38,10 @@ export interface ITaskContext {
     publishPlanResults: string;
     workspaceSubCommand: string;
     workspaceName: string;
+    stateSubCommand: string;
+    stateAddresses: string[];
+    stateMoveSource: string;
+    stateMoveDestination: string;
     setVariable: (name: string, val: string, secret?: boolean | undefined) => void;
     runTime: number;
     finished: () => void;
@@ -42,6 +50,59 @@ export interface ITaskContext {
     terraformVersionMinor?: number;
     terraformVersionPatch?: number;
     setTerraformVersion: (full: string, major: number, minor: number, patch: number) => void;
+    skipExistingWorkspace?: boolean;
+    backendServiceAws: string;
+    backendServiceAwsAccessKey: string;
+    backendServiceAwsSecretKey: string;
+    backendAwsBucket?: string;
+    backendAwsKey?: string;
+    backendAwsRegion?: string;
+    providerServiceAws?: string;
+    providerServiceAwsAccessKey: string;
+    providerServiceAwsSecretKey: string;
+    providerAwsRegion: string;
+    backendGcsCredentials: string;
+    backendGcsBucket: string;
+    backendGcsPrefix: string;
+    providerGoogleCredentials?: string;
+    providerGoogleProject?: string;
+    providerGoogleRegion?: string;
+}
+
+export const TRACKED_CONTEXT_PROPERTIES_METADATA_KEY = Symbol("propLogMetadata");
+
+interface TrackedContextProperty{
+  alias: string;
+  condition?: (target: ITaskContext) => boolean;
+  secret?: boolean;
+}
+
+export function trackValue(alias: string, condition?: (target: ITaskContext) => boolean, secret?: boolean) {
+  return function (target: ITaskContext, propertyKey: string){
+    const trackedProps = Reflect.getMetadata(TRACKED_CONTEXT_PROPERTIES_METADATA_KEY, target) || {};
+    trackedProps[propertyKey] = <TrackedContextProperty>{ alias, condition, secret };
+    Reflect.defineMetadata(TRACKED_CONTEXT_PROPERTIES_METADATA_KEY, trackedProps, target);
+  }
+}
+
+export function getTrackedProperties(target: ITaskContext): { [key: string]: string } {
+  const trackedPropsMetadata = Reflect.getMetadata(TRACKED_CONTEXT_PROPERTIES_METADATA_KEY, target);
+  const rvalues: { [key: string]: string } = {};
+  for(const key in trackedPropsMetadata){
+    const trackedProp = <TrackedContextProperty>trackedPropsMetadata[key];    
+    if((!trackedProp.condition || trackedProp.condition(target))){      
+      const value = target[key as keyof ITaskContext];
+      if(value){
+        if(trackedProp.secret){
+          rvalues[trackedProp.alias] = "[redacted]";
+        }
+        else{
+          rvalues[trackedProp.alias] = value.toString();
+        }      
+      }      
+    }    
+  }
+  return rvalues;
 }
 
 export { default as AzdoTaskContext } from './azdo-task-context';

@@ -1,0 +1,722 @@
+{
+  "format_version": "0.2",
+  "terraform_version": "1.0.5",
+  "variables": {
+      "INTER_CA": {
+          "value": "xxx"
+      },
+      "ROOT_CA": {
+          "value": "xxx"
+      }
+  },
+  "planned_values": {
+      "root_module": {
+          "resources": [
+              {
+                  "address": "azurerm_api_management.api_management",
+                  "mode": "managed",
+                  "type": "azurerm_api_management",
+                  "name": "api_management",
+                  "provider_name": "registry.terraform.io/hashicorp/azurerm",
+                  "schema_version": 0,
+                  "values": {
+                      "additional_location": [],
+                      "certificate": [
+                          {
+                              "certificate_password": null,
+                              "encoded_certificate": "xxx",
+                              "store_name": "CertificateAuthority"
+                          },
+                          {
+                              "certificate_password": null,
+                              "encoded_certificate": "xxx",
+                              "store_name": "Root"
+                          }
+                      ],
+                      "client_certificate_enabled": false,
+                      "gateway_disabled": false,
+                      "identity": [
+                          {
+                              "identity_ids": null,
+                              "type": "SystemAssigned"
+                          }
+                      ],
+                      "location": "westeurope",
+                      "min_api_version": null,
+                      "name": "temporaryName",
+                      "publisher_email": "noreply@microsoft.com",
+                      "publisher_name": "No reply",
+                      "resource_group_name": "xxx",
+                      "sign_up": [
+                          {
+                              "enabled": true,
+                              "terms_of_service": [
+                                  {
+                                      "consent_required": false,
+                                      "enabled": false,
+                                      "text": null
+                                  }
+                              ]
+                          }
+                      ],
+                      "sku_name": "Developer_1",
+                      "tags": null,
+                      "timeouts": null,
+                      "virtual_network_configuration": [
+                          {
+                              "subnet_id": "xxx"
+                          }
+                      ],
+                      "virtual_network_type": "Internal",
+                      "zones": null
+                  },
+                  "sensitive_values": {
+                      "additional_location": [],
+                      "certificate": [
+                          {},
+                          {}
+                      ],
+                      "hostname_configuration": [],
+                      "identity": [
+                          {}
+                      ],
+                      "policy": [],
+                      "private_ip_addresses": [],
+                      "protocols": [],
+                      "public_ip_addresses": [],
+                      "security": [],
+                      "sign_in": [],
+                      "sign_up": [
+                          {
+                              "terms_of_service": [
+                                  {}
+                              ]
+                          }
+                      ],
+                      "tenant_access": [],
+                      "virtual_network_configuration": [
+                          {}
+                      ]
+                  }
+              }
+          ]
+      }
+  },
+  "resource_changes": [
+      {
+          "address": "azurerm_api_management.api_management",
+          "mode": "managed",
+          "type": "azurerm_api_management",
+          "name": "api_management",
+          "provider_name": "registry.terraform.io/hashicorp/azurerm",
+          "change": {
+              "actions": [
+                  "delete",
+                  "create"
+              ],
+              "before": {
+                  "additional_location": [],
+                  "certificate": [
+                      {
+                          "certificate_password": "",
+                          "encoded_certificate": "lorem",
+                          "store_name": "CertificateAuthority"
+                      },
+                      {
+                          "certificate_password": "",
+                          "encoded_certificate": "ipsum",
+                          "store_name": "Root"
+                      }
+                  ],
+                  "client_certificate_enabled": false,
+                  "developer_portal_url": "https://sample.developer.azure-api.net",
+                  "gateway_disabled": false,
+                  "gateway_regional_url": "https://sample-westeurope-01.regional.azure-api.net",
+                  "gateway_url": "https://sample.azure-api.net",
+                  "hostname_configuration": [],
+                  "id": "xxxx",
+                  "identity": [
+                      {
+                          "identity_ids": [],
+                          "principal_id": "xxxx",
+                          "tenant_id": "xxxx",
+                          "type": "SystemAssigned"
+                      }
+                  ],
+                  "location": "westeurope",
+                  "management_api_url": "https://sample.management.azure-api.net",
+                  "min_api_version": "",
+                  "name": "sample",
+                  "notification_sender_email": "apimgmt-noreply@mail.windowsazure.com",
+                  "policy": [
+                      {
+                          "xml_content": "\u003cpolicies\u003e\r\n\t\u003cinbound\u003e\r\n\t\t\u003cquota-by-key calls=\"40\" renewal-period=\"3600\" counter-key=\"@(context.Request.IpAddress)\" /\u003e\r\n\t\t\u003ccors allow-credentials=\"true\"\u003e\r\n\t\t\t\u003callowed-origins\u003e\r\n\t\t\t\t\u003corigin\u003ehttps://sample.developer.azure-api.net\u003c/origin\u003e\r\n\t\t\t\u003c/allowed-origins\u003e\r\n\t\t\t\u003callowed-methods preflight-result-max-age=\"300\"\u003e\r\n\t\t\t\t\u003cmethod\u003e*\u003c/method\u003e\r\n\t\t\t\u003c/allowed-methods\u003e\r\n\t\t\t\u003callowed-headers\u003e\r\n\t\t\t\t\u003cheader\u003e*\u003c/header\u003e\r\n\t\t\t\u003c/allowed-headers\u003e\r\n\t\t\t\u003cexpose-headers\u003e\r\n\t\t\t\t\u003cheader\u003e*\u003c/header\u003e\r\n\t\t\t\u003c/expose-headers\u003e\r\n\t\t\u003c/cors\u003e\r\n\t\u003c/inbound\u003e\r\n\t\u003cbackend\u003e\r\n\t\t\u003cforward-request /\u003e\r\n\t\u003c/backend\u003e\r\n\t\u003coutbound /\u003e\r\n\t\u003con-error /\u003e\r\n\u003c/policies\u003e",
+                          "xml_link": ""
+                      }
+                  ],
+                  "portal_url": "https://sample.portal.azure-api.net",
+                  "private_ip_addresses": [
+                      "1.2.3.1"
+                  ],
+                  "protocols": [
+                      {
+                          "enable_http2": false
+                      }
+                  ],
+                  "public_ip_addresses": [
+                      "1.2.3"
+                  ],
+                  "publisher_email": "noreply@microsoft.com",
+                  "publisher_name": "No reply",
+                  "resource_group_name": "xxxx",
+                  "scm_url": "https://sample.scm.azure-api.net",
+                  "security": [
+                      {
+                          "enable_backend_ssl30": false,
+                          "enable_backend_tls10": false,
+                          "enable_backend_tls11": false,
+                          "enable_frontend_ssl30": false,
+                          "enable_frontend_tls10": false,
+                          "enable_frontend_tls11": false,
+                          "enable_triple_des_ciphers": false,
+                          "tls_ecdhe_ecdsa_with_aes128_cbc_sha_ciphers_enabled": false,
+                          "tls_ecdhe_ecdsa_with_aes256_cbc_sha_ciphers_enabled": false,
+                          "tls_ecdhe_rsa_with_aes128_cbc_sha_ciphers_enabled": false,
+                          "tls_ecdhe_rsa_with_aes256_cbc_sha_ciphers_enabled": false,
+                          "tls_rsa_with_aes128_cbc_sha256_ciphers_enabled": false,
+                          "tls_rsa_with_aes128_cbc_sha_ciphers_enabled": false,
+                          "tls_rsa_with_aes128_gcm_sha256_ciphers_enabled": false,
+                          "tls_rsa_with_aes256_cbc_sha256_ciphers_enabled": false,
+                          "tls_rsa_with_aes256_cbc_sha_ciphers_enabled": false,
+                          "triple_des_ciphers_enabled": false
+                      }
+                  ],
+                  "sign_in": [
+                      {
+                          "enabled": false
+                      }
+                  ],
+                  "sign_up": [
+                      {
+                          "enabled": true,
+                          "terms_of_service": [
+                              {
+                                  "consent_required": false,
+                                  "enabled": false,
+                                  "text": ""
+                              }
+                          ]
+                      }
+                  ],
+                  "sku_name": "Developer_1",
+                  "tags": {
+                      "a": "b"
+                  },
+                  "tenant_access": [
+                      {
+                          "enabled": false,
+                          "primary_key": "xxx",
+                          "secondary_key": "xxx",
+                          "tenant_id": "/tenant/access"
+                      }
+                  ],
+                  "timeouts": null,
+                  "virtual_network_configuration": [
+                      {
+                          "subnet_id": "xxx"
+                      }
+                  ],
+                  "virtual_network_type": "Internal",
+                  "zones": []
+              },
+              "after": {
+                  "additional_location": [],
+                  "certificate": [
+                      {
+                          "certificate_password": null,
+                          "encoded_certificate": "lorem",
+                          "store_name": "CertificateAuthority"
+                      },
+                      {
+                          "certificate_password": null,
+                          "encoded_certificate": "Mipsum",
+                          "store_name": "Root"
+                      }
+                  ],
+                  "client_certificate_enabled": false,
+                  "gateway_disabled": false,
+                  "identity": [
+                      {
+                          "identity_ids": null,
+                          "type": "SystemAssigned"
+                      }
+                  ],
+                  "location": "westeurope",
+                  "min_api_version": null,
+                  "name": "temporaryName",
+                  "publisher_email": "noreply@microsoft.com",
+                  "publisher_name": "No reply",
+                  "resource_group_name": "xxxx",
+                  "sign_up": [
+                      {
+                          "enabled": true,
+                          "terms_of_service": [
+                              {
+                                  "consent_required": false,
+                                  "enabled": false,
+                                  "text": null
+                              }
+                          ]
+                      }
+                  ],
+                  "sku_name": "Developer_1",
+                  "tags": null,
+                  "timeouts": null,
+                  "virtual_network_configuration": [
+                      {
+                          "subnet_id": "xxx"
+                      }
+                  ],
+                  "virtual_network_type": "Internal",
+                  "zones": null
+              },
+              "after_unknown": {
+                  "additional_location": [],
+                  "certificate": [
+                      {},
+                      {}
+                  ],
+                  "developer_portal_url": true,
+                  "gateway_regional_url": true,
+                  "gateway_url": true,
+                  "hostname_configuration": true,
+                  "id": true,
+                  "identity": [
+                      {
+                          "principal_id": true,
+                          "tenant_id": true
+                      }
+                  ],
+                  "management_api_url": true,
+                  "notification_sender_email": true,
+                  "policy": true,
+                  "portal_url": true,
+                  "private_ip_addresses": true,
+                  "protocols": true,
+                  "public_ip_addresses": true,
+                  "scm_url": true,
+                  "security": true,
+                  "sign_in": true,
+                  "sign_up": [
+                      {
+                          "terms_of_service": [
+                              {}
+                          ]
+                      }
+                  ],
+                  "tenant_access": true,
+                  "virtual_network_configuration": [
+                      {}
+                  ]
+              },
+              "before_sensitive": {
+                  "additional_location": [],
+                  "certificate": [
+                      {
+                          "certificate_password": true,
+                          "encoded_certificate": true
+                      },
+                      {
+                          "certificate_password": true,
+                          "encoded_certificate": true
+                      }
+                  ],
+                  "hostname_configuration": [],
+                  "identity": [
+                      {
+                          "identity_ids": []
+                      }
+                  ],
+                  "policy": [
+                      {}
+                  ],
+                  "private_ip_addresses": [
+                      false
+                  ],
+                  "protocols": [
+                      {}
+                  ],
+                  "public_ip_addresses": [
+                      false
+                  ],
+                  "security": [
+                      {}
+                  ],
+                  "sign_in": [
+                      {}
+                  ],
+                  "sign_up": [
+                      {
+                          "terms_of_service": [
+                              {}
+                          ]
+                      }
+                  ],
+                  "tags": {},
+                  "tenant_access": [
+                      {
+                          "primary_key": true,
+                          "secondary_key": true
+                      }
+                  ],
+                  "virtual_network_configuration": [
+                      {}
+                  ],
+                  "zones": []
+              },
+              "after_sensitive": {
+                  "additional_location": [],
+                  "certificate": [
+                      {
+                          "certificate_password": true,
+                          "encoded_certificate": true
+                      },
+                      {
+                          "certificate_password": true,
+                          "encoded_certificate": true
+                      }
+                  ],
+                  "hostname_configuration": [],
+                  "identity": [
+                      {}
+                  ],
+                  "policy": [],
+                  "private_ip_addresses": [],
+                  "protocols": [],
+                  "public_ip_addresses": [],
+                  "security": [],
+                  "sign_in": [],
+                  "sign_up": [
+                      {
+                          "terms_of_service": [
+                              {}
+                          ]
+                      }
+                  ],
+                  "tenant_access": [],
+                  "virtual_network_configuration": [
+                      {}
+                  ]
+              },
+              "replace_paths": [
+                  [
+                      "name"
+                  ]
+              ]
+          },
+          "action_reason": "replace_because_cannot_update"
+      }
+  ],
+  "prior_state": {
+      "format_version": "0.2",
+      "terraform_version": "1.0.5",
+      "values": {
+          "root_module": {
+              "resources": [
+                  {
+                      "address": "azurerm_api_management.api_management",
+                      "mode": "managed",
+                      "type": "azurerm_api_management",
+                      "name": "api_management",
+                      "provider_name": "registry.terraform.io/hashicorp/azurerm",
+                      "schema_version": 0,
+                      "values": {
+                          "additional_location": [],
+                          "certificate": [
+                              {
+                                  "certificate_password": "",
+                                  "encoded_certificate": "xxx",
+                                  "store_name": "CertificateAuthority"
+                              },
+                              {
+                                  "certificate_password": "",
+                                  "encoded_certificate": "xxx",
+                                  "store_name": "Root"
+                              }
+                          ],
+                          "client_certificate_enabled": false,
+                          "developer_portal_url": "https://sample.developer.azure-api.net",
+                          "gateway_disabled": false,
+                          "gateway_regional_url": "https://sample-westeurope-01.regional.azure-api.net",
+                          "gateway_url": "https://sample.azure-api.net",
+                          "hostname_configuration": [],
+                          "id": "/subscriptions/xxxxxxx/resourceGroups/xxxx/providers/Microsoft.ApiManagement/service/sample",
+                          "identity": [
+                              {
+                                  "identity_ids": [],
+                                  "principal_id": "xxx",
+                                  "tenant_id": "xxxx",
+                                  "type": "SystemAssigned"
+                              }
+                          ],
+                          "location": "westeurope",
+                          "management_api_url": "https://sample.management.azure-api.net",
+                          "min_api_version": "",
+                          "name": "sample",
+                          "notification_sender_email": "apimgmt-noreply@mail.windowsazure.com",
+                          "policy": [
+                              {
+                                  "xml_content": "\u003cpolicies\u003e\r\n\t\u003cinbound\u003e\r\n\t\t\u003cquota-by-key calls=\"40\" renewal-period=\"3600\" counter-key=\"@(context.Request.IpAddress)\" /\u003e\r\n\t\t\u003ccors allow-credentials=\"true\"\u003e\r\n\t\t\t\u003callowed-origins\u003e\r\n\t\t\t\t\u003corigin\u003ehttps://sample.developer.azure-api.net\u003c/origin\u003e\r\n\t\t\t\u003c/allowed-origins\u003e\r\n\t\t\t\u003callowed-methods preflight-result-max-age=\"300\"\u003e\r\n\t\t\t\t\u003cmethod\u003e*\u003c/method\u003e\r\n\t\t\t\u003c/allowed-methods\u003e\r\n\t\t\t\u003callowed-headers\u003e\r\n\t\t\t\t\u003cheader\u003e*\u003c/header\u003e\r\n\t\t\t\u003c/allowed-headers\u003e\r\n\t\t\t\u003cexpose-headers\u003e\r\n\t\t\t\t\u003cheader\u003e*\u003c/header\u003e\r\n\t\t\t\u003c/expose-headers\u003e\r\n\t\t\u003c/cors\u003e\r\n\t\u003c/inbound\u003e\r\n\t\u003cbackend\u003e\r\n\t\t\u003cforward-request /\u003e\r\n\t\u003c/backend\u003e\r\n\t\u003coutbound /\u003e\r\n\t\u003con-error /\u003e\r\n\u003c/policies\u003e",
+                                  "xml_link": ""
+                              }
+                          ],
+                          "portal_url": "https://sample.portal.azure-api.net",
+                          "private_ip_addresses": [
+                              "1.1.1.1"
+                          ],
+                          "protocols": [
+                              {
+                                  "enable_http2": false
+                              }
+                          ],
+                          "public_ip_addresses": [
+                              "52.174.68.203"
+                          ],
+                          "publisher_email": "noreply@microsoft.com",
+                          "publisher_name": "No reply",
+                          "resource_group_name": "xxxx",
+                          "scm_url": "https://sample.scm.azure-api.net",
+                          "security": [
+                              {
+                                  "enable_backend_ssl30": false,
+                                  "enable_backend_tls10": false,
+                                  "enable_backend_tls11": false,
+                                  "enable_frontend_ssl30": false,
+                                  "enable_frontend_tls10": false,
+                                  "enable_frontend_tls11": false,
+                                  "enable_triple_des_ciphers": false,
+                                  "tls_ecdhe_ecdsa_with_aes128_cbc_sha_ciphers_enabled": false,
+                                  "tls_ecdhe_ecdsa_with_aes256_cbc_sha_ciphers_enabled": false,
+                                  "tls_ecdhe_rsa_with_aes128_cbc_sha_ciphers_enabled": false,
+                                  "tls_ecdhe_rsa_with_aes256_cbc_sha_ciphers_enabled": false,
+                                  "tls_rsa_with_aes128_cbc_sha256_ciphers_enabled": false,
+                                  "tls_rsa_with_aes128_cbc_sha_ciphers_enabled": false,
+                                  "tls_rsa_with_aes128_gcm_sha256_ciphers_enabled": false,
+                                  "tls_rsa_with_aes256_cbc_sha256_ciphers_enabled": false,
+                                  "tls_rsa_with_aes256_cbc_sha_ciphers_enabled": false,
+                                  "triple_des_ciphers_enabled": false
+                              }
+                          ],
+                          "sign_in": [
+                              {
+                                  "enabled": false
+                              }
+                          ],
+                          "sign_up": [
+                              {
+                                  "enabled": true,
+                                  "terms_of_service": [
+                                      {
+                                          "consent_required": false,
+                                          "enabled": false,
+                                          "text": ""
+                                      }
+                                  ]
+                              }
+                          ],
+                          "sku_name": "Developer_1",
+                          "tags": {
+                              "a": "b"
+                          },
+                          "tenant_access": [
+                              {
+                                  "enabled": false,
+                                  "primary_key": "aaa",
+                                  "secondary_key": "bbb",
+                                  "tenant_id": "/tenant/access"
+                              }
+                          ],
+                          "timeouts": null,
+                          "virtual_network_configuration": [
+                              {
+                                  "subnet_id": "/subscriptions/xxxxxxx/resourcegroups/xxxx/providers/microsoft.network/virtualnetworks/xxxxxxx/subnets/Subnet_Apimgmnt_1"
+                              }
+                          ],
+                          "virtual_network_type": "Internal",
+                          "zones": []
+                      },
+                      "sensitive_values": {
+                          "additional_location": [],
+                          "certificate": [
+                              {},
+                              {}
+                          ],
+                          "hostname_configuration": [],
+                          "identity": [
+                              {
+                                  "identity_ids": []
+                              }
+                          ],
+                          "policy": [
+                              {}
+                          ],
+                          "private_ip_addresses": [
+                              false
+                          ],
+                          "protocols": [
+                              {}
+                          ],
+                          "public_ip_addresses": [
+                              false
+                          ],
+                          "security": [
+                              {}
+                          ],
+                          "sign_in": [
+                              {}
+                          ],
+                          "sign_up": [
+                              {
+                                  "terms_of_service": [
+                                      {}
+                                  ]
+                              }
+                          ],
+                          "tags": {},
+                          "tenant_access": [
+                              {}
+                          ],
+                          "virtual_network_configuration": [
+                              {}
+                          ],
+                          "zones": []
+                      }
+                  }
+              ]
+          }
+      }
+  },
+  "configuration": {
+      "provider_config": {
+          "azurerm": {
+              "name": "azurerm",
+              "version_constraint": "2.73.0",
+              "expressions": {
+                  "features": [
+                      {}
+                  ],
+                  "skip_provider_registration": {
+                      "constant_value": true
+                  }
+              }
+          }
+      },
+      "root_module": {
+          "resources": [
+              {
+                  "address": "azurerm_api_management.api_management",
+                  "mode": "managed",
+                  "type": "azurerm_api_management",
+                  "name": "api_management",
+                  "provider_config_key": "azurerm",
+                  "expressions": {
+                      "certificate": [
+                          {
+                              "encoded_certificate": {
+                                  "references": [
+                                      "var.INTER_CA"
+                                  ]
+                              },
+                              "store_name": {
+                                  "constant_value": "CertificateAuthority"
+                              }
+                          },
+                          {
+                              "encoded_certificate": {
+                                  "references": [
+                                      "var.ROOT_CA"
+                                  ]
+                              },
+                              "store_name": {
+                                  "constant_value": "Root"
+                              }
+                          }
+                      ],
+                      "identity": [
+                          {
+                              "type": {
+                                  "constant_value": "SystemAssigned"
+                              }
+                          }
+                      ],
+                      "location": {
+                          "references": [
+                              "data.azurerm_resource_group.rg.location",
+                              "data.azurerm_resource_group.rg"
+                          ]
+                      },
+                      "name": {
+                          "constant_value": "temporaryName"
+                      },
+                      "publisher_email": {
+                          "constant_value": "noreply@microsoft.com"
+                      },
+                      "publisher_name": {
+                          "constant_value": "No reply"
+                      },
+                      "resource_group_name": {
+                          "references": [
+                              "data.azurerm_resource_group.rg.name",
+                              "data.azurerm_resource_group.rg"
+                          ]
+                      },
+                      "sign_up": [
+                          {
+                              "enabled": {
+                                  "constant_value": true
+                              },
+                              "terms_of_service": [
+                                  {
+                                      "consent_required": {
+                                          "constant_value": false
+                                      },
+                                      "enabled": {
+                                          "constant_value": false
+                                      }
+                                  }
+                              ]
+                          }
+                      ],
+                      "sku_name": {
+                          "references": [
+                              "local.apim_sku_name"
+                          ]
+                      },
+                      "virtual_network_configuration": [
+                          {
+                              "subnet_id": {
+                                  "references": [
+                                      "data.azurerm_subnet.subnet.id",
+                                      "data.azurerm_subnet.subnet"
+                                  ]
+                              }
+                          }
+                      ],
+                      "virtual_network_type": {
+                          "constant_value": "Internal"
+                      }
+                  },
+                  "schema_version": 0
+              }
+          ],
+          "variables": {
+              "INTER_CA": {
+                  "description": "CA certificate in base64"
+              },
+              "ROOT_CA": {
+                  "description": "Root certificate in base64"
+              }
+          }
+      }
+  }
+}

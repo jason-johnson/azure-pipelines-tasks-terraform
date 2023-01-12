@@ -1,8 +1,9 @@
 import { binding, given, then } from 'cucumber-tsflow';
 import { expect } from 'chai';
 import { MockTaskContext } from '../../context';
-import { TableDefinition } from 'cucumber';
+import { DataTable } from '@cucumber/cucumber'
 import { BackendTypes } from '../../backends';
+import util from "util";
 
 @binding([MockTaskContext])
 export class TaskContextSteps {
@@ -24,10 +25,16 @@ export class TaskContextSteps {
         this.ctx.secureVarsFileId = id;
         this.ctx.secureVarsFileName = name;
         process.env[`SECUREFILE_NAME_${id}`] = name;
-    }  
+    }
+    
+    @given("gcs backend credential file specified with id {string} and name {string}")
+    public inputGcpCredentialFileFile(id: string, name: string){
+        this.ctx.backendGcsCredentials = id;
+        process.env[`SECUREFILE_NAME_${id}`] = name;
+    }
     
     @given("azurerm backend service connection {string} exists as")
-    public inputAzureRmBackendServiceEndpoint(backendServiceName: string, table: TableDefinition){
+    public inputAzureRmBackendServiceEndpoint(backendServiceName: string, table: DataTable){
         var endpoint = table.rowsHash();        
         this.ctx.backendServiceArm = backendServiceName;
         this.ctx.backendServiceArmAuthorizationScheme = endpoint.scheme;
@@ -37,8 +44,29 @@ export class TaskContextSteps {
         this.ctx.backendServiceArmTenantId = endpoint.tenantId;
     }
 
+    @given("aws backend service connection {string} exists as")
+    public inputAwsBackendServiceEndpoint(backendServiceName: string, table: DataTable){
+        var endpoint = table.rowsHash();        
+        this.ctx.backendServiceAws = backendServiceName;
+        this.ctx.backendServiceAwsAccessKey = endpoint.username;
+        this.ctx.backendServiceAwsSecretKey = endpoint.password;
+    }
+
+    @given("aws provider service connection {string} exists as")
+    public inputAwsProviderServiceEndpoint(providerServiceName: string, table: DataTable){
+        var endpoint = table.rowsHash();        
+        this.ctx.providerServiceAws = providerServiceName;
+        this.ctx.providerServiceAwsAccessKey = endpoint.username;
+        this.ctx.providerServiceAwsSecretKey = endpoint.password;
+    }
+
+    @given("aws provider region is configured as {string}")
+    public inputAwsProviderRegion(providerAwsRegion: string){
+        this.ctx.providerAwsRegion = providerAwsRegion;
+    }
+
     @given("azurerm service connection {string} exists as")
-    public inputAzureRmServiceEndpoint(environmentServiceName: string, table: TableDefinition){
+    public inputAzureRmServiceEndpoint(environmentServiceName: string, table: DataTable){
         var endpoint = table.rowsHash();        
         this.ctx.environmentServiceName = environmentServiceName;
         this.ctx.environmentServiceArmAuthorizationScheme = endpoint.scheme;
@@ -48,14 +76,42 @@ export class TaskContextSteps {
         this.ctx.environmentServiceArmTenantId = endpoint.tenantId;
     }
 
+    @given("azurerm subscriptionId is {string}")
+    public inputProviderAzureRmSubscriptionId(subscriptionId: string){
+      this.ctx.providerAzureRmSubscriptionId = subscriptionId;
+    }
+
     @given("azurerm backend type selected with the following storage account")
-    public inputAzureRmBackend(table: TableDefinition){
+    public inputAzureRmBackend(table: DataTable){
         var backend = table.rowsHash();
         this.ctx.backendType = BackendTypes.azurerm;
+        this.ctx.backendAzureRmSubscriptionId = backend.subscriptionId;
         this.ctx.backendAzureRmResourceGroupName = backend.resourceGroup;
         this.ctx.backendAzureRmStorageAccountName = backend.name;
         this.ctx.backendAzureRmContainerName = backend.container;
         this.ctx.backendAzureRmKey = backend.key;
+    }
+
+    @given("aws backend type selected with the following bucket")
+    public inputAwsBackend(table: DataTable){
+        var backend = table.rowsHash();
+        this.ctx.backendType = BackendTypes.aws;
+        this.ctx.backendAwsBucket = backend.bucket;
+        this.ctx.backendAwsKey = backend.key;
+        this.ctx.backendAwsRegion = backend.region;
+    }
+
+    @given("gcs backend type selected with the following bucket")
+    public inputGcsBackend(table: DataTable){
+        var backend = table.rowsHash();
+        this.ctx.backendType = BackendTypes.gcs;
+        this.ctx.backendGcsBucket = backend.bucket;
+        this.ctx.backendGcsPrefix = backend.prefix;
+    }
+
+    @given("aws backend type selected without bucket configuration")
+    public inputAwsBackendWithoutBucketConfiguration(){
+        this.ctx.backendType = BackendTypes.aws;
     }
 
     @given("self-configured backend")
@@ -64,7 +120,7 @@ export class TaskContextSteps {
     }
 
     @given("azurerm ensure backend is checked with the following")
-    public inputAzureRmEnsureBackend(table: TableDefinition){
+    public inputAzureRmEnsureBackend(table: DataTable){
         const backend = table.rowsHash();
         this.ctx.ensureBackend = true;
         this.ctx.backendAzureRmResourceGroupLocation = backend.location;
@@ -101,6 +157,34 @@ export class TaskContextSteps {
     public workspaceCommandIsForName(subCommand: string, name: string){
         this.ctx.workspaceSubCommand = subCommand;
         this.ctx.workspaceName = name;
+    }
+
+    @given("workspace command is {string} with name {string} and command is set to succeed if existing")
+    public workspaceCommandIsForNameWithSkipExisting(subCommand: string, name: string){
+        this.ctx.workspaceSubCommand = subCommand;
+        this.ctx.workspaceName = name;
+        this.ctx.skipExistingWorkspace = true;
+    }
+
+    @given("state subcommand is {string}")
+    public stateSubCommand(subCommand: string){
+        this.ctx.stateSubCommand = subCommand;
+    }
+
+    @given("state subcommand is {string} with the following addresses:")
+    public stateCommandWithAddresses(subCommand: string, addresses: DataTable){
+        this.ctx.stateSubCommand = subCommand;
+        this.ctx.stateAddresses = addresses.raw().map(r => r[0]);
+    }
+
+    @given("state move source is {string}")
+    public stateMoveSource(source: string){
+        this.ctx.stateMoveSource = source;
+    }
+
+    @given("state move destination is {string}")
+    public stateMoveDestination(destination: string){
+        this.ctx.stateMoveDestination = destination;
     }
 
     @then("pipeline variable {string} is set to {string}")
@@ -142,7 +226,7 @@ export class TaskContextSteps {
     }
 
     @then("the resolved terraform version is")
-    public theResolvedTerraformVersionIs(table: TableDefinition){
+    public theResolvedTerraformVersionIs(table: DataTable){
         const segments = table.rowsHash();
         expect(this.ctx.terraformVersionFull).to.equal(segments["full"]);
         expect(this.ctx.terraformVersionMajor).to.equal(Number.parseInt(segments["major"]));

@@ -31,6 +31,8 @@ variables:
   marketplace_publisher: charleszipp
   ado_service_url: https://dev.azure.com/azure-pipelines-terraform-beta
 
+pool:
+  vmImage: ubuntu-latest
 
 name: $(GitVersion.FullSemVer)
 
@@ -51,6 +53,10 @@ stages:
         - local_exec_az_cli.yml
         - init_with_ensure_backend_no_storage_account.yml
         - init_with_self_configured_backend.yml
-        - switch_workspaces.yml        
-        # removing for now as it appears the compatible azurerm plugin is no longer available
-        # - init_with_version_11.yml
+        - switch_workspaces.yml  
+        # - aws_self_configured.yml  
+        # - aws_service_connection.yml
+        - init_without_ensure_backend.yml
+        # - gcp_credential_file.yml
+        - azurerm_mgmt_group_service_connection.yml
+        - state_commands.yml
