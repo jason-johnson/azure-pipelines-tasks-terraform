@@ -1,6 +1,6 @@
 {
 	"name": " Codespace",
-	"image": "mcr.microsoft.com/vscode/devcontainers/javascript-node:0.202.3-16",
+	"image": "mcr.microsoft.com/devcontainers/javascript-node:0-18-bullseye",
 	"settings": {
 		"workbench.colorTheme": "Default Dark+"
 	},
