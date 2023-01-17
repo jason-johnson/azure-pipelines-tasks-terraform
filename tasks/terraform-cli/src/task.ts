@@ -62,7 +62,7 @@ export class Task {
     }
     catch (err) {
       response = new commands.CommandResponse(commands.CommandStatus.Failed, err?.toString(), 1);
-      this.logger.error(err?.toString() ?? `unknown error ${err}`)
+      this.logger.error(err?.toString() ?? `unknown error ${err}`);
     }
     finally {
       this.ctx.finished();
