@@ -35,7 +35,7 @@ export default class TaskRunner {
             unhook_intercept();
         }
         catch(error){
-            this.error = error;
+            this.error = (error instanceof  Error) ? error : undefined;
         }
     }
 
