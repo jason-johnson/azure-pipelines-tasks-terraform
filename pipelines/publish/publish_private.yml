@@ -51,7 +51,7 @@ stages:
             name: publish
             inputs:
               connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace_charleszipp'
+              connectedServiceName: 'marketplace_jasonbjohnson'
               cwd: $(terraform_extension_dir)
               extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch)            
               shareWith: $(marketplace_share_with)
