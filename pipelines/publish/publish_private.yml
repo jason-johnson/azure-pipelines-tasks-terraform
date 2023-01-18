@@ -47,17 +47,16 @@ stages:
               --extension-id azure-pipelines-tasks-terraform-${{ parameters.stage }}
               -t $(marketplace_access_token)
             displayName: unpublish extension
-          - task: PublishAzureDevOpsExtension@3
+          - task: PublishAzureDevOpsExtension@4
             name: publish
             inputs:
-              connectTo: 'VsTeam'
               connectedServiceName: 'marketplace_jasonbjohnson'
-              cwd: $(terraform_extension_dir)
-              extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch)            
-              shareWith: $(marketplace_share_with)
+              rootFolder: $(terraform_extension_dir)
               patternManifest: |
-                vss-extension.json
-                vss-extension-${{ parameters.stage }}.json
+               vss-extension.json
+               vss-extension-${{ parameters.stage }}.json
+              extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch)
+              shareWith: $(marketplace_share_with)
           - task: InstallAzureDevOpsExtension@4
             displayName: 'Install Extension'
             inputs:
