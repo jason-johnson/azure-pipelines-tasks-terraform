@@ -57,11 +57,10 @@ stages:
               shareWith: $(marketplace_share_with)
               patternManifest: |
                 vss-extension.json
-                vss-extension-${{ parameters.stage }}.json            
-          - task: InstallAzureDevOpsExtension@3
-            name: install
+                vss-extension-${{ parameters.stage }}.json
+          - task: InstallAzureDevOpsExtension@4
+            displayName: 'Install Extension'
             inputs:
-              connectTo: 'VsTeam'
               connectedServiceName: azure-pipelines-terraform-${{ parameters.stage }}
               publisherId: $(marketplace_publisher)
               extensionId: azure-pipelines-tasks-terraform-${{ parameters.stage }}
