@@ -46,6 +46,7 @@ stages:
               --publisher $(marketplace_publisher) 
               --extension-id azure-pipelines-tasks-terraform-${{ parameters.stage }}
               -t $(marketplace_access_token)
+            displayName: unpublish extension
           - task: PublishAzureDevOpsExtension@3
             name: publish
             inputs:
