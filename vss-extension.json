@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "version": "0.4.14",
-    "publisher": "charleszipp",
+    "publisher": "JasonBJohnson",
     "targets": [{
         "id": "Microsoft.VisualStudio.Services"
     }],
@@ -19,7 +19,7 @@
     ],
     "repository" : {
         "type" : "git",
-        "uri" : "https://github.com/charleszipp/azure-pipelines-tasks-terraform"
+        "uri" : "https://github.com/jason-johnson/azure-pipelines-tasks-terraform"
     },
     "content": {
         "details": {
@@ -51,10 +51,10 @@
     ],
     "links": {
         "support": {
-            "uri": "https://github.com/charleszipp/azure-pipelines-tasks-terraform/issues"
+            "uri": "https://github.com/jason-johnson/azure-pipelines-tasks-terraform/issues"
         },
         "license": {
-            "uri": "https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/LICENSE"
+            "uri": "https://github.com/jason-johnson/azure-pipelines-tasks-terraform/blob/main/LICENSE"
         }
     },
     

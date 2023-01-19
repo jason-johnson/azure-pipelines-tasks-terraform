@@ -1,10 +1,8 @@
 # Terraform Tasks for Azure Pipelines
 
-## NOTICE: PROJECT IN MAINTENANCE MODE
+## NOTICE: PROJECT IN TRANSFER
 
-As of the start of 2022, I have transitioned to a new role where I can no longer commit to improving or maintaining this project going forward. I am open to transferring the project to a new owner. If you are interested in taking ownership of the project please contact me on LinkedIn @ [charleszipp](https://www.linkedin.com/in/charleszipp/).
-
-Alternative Extension available [here](https://marketplace.visualstudio.com/items?itemName=ms-devlabs.custom-terraform-tasks)
+As of the start of 2022, Charles transitioned to a new role and could no longer commit to improving or maintaining this project going forward so it was transferred to Jason Johnson. This process is currently ongoing.
 
 The tasks in this extension allow for running terraform cli commands from Azure Pipelines. The motivation for this extension was to provide terraform pipeline tasks that could execute on all build agent operating systems and provide guided task configuration.
 
@@ -213,7 +211,7 @@ When executing commands that interact with GCP such as `plan`, `apply`, and `des
 
 ### Configuring Other Cloud Providers
 
-Other cloud providers can be configured using [secure env files](#secure-variable-secrets). See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
+Other cloud providers can be configured using [secure env files](#secure-variable-secrets). See [`aws_self_configured.yml`](https://github.com/jason-johnson/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
 
 ## Remote, Local and Self-configured Backend State Support
 
@@ -225,7 +223,7 @@ The task currently supports the following backend configurations
 - gcs - State is stored in Google Cloud Storage bucket
 - self-configured - State configuration will be provided using environment variables or command options. Environment files can be provided using Secure Files Library in AzDO and specified in Secure Files configuration field. Command options such as `-backend-config=` flag can be provided in the Command Options configuration field.
 
-> NOTE: `self-configured` can be used to execute deployments for other cloud providers. See [`aws_self_configured.yml`](https://github.com/charleszipp/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
+> NOTE: `self-configured` can be used to execute deployments for other cloud providers. See [`aws_self_configured.yml`](https://github.com/jason-johnson/azure-pipelines-tasks-terraform/blob/main/pipelines/test/aws_self_configured.yml) for example.
 
 ### AzureRM
 
@@ -404,11 +402,11 @@ The extension includes a feature to render terraform plans within the pipeline r
     publishPlanResults: 'my_plan_name'
 ```
 
-![Terraform Plan View Has Results](https://raw.githubusercontent.com/charleszipp/azure-pipelines-tasks-terraform/main/screenshots/overview-tfplan-view.jpg)
+![Terraform Plan View Has Results](https://raw.githubusercontent.com/jason-johnson/azure-pipelines-tasks-terraform/main/screenshots/overview-tfplan-view.jpg)
 
 If the `publishPlanResults` input is not provided, then no plans will be published. In this case, the view will render empty with a message indicating no plans were found.
 
-![Terraform Plan View No Results](https://raw.githubusercontent.com/charleszipp/azure-pipelines-tasks-terraform/main/screenshots/overview-tfplan-view-no-plans.jpg)
+![Terraform Plan View No Results](https://raw.githubusercontent.com/jason-johnson/azure-pipelines-tasks-terraform/main/screenshots/overview-tfplan-view-no-plans.jpg)
 
 > **Note The name set on `publishPlanResults` is only used for rendering in the view. It does not cause the cli to implicitly save plan output on the agent with that name.
 

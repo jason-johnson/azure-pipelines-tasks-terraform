@@ -5,7 +5,7 @@ tasks_terraform_cli_dir=./tasks/terraform-cli
 tasks_terraform_installer_dir=./tasks/terraform-installer
 views_terraform_installer_dir=./views/terraform-plan
 semver_full=$(gitversion | jq -r .MajorMinorPatch)
-publisher=charleszipp
+publisher=JasonBJohnson
 token=
 env=beta
 

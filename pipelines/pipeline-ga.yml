@@ -16,7 +16,7 @@ variables:
   # secure files can only be parameterized if variable is defined at global scope
   # https://github.com/microsoft/azure-pipelines-tasks/issues/6885#issuecomment-618200608
   tf_variables_secure_file: b1de708e-785c-4088-9305-3b772630676a
-  marketplace_publisher: charleszipp
+  marketplace_publisher: JasonBJohnson
   ado_service_url: https://dev.azure.com/azure-pipelines-terraform-ga
 
 pool:
