@@ -18,9 +18,6 @@ jobs:
       displayName: 'download backend config file'
       inputs:
         secureFile: 'backend_${{ parameters.stage }}.vars'
-    - bash: |
-        cat $(backend_config_file.secureFilePath)
-      displayName: debug secure file
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform init'
       inputs:
