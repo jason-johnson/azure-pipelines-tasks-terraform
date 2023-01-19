@@ -60,7 +60,7 @@ stages:
           - task: InstallAzureDevOpsExtension@4
             displayName: 'Install Extension'
             inputs:
-              connectedServiceName: azure-pipelines-terraform-${{ parameters.stage }}
+              connectedServiceName: 'marketplace_jasonbjohnson'
               publisherId: $(marketplace_publisher)
               extensionId: azure-pipelines-tasks-terraform-${{ parameters.stage }}
               accounts: $(ado_service_url)
