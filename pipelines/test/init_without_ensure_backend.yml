@@ -20,7 +20,7 @@ jobs:
         workingDirectory: $(terraform_templates_dir)
         backendType: azurerm
         backendServiceArm: 'env_test'
-        backendAzureRmResourceGroupName: rg-trfrm-${{ parameters.stage }}-eus-czp
-        backendAzureRmStorageAccountName: sttrfrm${{ parameters.stage }}eusczp
-        backendAzureRmContainerName: azure-pipelines-terraform
+        backendAzureRmResourceGroupName: $(backendAzureRmResourceGroupName)
+        backendAzureRmStorageAccountName: $(backendAzureRmStorageAccountName)
+        backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: init_without_ensure_backend.tfstate

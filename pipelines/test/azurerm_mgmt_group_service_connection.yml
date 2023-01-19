@@ -27,11 +27,11 @@ jobs:
         backendServiceArm: 'env_test_mgmt'
         backendAzureRmSubscriptionId: $(azure_subscription_id)
         ensureBackend: true
-        backendAzureRmResourceGroupName: rg-trfrm-${{ parameters.stage }}-eus-czp
-        backendAzureRmResourceGroupLocation: eastus
-        backendAzureRmStorageAccountName: sttrfrm${{ parameters.stage }}eusczp
-        backendAzureRmStorageAccountSku: Standard_RAGRS
-        backendAzureRmContainerName: azure-pipelines-terraform
+        backendAzureRmResourceGroupName: $(backendAzureRmResourceGroupName)
+        backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
+        backendAzureRmStorageAccountName: $(backendAzureRmStorageAccountName)
+        backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
+        backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: azurerm_mgmt_group_service_connection.tfstate
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform plan'

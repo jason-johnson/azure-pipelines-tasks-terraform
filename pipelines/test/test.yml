@@ -6,6 +6,16 @@ stages:
 - stage: test_${{ parameters.stage }}
   variables:
     - group: env_${{ parameters.stage }}
+    - name: backendAzureRmResourceGroupName
+      value: rg-trfrm-${{ parameters.stage }}-chn-jbj
+    - name: backendAzureRmResourceGroupLocation
+      value: switzerlandnorth
+    - name: backendAzureRmStorageAccountName
+      value: sttrfrm${{ parameters.stage }}chnjbj
+    - name: backendAzureRmStorageAccountSku
+      value: Standard_RAGRS
+    - name: backendAzureRmContainerName
+      value: azure-pipelines-terraform
   jobs:
     - ${{ each scenario in parameters.scenarios }}:
       - template: ${{ scenario }}
