@@ -9,11 +9,11 @@ jobs:
       inputs: 
         artifact: terraform_templates
         path: $(terraform_extension_dir)
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
       displayName: install terraform
       inputs:
         terraformVersion: 1.0.10
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform init'
       inputs:
         command: init
@@ -27,7 +27,7 @@ jobs:
         backendAzureRmStorageAccountSku: Standard_RAGRS
         backendAzureRmContainerName: azure-pipelines-terraform
         backendAzureRmKey: publish_plan_results.tfstate
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform plan'
       inputs:
         command: plan

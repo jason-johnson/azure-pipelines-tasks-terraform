@@ -196,7 +196,7 @@ When executing commands that interact with AWS such as `plan`, `apply`, and `des
 When executing commands that interact with GCP such as `plan`, `apply`, and `destroy`, the task can utilize a JSON formatted key file uploaded to Azure DevOps Secure Files to authorize operations. This is specified via the `providerGoogleCredentials` input. This input should be the name of the secure file containing the JSON formatted key.
 
 ```yaml
-- task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+- task: JasonBJohnson.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
   displayName: 'terraform plan'
   inputs:
     command: plan
