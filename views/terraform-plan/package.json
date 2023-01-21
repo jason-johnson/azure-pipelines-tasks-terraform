@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/charleszipp/azure-pipelines-tasks-terraform.git"
+    "url": "git+https://github.com/jason-johnson/azure-pipelines-tasks-terraform.git"
   },
   "keywords": [
     "terraform",
@@ -23,9 +23,9 @@
   "author": "Charles Zipp, Zachary Nawar, Alex Goncharov",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/charleszipp/azure-pipelines-tasks-terraform/issues"
+    "url": "https://github.com/jason-johnson/azure-pipelines-tasks-terraform/issues"
   },
-  "homepage": "https://github.com/charleszipp/azure-pipelines-tasks-terraform#readme",
+  "homepage": "https://github.com/jason-johnson/azure-pipelines-tasks-terraform#readme",
   "dependencies": {
     "azure-devops-extension-api": "^1.158.0",
     "azure-devops-extension-sdk": "^2.0.7",

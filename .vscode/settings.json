@@ -18,5 +18,8 @@
         "tasks/terraform-cli/src/tests/steps/*.ts"
     ],
     "cucumberautocomplete.syncfeatures": "tasks/terraform-cli/src/tests/features/*.feature",
-    "cucumberautocomplete.strictGherkinCompletion": false
+    "cucumberautocomplete.strictGherkinCompletion": false,
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/microsoft/azure-pipelines-vscode/master/service-schema.json": "file:///workspaces/azure-pipelines-tasks-terraform/pipelines/test/test.yml"
+    }
 }

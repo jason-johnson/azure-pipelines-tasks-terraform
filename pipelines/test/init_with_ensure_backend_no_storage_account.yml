@@ -4,8 +4,8 @@ parameters:
 jobs:
 - job: init_with_ensure_backend_no_storage_account
   variables: 
-    backend_arm_resource_group: rg-trfrm-${{ parameters.stage }}-eus-czp
-    backend_arm_storage_name: sttrfrm${{ parameters.stage }}eusczp
+    backend_arm_resource_group: rg-trfrm-${{ parameters.stage }}-nch-jbj
+    backend_arm_storage_name: sttrfrm${{ parameters.stage }}nchjbj
     backend_arm_storage_container: azure-pipelines-terraform
   steps:
     - task: DownloadPipelineArtifact@2
@@ -13,11 +13,11 @@ jobs:
       inputs: 
         artifact: terraform_templates
         path: $(terraform_extension_dir)
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
       displayName: install terraform
       inputs:
         terraformVersion: 1.0.10
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform init'
       inputs:
         command: init
@@ -26,9 +26,9 @@ jobs:
         backendServiceArm: 'env_test'
         ensureBackend: true
         backendAzureRmResourceGroupName: '$(backend_arm_resource_group)$(Build.BuildId)'
-        backendAzureRmResourceGroupLocation: eastus
+        backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
         backendAzureRmStorageAccountName: '$(backend_arm_storage_name)$(Build.BuildId)'
-        backendAzureRmStorageAccountSku: Standard_RAGRS
+        backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: '$(backend_arm_storage_container)$(Build.BuildId)'
         backendAzureRmKey: init_ensure_backend_no_storage_$(Build.BuildId).tfstate
     - task: AzureCLI@1
