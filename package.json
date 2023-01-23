@@ -5,14 +5,14 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/charleszipp/azure-pipelines-tasks-terraform.git"
+    "url": "git+https://github.com/jason-johnson/azure-pipelines-tasks-terraform.git"
   },
   "author": "Charles Zipp",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/charleszipp/azure-pipelines-tasks-terraform/issues"
+    "url": "https://github.com/jason-johnson/azure-pipelines-tasks-terraform/issues"
   },
-  "homepage": "https://github.com/charleszipp/azure-pipelines-tasks-terraform#readme",
+  "homepage": "https://github.com/jason-johnson/azure-pipelines-tasks-terraform#readme",
   "devDependencies": {
     "cross-var": "^1.1.0"
   }

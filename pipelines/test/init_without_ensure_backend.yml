@@ -9,18 +9,18 @@ jobs:
       inputs: 
         artifact: terraform_templates
         path: $(terraform_extension_dir)
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
       displayName: install terraform
       inputs:
         terraformVersion: 1.0.10
-    - task: charleszipp.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform init'
       inputs:
         command: init
         workingDirectory: $(terraform_templates_dir)
         backendType: azurerm
         backendServiceArm: 'env_test'
-        backendAzureRmResourceGroupName: rg-trfrm-${{ parameters.stage }}-eus-czp
-        backendAzureRmStorageAccountName: sttrfrm${{ parameters.stage }}eusczp
-        backendAzureRmContainerName: azure-pipelines-terraform
+        backendAzureRmResourceGroupName: $(backendAzureRmResourceGroupName)
+        backendAzureRmStorageAccountName: $(backendAzureRmStorageAccountName)
+        backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: init_without_ensure_backend.tfstate

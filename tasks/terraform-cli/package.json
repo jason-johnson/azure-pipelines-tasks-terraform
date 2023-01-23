@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/charleszipp/azure-pipelines-tasks-terraform.git"
+    "url": "git+https://github.com/jason-johnson/azure-pipelines-tasks-terraform.git"
   },
   "keywords": [
     "terraform",
@@ -23,9 +23,9 @@
   "author": "Charles Zipp",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/charleszipp/azure-pipelines-tasks-terraform/issues"
+    "url": "https://github.com/jason-johnson/azure-pipelines-tasks-terraform/issues"
   },
-  "homepage": "https://github.com/charleszipp/azure-pipelines-tasks-terraform#readme",
+  "homepage": "https://github.com/jason-johnson/azure-pipelines-tasks-terraform#readme",
   "dependencies": {
     "applicationinsights": "^1.8.8",
     "azure-devops-node-api": "^10.2.2",
@@ -52,7 +52,7 @@
     "cucumber-tsflow": "^4.0.0-rc.1",
     "nyc": "^15.1.0",
     "tfx-cli": "^0.12.0",
-    "ts-node": "^9.0.0",
+    "ts-node": "^10.9.1",
     "typescript": "^4.0.5"
   }
 }
