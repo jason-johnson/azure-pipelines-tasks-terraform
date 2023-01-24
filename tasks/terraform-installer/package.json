@@ -35,7 +35,7 @@
   "dependencies": {
     "azure-pipelines-task-lib": "^3.4.0",
     "azure-pipelines-tool-lib": "^1.0.2",
-    "node-fetch": "^2.6.7",
+    "node-fetch-with-proxy": "^0.1.6",
     "q": "^1.5.1"
   }
 }
