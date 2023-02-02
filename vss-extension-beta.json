@@ -16,7 +16,7 @@
             "properties": {
                 "name": "Terraform Plan (Beta)",
                 "supportsTasks": [
-                    "721c3f90-d938-11e8-9d92-09d7594721b5"
+                    "51355d76-dd54-4754-919d-bba27fdf59e4"
                 ],
                 "uri": "views/terraform-plan/.dist/index.html"
             }

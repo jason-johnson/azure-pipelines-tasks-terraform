@@ -24,7 +24,7 @@ if(process.env.TEST){
 }
 else{    
     SDK.init().then(() => {
-        const taskId: string = "721c3f90-d938-11e8-9d92-09d7594721b5"
+        const taskId: string = "51355d76-dd54-4754-919d-bba27fdf59e4"
         const azdoAttachments = new AzdoAttachmentService(taskId);
         renderComponent(azdoAttachments);
     });
