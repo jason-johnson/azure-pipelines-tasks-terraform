@@ -1,9 +1,5 @@
 # Terraform Tasks for Azure Pipelines
 
-## NOTICE: PROJECT IN TRANSFER
-
-As of the start of 2022, Charles transitioned to a new role and could no longer commit to improving or maintaining this project going forward so it was transferred to Jason Johnson. This process is currently ongoing.
-
 The tasks in this extension allow for running terraform cli commands from Azure Pipelines. The motivation for this extension was to provide terraform pipeline tasks that could execute on all build agent operating systems and provide guided task configuration.
 
 ## Supported Commands
