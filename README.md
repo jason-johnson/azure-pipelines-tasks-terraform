@@ -1,11 +1,11 @@
-## NOTICE: PROJECT BEING TRANSITIONED TO NEW OWNER
+## NOTICE: PROJECT TRANSITIONED TO NEW OWNER
 
-As of the start of 2022, I have transitioned to a new role where I can no longer commit to improving or maintaining this project going forward. [@jason-johnson](https://github.com/jason-johnson) has volunteered to take over ownership of the extension. While we are working on transition you may see this extension move to [@jason-johnson](https://github.com/jason-johnson). Eventually the extension will move to his publisher as well.
+[@jason-johnson](https://github.com/jason-johnson) has taken over ownership of this extension. The previous publisher will no longer be creating updates for this extension so, going forward, please use the new publisher as described in this updated documentation.
 
 # Azure Pipelines Extension for Terraform
 
-![Build Status](https://dev.azure.com/azure-pipelines-terraform-rc/azure-pipelines-terraform-rc/_apis/build/status/charleszipp.azure-pipelines-tasks-terraform?branchName=main)
-![Visual Studio Marketplace Installs - Azure DevOps Extension](https://img.shields.io/visual-studio-marketplace/azure-devops/installs/total/charleszipp.azure-pipelines-tasks-terraform?label=marketplace%20installs)
+![Build Status](https://dev.azure.com/azure-pipelines-terraform-rc/azure-pipelines-terraform-rc/_apis/build/status/jason-johnson.azure-pipelines-tasks-terraform?branchName=main)
+![Visual Studio Marketplace Installs - Azure DevOps Extension](https://img.shields.io/visual-studio-marketplace/azure-devops/installs/total/JasonBJohnson.azure-pipelines-tasks-terraform?label=marketplace%20installs)
 
 This contains tasks for installing and executing Terraform commands from Azure Pipelines. These extensions are intended to work on any build agent. They are also intended to provide a guided abstraction to deploying infrastructure with Terraform from Azure Pipelines.
 
