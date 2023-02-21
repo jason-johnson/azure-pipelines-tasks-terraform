@@ -21,8 +21,8 @@ jobs:
         command: init
         workingDirectory: $(test_templates_dir)
         backendType: aws
-        backendServiceAws: env_test_aws
-        backendAwsRegion: us-east-1
+        backendServiceAws: env_test_aws2
+        backendAwsRegion: eu-west-1
         backendAwsBucket: s3-trfrm-${{ parameters.stage }}-eus-czp
         backendAwsKey: 'azure-pipelines-terraform/aws-service-connection'
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
@@ -34,21 +34,21 @@ jobs:
       inputs:
         command: plan
         workingDirectory: $(test_templates_dir)
-        providerServiceAws: env_test_aws
-        providerAwsRegion: us-east-1
+        providerServiceAws: env_test_aws2
+        providerAwsRegion: eu-west-1
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform apply'
       inputs:
         command: apply
         workingDirectory: $(test_templates_dir)
-        providerServiceAws: env_test_aws
-        providerAwsRegion: us-east-1
+        providerServiceAws: env_test_aws2
+        providerAwsRegion: eu-west-1
         commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
       displayName: 'terraform destroy'
       inputs:
         command: destroy
         workingDirectory: $(test_templates_dir)
-        providerServiceAws: env_test_aws
+        providerServiceAws: env_test_aws2
         providerAwsRegion: us-east-1
