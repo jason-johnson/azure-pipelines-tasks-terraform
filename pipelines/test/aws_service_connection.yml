@@ -51,4 +51,6 @@ jobs:
         command: destroy
         workingDirectory: $(test_templates_dir)
         providerServiceAws: env_test_aws2
-        providerAwsRegion: us-east-1
+        providerAwsRegion: eu-west-1
+      env:
+        TF_LOG: 1
