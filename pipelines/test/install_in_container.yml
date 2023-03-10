@@ -8,4 +8,7 @@ jobs:
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
       displayName: install terraform
       inputs:
-        terraformVersion: 1.3.9
+        terraformVersion: 1.2.8
+      env:
+        HTTP_PROXY: ""
+        HTTPS_PROXY: ""
