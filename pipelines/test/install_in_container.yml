@@ -3,7 +3,7 @@ parameters:
 
 jobs:
 - job: install_in_container_${{ parameters.stage }}
-  container: ubuntu22
+  container: ubuntu:22.04
   steps:
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
       displayName: install terraform
