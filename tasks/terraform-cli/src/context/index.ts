@@ -62,7 +62,7 @@ export interface ITaskContext {
     providerServiceAwsSecretKey: string;
     providerServiceAWSSessionToken: string;
     providerServiceAwsAssumRoleArn: string;
-    providerServiceExternalId: string;
+    providerServiceAwsExternalId: string;
     providerServiceAwsRoleSessionName: string;
     providerAwsRegion: string;
     backendGcsCredentials: string;

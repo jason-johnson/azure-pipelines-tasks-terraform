@@ -234,7 +234,7 @@ export default class AzdoTaskContext implements ITaskContext {
     get providerServiceAwsAssumRoleArn() {
       return this.getEndpointAuthorizationParameter(this.providerServiceAws, "providerServiceAwsAssumRoleArn", true )
     }
-    get providerServiceExternalId() {
+    get providerServiceAwsExternalId() {
       return this.getEndpointAuthorizationParameter(this.providerServiceAws, "externalId", true )
     } 
     get providerServiceAwsRoleSessionName() {
