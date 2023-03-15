@@ -227,7 +227,19 @@ export default class AzdoTaskContext implements ITaskContext {
     }    
     get providerServiceAwsSecretKey() {
       return this.getEndpointAuthorizationParameter(this.providerServiceAws, "password", true )
-    }    
+    }
+    get providerServiceAWSSessionToken() {
+      return this.getEndpointAuthorizationParameter(this.providerServiceAws, "sessionToken", true )
+    }
+    get providerServiceAwsAssumRoleArn() {
+      return this.getEndpointAuthorizationParameter(this.providerServiceAws, "providerServiceAwsAssumRoleArn", true )
+    }
+    get providerServiceExternalId() {
+      return this.getEndpointAuthorizationParameter(this.providerServiceAws, "externalId", true )
+    } 
+    get providerServiceAwsRoleSessionName() {
+        return this.getEndpointAuthorizationParameter(this.providerServiceAws, "roleSessionName", true )
+      }   
     @trackValue("inputs.providers.aws.region", usesProviderAws)
     get providerAwsRegion() {
       return this.getInput("providerAwsRegion", true);

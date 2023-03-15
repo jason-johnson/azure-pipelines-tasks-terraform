@@ -60,6 +60,10 @@ export default class MockTaskContext implements ITaskContext {
     providerServiceAws?: string;
     providerServiceAwsAccessKey: string = "";
     providerServiceAwsSecretKey: string = "";
+    providerServiceAWSSessionToken: string = "";
+    providerServiceAwsAssumRoleArn: string = "";
+    providerServiceAwsExternalId: string = "";
+    providerServiceAwsRoleSessionName: string = "";
     providerAwsRegion: string = "";
     backendGcsCredentials: string = "";
     backendGcsBucket: string = "";

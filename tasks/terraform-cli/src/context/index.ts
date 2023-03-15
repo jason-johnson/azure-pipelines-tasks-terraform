@@ -60,6 +60,10 @@ export interface ITaskContext {
     providerServiceAws?: string;
     providerServiceAwsAccessKey: string;
     providerServiceAwsSecretKey: string;
+    providerServiceAWSSessionToken: string;
+    providerServiceAwsAssumRoleArn: string;
+    providerServiceExternalId: string;
+    providerServiceAwsRoleSessionName: string;
     providerAwsRegion: string;
     backendGcsCredentials: string;
     backendGcsBucket: string;

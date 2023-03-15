@@ -58,6 +58,11 @@ export class TaskContextSteps {
         this.ctx.providerServiceAws = providerServiceName;
         this.ctx.providerServiceAwsAccessKey = endpoint.username;
         this.ctx.providerServiceAwsSecretKey = endpoint.password;
+        this.ctx.providerServiceAWSSessionToken = endpoint.sessionToken;
+        this.ctx.providerServiceAwsAssumRoleArn = endpoint.assumeRoleArn;
+        this.ctx.providerServiceAwsRoleSessionName = endpoint.assumeRoleArn;
+        this.ctx.providerServiceAwsExternalId = endpoint.assumeRoleArn;
+
     }
 
     @given("aws provider region is configured as {string}")
