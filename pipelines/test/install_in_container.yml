@@ -10,5 +10,5 @@ jobs:
       inputs:
         terraformVersion: 1.2.8
       env:
-        HTTP_PROXY: ""
-        HTTPS_PROXY: ""
+        HTTP_PROXY: "http://localhost:9090"
+        HTTPS_PROXY: "http://localhost:9090"
