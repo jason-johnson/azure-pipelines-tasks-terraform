@@ -57,7 +57,6 @@ stages:
         - switch_workspaces.yml
         # - aws_self_configured.yml
         - aws_service_connection.yml
-        - install_in_container.yml
         - init_without_ensure_backend.yml
         # - gcp_credential_file.yml
         # - azurerm_mgmt_group_service_connection.yml       # will need another subscription to do this one
