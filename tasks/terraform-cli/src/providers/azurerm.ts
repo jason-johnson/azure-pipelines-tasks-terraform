@@ -20,14 +20,15 @@ export default class AzureRMProvider implements ITerraformProvider {
     }
 
     async init(): Promise<void> {
-      var authorizationScheme : AuthorizationScheme = AuthorizationScheme.ServicePrincipal;
+      const authorizationScheme = AzureRMAuthentication.getAuthorizationScheme(this.ctx.environmentServiceArmAuthorizationScheme);
+ 
+      const subscriptionId = this.ctx.providerAzureRmSubscriptionId || this.ctx.environmentServiceArmSubscriptionId;
 
-      try {
-          authorizationScheme = AuthorizationScheme[this.ctx.environmentServiceArmAuthorizationScheme.toLowerCase() as keyof typeof AuthorizationScheme];
-      }
-      catch(error){
-          throw "Terraform only supports service principal, managed service identity or workload identity federation authorization";
-      }
+      if(subscriptionId){
+        process.env['ARM_SUBSCRIPTION_ID']  = subscriptionId;
+      }      
+
+      process.env['ARM_TENANT_ID']        = this.ctx.environmentServiceArmTenantId;
 
       switch(authorizationScheme) {
         case AuthorizationScheme.ServicePrincipal:
@@ -48,14 +49,6 @@ export default class AzureRMProvider implements ITerraformProvider {
             break;
       }
   
-      const subscriptionId = this.ctx.providerAzureRmSubscriptionId || this.ctx.environmentServiceArmSubscriptionId;
-
-      if(subscriptionId){
-        process.env['ARM_SUBSCRIPTION_ID']  = subscriptionId;
-      }      
-
-      process.env['ARM_TENANT_ID']        = this.ctx.environmentServiceArmTenantId;
-
       if(this.ctx.runAzLogin){
           //run az login so provisioners needing az cli can be run.
           await new CommandPipeline(this.runner)

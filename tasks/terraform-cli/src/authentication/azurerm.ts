@@ -1,20 +1,46 @@
 import { ITaskContext } from "../context";
 
 export class AzureRMAuthentication {
-  static getServicePrincipalCredentials(ctx: ITaskContext) : ServicePrincipalCredentials {
-    const servicePrincipalCredentials : ServicePrincipalCredentials = {
+  static getServicePrincipalCredentials(ctx: ITaskContext, isBackend: boolean = false) : ServicePrincipalCredentials {
+    let servicePrincipalCredentials : ServicePrincipalCredentials = {
       servicePrincipalId: ctx.environmentServiceArmClientId,
       servicePrincipalKey: ctx.environmentServiceArmClientSecret
     };
+
+    if(isBackend){
+      servicePrincipalCredentials = {
+        servicePrincipalId: ctx.backendServiceArmClientId,
+        servicePrincipalKey: ctx.backendServiceArmClientSecret
+      };
+    }
+
     return servicePrincipalCredentials;
   }
 
-  static getWorkloadIdentityFederationCredentials(ctx: ITaskContext) : WorkloadIdentityFederationCredentials {
+  static getWorkloadIdentityFederationCredentials(ctx: ITaskContext, isBackend: boolean = false) : WorkloadIdentityFederationCredentials {
     var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = {
       servicePrincipalId: ctx.environmentServiceArmClientId,
-      idToken: ctx.backendServiceArmSystemAccessToken
+      idToken: ctx.environmentServiceArmSystemAccessToken
     }      
+
+    if(isBackend){
+      workloadIdentityFederationCredentials = {
+        servicePrincipalId: ctx.backendServiceArmClientId,
+        idToken: ctx.backendServiceArmSystemAccessToken
+      }
+    }
     return workloadIdentityFederationCredentials;
+  }
+
+  static getAuthorizationScheme(sourceAuthorizationScheme: string) : AuthorizationScheme {
+    let authorizationScheme : AuthorizationScheme = AuthorizationScheme.ServicePrincipal;
+
+    authorizationScheme = AuthorizationScheme[sourceAuthorizationScheme as keyof typeof AuthorizationScheme];
+    if(!authorizationScheme){
+      throw "Terraform only supports service principal, managed service identity or workload identity federation authorization";
+    }
+
+    return authorizationScheme;
   }
 }
 

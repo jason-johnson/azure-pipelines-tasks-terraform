@@ -10,16 +10,7 @@ export default class AzureRMBackend implements ITerraformBackend {
     ) { }
 
     async init(ctx: ITaskContext): Promise<TerraformBackendInitResult> {
-        var authorizationScheme : AuthorizationScheme = AuthorizationScheme.ServicePrincipal;
-
-        try {
-            authorizationScheme = AuthorizationScheme[ctx.environmentServiceArmAuthorizationScheme.toLowerCase() as keyof typeof AuthorizationScheme];
-        }
-        catch(error){
-            throw "Terraform backend initialization for AzureRM only support service principal, managed service identity or workload identity federation authorization";
-        }
-
-        var authorizationScheme : AuthorizationScheme = AuthorizationScheme[ctx.environmentServiceArmAuthorizationScheme.toLowerCase() as keyof typeof AuthorizationScheme];
+        const authorizationScheme = AzureRMAuthentication.getAuthorizationScheme(ctx.backendServiceArmAuthorizationScheme);
 
         let backendConfig: any = {
             storage_account_name: ctx.backendAzureRmStorageAccountName,
@@ -30,9 +21,25 @@ export default class AzureRMBackend implements ITerraformBackend {
 
         const isPre12 = ctx.terraformVersionMajor === 0 && typeof(ctx.terraformVersionMinor) == 'number' && ctx.terraformVersionMinor < 12;
 
+        const subscriptionId = ctx.backendAzureRmSubscriptionId || ctx.backendServiceArmSubscriptionId;
+
+        //use the arm_* prefix config only for versions before 0.12.0
+        if(isPre12){
+            if(subscriptionId){
+              backendConfig.arm_subscription_id = subscriptionId
+            }
+            backendConfig.arm_tenant_id = ctx.backendServiceArmTenantId;
+        }
+        else{
+            if(subscriptionId){
+              backendConfig.subscription_id = subscriptionId
+            }
+            backendConfig.tenant_id = ctx.backendServiceArmTenantId;
+        }
+
         switch(authorizationScheme) {
           case AuthorizationScheme.ServicePrincipal:
-              var servicePrincipalCredentials : ServicePrincipalCredentials = AzureRMAuthentication.getServicePrincipalCredentials(ctx);
+              var servicePrincipalCredentials : ServicePrincipalCredentials = AzureRMAuthentication.getServicePrincipalCredentials(ctx, true);
               if(isPre12){
                 backendConfig.arm_client_id        = servicePrincipalCredentials.servicePrincipalId;
                 backendConfig.arm_client_secret    = servicePrincipalCredentials.servicePrincipalKey;
@@ -54,29 +61,13 @@ export default class AzureRMBackend implements ITerraformBackend {
               if(isPre12){
                 throw new Error('Workload Identity Federation is not supported for Terraform versions before 0.12.0');
               }
-              var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = AzureRMAuthentication.getWorkloadIdentityFederationCredentials(ctx);
+              var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = AzureRMAuthentication.getWorkloadIdentityFederationCredentials(ctx, true);
               backendConfig.arm_client_id = workloadIdentityFederationCredentials.servicePrincipalId;
               backendConfig.oidc_token = workloadIdentityFederationCredentials.idToken;
               backendConfig.use_oidc = 'true';
               break;
         }
         
-        const subscriptionId = ctx.backendAzureRmSubscriptionId || ctx.backendServiceArmSubscriptionId;
-
-        //use the arm_* prefix config only for versions before 0.12.0
-        if(isPre12){
-            if(subscriptionId){
-              backendConfig.arm_subscription_id = subscriptionId
-            }
-            backendConfig.arm_tenant_id = ctx.backendServiceArmTenantId;
-        }
-        else{
-            if(subscriptionId){
-              backendConfig.subscription_id = subscriptionId
-            }
-            backendConfig.tenant_id = ctx.backendServiceArmTenantId;
-        }
-
         const result = <TerraformBackendInitResult>{
             args: []
         };
