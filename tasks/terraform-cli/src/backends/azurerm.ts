@@ -2,6 +2,7 @@ import { ITerraformBackend, TerraformBackendInitResult } from ".";
 import { CommandPipeline } from "../commands";
 import { IRunner } from "../runners";
 import { ITaskContext } from "../context";
+import { AzureRMAuthentication, AuthorizationScheme, ServicePrincipalCredentials, WorkloadIdentityFederationCredentials } from "../authentication/azurerm";
 
 export default class AzureRMBackend implements ITerraformBackend {
     constructor(
@@ -31,7 +32,7 @@ export default class AzureRMBackend implements ITerraformBackend {
 
         switch(authorizationScheme) {
           case AuthorizationScheme.ServicePrincipal:
-              var servicePrincipalCredentials : ServicePrincipalCredentials = this.getServicePrincipalCredentials(ctx);
+              var servicePrincipalCredentials : ServicePrincipalCredentials = AzureRMAuthentication.getServicePrincipalCredentials(ctx);
               if(isPre12){
                 backendConfig.arm_client_id        = servicePrincipalCredentials.servicePrincipalId;
                 backendConfig.arm_client_secret    = servicePrincipalCredentials.servicePrincipalKey;
@@ -53,7 +54,7 @@ export default class AzureRMBackend implements ITerraformBackend {
               if(isPre12){
                 throw new Error('Workload Identity Federation is not supported for Terraform versions before 0.12.0');
               }
-              var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = this.getWorkloadIdentityFederationCredentials(ctx);
+              var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = AzureRMAuthentication.getWorkloadIdentityFederationCredentials(ctx);
               backendConfig.arm_client_id = workloadIdentityFederationCredentials.servicePrincipalId;
               backendConfig.oidc_token = workloadIdentityFederationCredentials.idToken;
               backendConfig.use_oidc = 'true';
@@ -102,36 +103,4 @@ export default class AzureRMBackend implements ITerraformBackend {
         .azStorageContainerCreate()
         .exec(ctx);
     }
-
-    private getServicePrincipalCredentials(ctx: ITaskContext) : ServicePrincipalCredentials {
-        const servicePrincipalCredentials : ServicePrincipalCredentials = {
-          servicePrincipalId: ctx.environmentServiceArmClientId,
-          servicePrincipalKey: ctx.environmentServiceArmClientSecret
-        };
-        return servicePrincipalCredentials;
-      }
-  
-    private getWorkloadIdentityFederationCredentials(ctx: ITaskContext) : WorkloadIdentityFederationCredentials {
-        var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = {
-        servicePrincipalId: ctx.environmentServiceArmClientId,
-        idToken: ctx.backendServiceArmSystemAccessToken
-    }      
-    return workloadIdentityFederationCredentials;
-    }
-}
-
-interface ServicePrincipalCredentials {
-    servicePrincipalId: string;
-    servicePrincipalKey: string;
-}
-
-interface WorkloadIdentityFederationCredentials {
-    servicePrincipalId: string;
-    idToken: string;
-}
-
-enum AuthorizationScheme {
-    ServicePrincipal = "serviceprincipal",
-    ManagedServiceIdentity = "managedserviceidentity",
-    WorkloadIdentityFederation = "workloadidentityfederation"   
 }

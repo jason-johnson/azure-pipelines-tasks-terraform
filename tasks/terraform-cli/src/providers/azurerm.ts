@@ -2,6 +2,7 @@ import { ITerraformProvider } from ".";
 import { CommandPipeline } from "../commands";
 import { ITaskContext } from "../context";
 import { IRunner } from "../runners";
+import { AzureRMAuthentication, AuthorizationScheme, ServicePrincipalCredentials, WorkloadIdentityFederationCredentials } from "../authentication/azurerm";
 
 export default class AzureRMProvider implements ITerraformProvider {
     constructor(
@@ -30,7 +31,7 @@ export default class AzureRMProvider implements ITerraformProvider {
 
       switch(authorizationScheme) {
         case AuthorizationScheme.ServicePrincipal:
-            var servicePrincipalCredentials : ServicePrincipalCredentials = this.getServicePrincipalCredentials();
+            var servicePrincipalCredentials : ServicePrincipalCredentials = AzureRMAuthentication.getServicePrincipalCredentials(this.ctx);
             process.env['ARM_CLIENT_ID']        = servicePrincipalCredentials.servicePrincipalId;
             process.env['ARM_CLIENT_SECRET']    = servicePrincipalCredentials.servicePrincipalKey;
             break;
@@ -40,7 +41,7 @@ export default class AzureRMProvider implements ITerraformProvider {
             break;
 
         case AuthorizationScheme.WorkloadIdentityFederation:
-            var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = this.getWorkloadIdentityFederationCredentials();
+            var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = AzureRMAuthentication.getWorkloadIdentityFederationCredentials(this.ctx);
             process.env['ARM_CLIENT_ID'] = workloadIdentityFederationCredentials.servicePrincipalId;
             process.env['ARM_OIDC_TOKEN'] = workloadIdentityFederationCredentials.idToken;
             process.env['ARM_USE_OIDC'] = 'true';
@@ -62,36 +63,4 @@ export default class AzureRMProvider implements ITerraformProvider {
               .exec(this.ctx);
       }        
     }
-
-    private getServicePrincipalCredentials() : ServicePrincipalCredentials {
-      const servicePrincipalCredentials : ServicePrincipalCredentials = {
-        servicePrincipalId: this.ctx.environmentServiceArmClientId,
-        servicePrincipalKey: this.ctx.environmentServiceArmClientSecret
-      };
-      return servicePrincipalCredentials;
-    }
-
-    private getWorkloadIdentityFederationCredentials() : WorkloadIdentityFederationCredentials {
-       var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = {
-        servicePrincipalId: this.ctx.environmentServiceArmClientId,
-        idToken: this.ctx.backendServiceArmSystemAccessToken
-      }      
-      return workloadIdentityFederationCredentials;
-    }
-}
-
-interface ServicePrincipalCredentials {
-    servicePrincipalId: string;
-    servicePrincipalKey: string;
-}
-
-interface WorkloadIdentityFederationCredentials {
-    servicePrincipalId: string;
-    idToken: string;
-}
-
-enum AuthorizationScheme {
-    ServicePrincipal = "serviceprincipal",
-    ManagedServiceIdentity = "managedserviceidentity",
-    WorkloadIdentityFederation = "workloadidentityfederation"   
 }
