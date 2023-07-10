@@ -155,3 +155,63 @@ Feature: terraform apply
         And running command "terraform apply" returns successful result
         When the terraform cli task is run
         Then the terraform cli task fails with message "Terraform only supports service principal, managed service identity or workload identity federation authorization"
+    
+    Scenario: apply with azurerm and ManagedServiceIdentity auth scheme
+        Given terraform exists
+        And terraform command is "apply"
+        And azurerm service connection "dev" exists as
+            | scheme         | ManagedServiceIdentity       |
+            | subscriptionId | sub1                   |
+            | tenantId       | ten1                   |
+        And running command "terraform apply -auto-approve" returns successful result
+        And azure cli exists
+        And running command "az login" with the following options returns successful result
+            | option      |
+            | --identity  |
+        And task configured to run az login
+        When the terraform cli task is run
+        Then the terraform cli task executed command "terraform apply -auto-approve" with the following environment variables
+            | ARM_SUBSCRIPTION_ID | sub1                   |
+            | ARM_TENANT_ID       | ten1                   |
+            | ARM_USE_MSI         | true                   |
+        And azure login is executed with the following options
+            | option      |
+            | --identity  |
+        And the terraform cli task is successful
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+
+    Scenario: apply with azurerm and WorkloadIdentityFederation auth scheme
+        Given terraform exists
+        And terraform command is "apply"
+        And azurerm service connection "dev" exists as
+            | scheme         | WorkloadIdentityFederation |
+            | subscriptionId | sub1                       |
+            | tenantId       | ten1                       |
+            | clientId       | servicePrincipal1          |
+            | accessToken    | oidcToken1                 |
+        And running command "terraform apply -auto-approve" returns successful result
+        And azure cli exists
+        And running command "az login" with the following options returns successful result
+            | option                       |
+            | --service-principal          |
+            | -t ten1                      |
+            | -u servicePrincipal1         |
+            | --allow-no-subscriptions     |
+            | --federated-token oidcToken1 |
+        And task configured to run az login
+        When the terraform cli task is run
+        Then the terraform cli task executed command "terraform apply -auto-approve" with the following environment variables
+            | ARM_SUBSCRIPTION_ID | sub1                   |
+            | ARM_TENANT_ID       | ten1                   |
+            | ARM_CLIENT_ID       | servicePrincipal1      |
+            | ARM_OIDC_TOKEN      | oidcToken1             |
+            | ARM_USE_OIDC        | true                   |
+        And azure login is executed with the following options
+            | option                       |
+            | --service-principal          |
+            | -t ten1                      |
+            | -u servicePrincipal1         |
+            | --allow-no-subscriptions     |
+            | --federated-token oidcToken1 |
+        And the terraform cli task is successful
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
