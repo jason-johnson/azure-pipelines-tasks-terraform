@@ -1,5 +1,7 @@
 import { ITaskContext, trackValue } from ".";
 import * as tasks from 'azure-pipelines-task-lib/task';
+import { getHandlerFromToken, WebApi } from "azure-devops-node-api";
+import { ITaskApi } from "azure-devops-node-api/TaskApi";
 import { BackendTypes } from "../backends";
 
 const isCommand = (...commands: string[]) => (ctx: ITaskContext) => commands.includes(ctx.name);
@@ -256,6 +258,13 @@ export default class AzdoTaskContext implements ITaskContext {
     get providerGoogleRegion() {
       return this.getInput("providerGoogleRegion");
     }
+    get backendServiceArmSystemAccessToken() {
+        return this.getOidcAccessToken(this.backendServiceArm);
+    }
+    get environmentServiceArmSystemAccessToken() {
+        return this.getOidcAccessToken(this.environmentServiceName);
+    }
+
     finished() {
         this.finishedAt = process.hrtime(this.startedAt);
         this.runTime = this.finishedAt[1] / 1000000;
@@ -265,5 +274,50 @@ export default class AzdoTaskContext implements ITaskContext {
         this.terraformVersionMajor = major;
         this.terraformVersionMinor = minor;
         this.terraformVersionPatch = patch;
+    }
+
+    private getOidcAccessToken(connectedService: string) : string {
+        var authorizationScheme = this.getEndpointAuthorizationScheme(this.backendServiceArm, true).toLowerCase();
+        if(authorizationScheme != "workloadidentityfederation") {
+            return "";
+        }
+        var idToken : string = "";
+        this.getIdToken(this.getInput(connectedService, true)).then((token) => { idToken = token; });
+        return idToken;
+    }
+
+    private async getIdToken(connectedService: string) : Promise<string> {
+        const jobId = tasks.getVariable("System.JobId");
+        const planId = tasks.getVariable("System.PlanId");
+        const projectId = tasks.getVariable("System.TeamProjectId");
+        const hub = tasks.getVariable("System.HostType");
+        const uri = tasks.getVariable("System.CollectionUri");
+        const token = this.getSystemAccessToken();
+        
+        if(projectId === undefined || hub === undefined || uri === undefined || token === undefined || jobId === undefined || planId === undefined) {
+            return "";
+        }
+        const authHandler = getHandlerFromToken(token);
+        const connection = new WebApi(uri, authHandler);
+        const api: ITaskApi = await connection.getTaskApi();
+        const response = await api.createOidcToken({}, projectId, hub, planId, jobId, connectedService);
+        if (response == null  || response.oidcToken == null) {
+            return "";
+        }
+
+        return response.oidcToken;
+    }
+
+    private getSystemAccessToken() : string {
+        tasks.debug('Getting credentials for local feeds');
+        const auth = tasks.getEndpointAuthorization('SYSTEMVSSCONNECTION', false);
+        if (auth !== undefined && auth.scheme === 'OAuth') {
+            tasks.debug('Got auth token');
+            return auth.parameters['AccessToken'];
+        }
+        else {
+            tasks.warning('Could not determine credentials to use');
+        }
+        return "";
     }
 }

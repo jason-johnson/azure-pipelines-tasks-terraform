@@ -19,9 +19,27 @@ export default class AzureRMProvider implements ITerraformProvider {
     }
 
     async init(): Promise<void> {
-      if(this.ctx.environmentServiceArmAuthorizationScheme != "ServicePrincipal"){
-          throw "Terraform only supports service principal authorization for azure";
+      var authorizationScheme : AuthorizatonScheme = AuthorizatonScheme[this.ctx.environmentServiceArmAuthorizationScheme.toLowerCase() as keyof typeof AuthorizatonScheme];
+
+      switch(authorizationScheme) {
+        case AuthorizatonScheme.ServicePrincipal:
+            var servicePrincipalCredentials : ServicePrincipalCredentials = this.getServicePrincipalCredentials();
+            process.env['ARM_CLIENT_ID']        = servicePrincipalCredentials.servicePrincipalId;
+            process.env['ARM_CLIENT_SECRET']    = servicePrincipalCredentials.servicePrincipalKey;
+            break;
+
+        case AuthorizatonScheme.ManagedServiceIdentity:
+            process.env['ARM_USE_MSI'] = 'true';
+            break;
+
+        case AuthorizatonScheme.WorkloadIdentityFederation:
+            var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = this.getWorkloadIdentityFederationCredentials();
+            process.env['ARM_CLIENT_ID'] = workloadIdentityFederationCredentials.servicePrincipalId;
+            process.env['ARM_OIDC_TOKEN'] = workloadIdentityFederationCredentials.idToken;
+            process.env['ARM_USE_OIDC'] = 'true';
+            break;
       }
+  
       const subscriptionId = this.ctx.providerAzureRmSubscriptionId || this.ctx.environmentServiceArmSubscriptionId;
 
       if(subscriptionId){
@@ -29,8 +47,6 @@ export default class AzureRMProvider implements ITerraformProvider {
       }      
 
       process.env['ARM_TENANT_ID']        = this.ctx.environmentServiceArmTenantId;
-      process.env['ARM_CLIENT_ID']        = this.ctx.environmentServiceArmClientId;
-      process.env['ARM_CLIENT_SECRET']    = this.ctx.environmentServiceArmClientSecret;
 
       if(this.ctx.runAzLogin){
           //run az login so provisioners needing az cli can be run.
@@ -39,4 +55,36 @@ export default class AzureRMProvider implements ITerraformProvider {
               .exec(this.ctx);
       }        
     }
+
+    private getServicePrincipalCredentials() : ServicePrincipalCredentials {
+      const servicePrincipalCredentials : ServicePrincipalCredentials = {
+        servicePrincipalId: this.ctx.environmentServiceArmClientId,
+        servicePrincipalKey: this.ctx.environmentServiceArmClientSecret
+      };
+      return servicePrincipalCredentials;
+    }
+
+    private getWorkloadIdentityFederationCredentials() : WorkloadIdentityFederationCredentials {
+       var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = {
+        servicePrincipalId: this.ctx.environmentServiceArmClientId,
+        idToken: this.ctx.backendServiceArmSystemAccessToken
+      }      
+      return workloadIdentityFederationCredentials;
+    }
+}
+
+interface ServicePrincipalCredentials {
+    servicePrincipalId: string;
+    servicePrincipalKey: string;
+}
+
+interface WorkloadIdentityFederationCredentials {
+    servicePrincipalId: string;
+    idToken: string;
+}
+
+enum AuthorizatonScheme {
+    ServicePrincipal = "serviceprincipal",
+    ManagedServiceIdentity = "managedserviceidentity",
+    WorkloadIdentityFederation = "workloadidentityfederation"   
 }

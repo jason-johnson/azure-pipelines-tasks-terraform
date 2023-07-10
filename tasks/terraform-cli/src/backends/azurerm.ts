@@ -9,11 +9,7 @@ export default class AzureRMBackend implements ITerraformBackend {
     ) { }
 
     async init(ctx: ITaskContext): Promise<TerraformBackendInitResult> {
-        if (ctx.backendServiceArmAuthorizationScheme != "ServicePrincipal") {
-            throw "Terraform backend initialization for AzureRM only support service principal authorization";
-        }
-        
-        const subscriptionId = ctx.backendAzureRmSubscriptionId || ctx.backendServiceArmSubscriptionId;
+        var authorizationScheme : AuthorizatonScheme = AuthorizatonScheme[ctx.environmentServiceArmAuthorizationScheme.toLowerCase() as keyof typeof AuthorizatonScheme];
 
         let backendConfig: any = {
             storage_account_name: ctx.backendAzureRmStorageAccountName,
@@ -22,22 +18,53 @@ export default class AzureRMBackend implements ITerraformBackend {
             resource_group_name: ctx.backendAzureRmResourceGroupName
         }
 
+        const isPre12 = ctx.terraformVersionMajor === 0 && typeof(ctx.terraformVersionMinor) == 'number' && ctx.terraformVersionMinor < 12;
+
+        switch(authorizationScheme) {
+          case AuthorizatonScheme.ServicePrincipal:
+              var servicePrincipalCredentials : ServicePrincipalCredentials = this.getServicePrincipalCredentials(ctx);
+              if(isPre12){
+                backendConfig.arm_client_id        = servicePrincipalCredentials.servicePrincipalId;
+                backendConfig.arm_client_secret    = servicePrincipalCredentials.servicePrincipalKey;
+              }
+              else {
+                backendConfig.client_id        = servicePrincipalCredentials.servicePrincipalId;
+                backendConfig.client_secret    = servicePrincipalCredentials.servicePrincipalKey;
+              }
+              break;
+  
+          case AuthorizatonScheme.ManagedServiceIdentity:
+              if(isPre12){
+                throw new Error('Managed Service Identity is not supported for Terraform versions before 0.12.0');
+              }
+              backendConfig.use_msi = 'true';
+              break;
+  
+          case AuthorizatonScheme.WorkloadIdentityFederation:
+              if(isPre12){
+                throw new Error('Workload Identity Federation is not supported for Terraform versions before 0.12.0');
+              }
+              var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = this.getWorkloadIdentityFederationCredentials(ctx);
+              backendConfig.arm_client_id = workloadIdentityFederationCredentials.servicePrincipalId;
+              backendConfig.oidc_token = workloadIdentityFederationCredentials.idToken;
+              backendConfig.use_oidc = 'true';
+              break;
+        }
+        
+        const subscriptionId = ctx.backendAzureRmSubscriptionId || ctx.backendServiceArmSubscriptionId;
+
         //use the arm_* prefix config only for versions before 0.12.0
-        if(ctx.terraformVersionMajor === 0 && typeof(ctx.terraformVersionMinor) == 'number' && ctx.terraformVersionMinor < 12){
+        if(isPre12){
             if(subscriptionId){
               backendConfig.arm_subscription_id = subscriptionId
             }
             backendConfig.arm_tenant_id = ctx.backendServiceArmTenantId;
-            backendConfig.arm_client_id = ctx.backendServiceArmClientId;
-            backendConfig.arm_client_secret = ctx.backendServiceArmClientSecret;
         }
         else{
             if(subscriptionId){
               backendConfig.subscription_id = subscriptionId
             }
             backendConfig.tenant_id = ctx.backendServiceArmTenantId;
-            backendConfig.client_id = ctx.backendServiceArmClientId;
-            backendConfig.client_secret = ctx.backendServiceArmClientSecret;
         }
 
         const result = <TerraformBackendInitResult>{
@@ -66,4 +93,36 @@ export default class AzureRMBackend implements ITerraformBackend {
         .azStorageContainerCreate()
         .exec(ctx);
     }
+
+    private getServicePrincipalCredentials(ctx: ITaskContext) : ServicePrincipalCredentials {
+        const servicePrincipalCredentials : ServicePrincipalCredentials = {
+          servicePrincipalId: ctx.environmentServiceArmClientId,
+          servicePrincipalKey: ctx.environmentServiceArmClientSecret
+        };
+        return servicePrincipalCredentials;
+      }
+  
+    private getWorkloadIdentityFederationCredentials(ctx: ITaskContext) : WorkloadIdentityFederationCredentials {
+        var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = {
+        servicePrincipalId: ctx.environmentServiceArmClientId,
+        idToken: ctx.backendServiceArmSystemAccessToken
+    }      
+    return workloadIdentityFederationCredentials;
+    }
+}
+
+interface ServicePrincipalCredentials {
+    servicePrincipalId: string;
+    servicePrincipalKey: string;
+}
+
+interface WorkloadIdentityFederationCredentials {
+    servicePrincipalId: string;
+    idToken: string;
+}
+
+enum AuthorizatonScheme {
+    ServicePrincipal = "serviceprincipal",
+    ManagedServiceIdentity = "managedserviceidentity",
+    WorkloadIdentityFederation = "workloadidentityfederation"   
 }
