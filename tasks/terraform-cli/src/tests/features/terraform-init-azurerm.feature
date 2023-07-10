@@ -297,3 +297,80 @@ Feature: terraform init
             | -backend-config=/agentVSTS/agent_D/_work/207/apim/backend.tfvars |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+
+    Scenario: init with backend azurerm on terraform 1.52.0 and ManagedServiceIdentity authorization scheme
+        Given terraform exists
+        And terraform command is "init"        
+        And running command "terraform version" returns successful result with stdout "Terraform v0.15.0\non windows_amd64\n+ provider registry.terraform.io/hashicorp/azurerm v2.53.0\n"
+        And azurerm backend service connection "backend" exists as
+            | scheme         | ManagedServiceIdentity |
+            | subscriptionId | sub1                   |
+            | tenantId       | ten1                   |
+            | use_msi        | true                   |
+        And azurerm backend type selected with the following storage account
+            | resourceGroup | rg-backend-storage |
+            | name          | storage            |
+            | container     | container          |
+            | key           | master             |
+        And running command "terraform init" with the following options returns successful result
+            | option                                                   |
+            | -backend-config=storage_account_name=storage             |
+            | -backend-config=container_name=container                 |
+            | -backend-config=key=master                               |
+            | -backend-config=resource_group_name=rg-backend-storage   |
+            | -backend-config=subscription_id=sub1                     |
+            | -backend-config=tenant_id=ten1                           |
+            | -backend-config=use_msi=true                             |
+        When the terraform cli task is run
+        Then terraform is initialized with the following options
+            | option                                                   |
+            | -backend-config=storage_account_name=storage             |
+            | -backend-config=container_name=container                 |
+            | -backend-config=key=master                               |
+            | -backend-config=resource_group_name=rg-backend-storage   |
+            | -backend-config=subscription_id=sub1                     |
+            | -backend-config=tenant_id=ten1                           |
+            | -backend-config=use_msi=true                             |
+        And the terraform cli task is successful
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+
+    Scenario: init with backend azurerm on terraform 1.52.0
+        Given terraform exists
+        And terraform command is "init"        
+        And running command "terraform version" returns successful result with stdout "Terraform v0.15.0\non windows_amd64\n+ provider registry.terraform.io/hashicorp/azurerm v2.53.0\n"
+        And azurerm backend service connection "backend" exists as
+            | scheme         | WorkloadIdentityFederation |
+            | subscriptionId | sub1                       |
+            | tenantId       | ten1                       |
+            | clientId       | servicePrincipal1          |
+            | accessToken    | oidcToken1                 |
+        And azurerm backend type selected with the following storage account
+            | resourceGroup | rg-backend-storage |
+            | name          | storage            |
+            | container     | container          |
+            | key           | master             |
+        And running command "terraform init" with the following options returns successful result
+            | option                                                   |
+            | -backend-config=storage_account_name=storage             |
+            | -backend-config=container_name=container                 |
+            | -backend-config=key=master                               |
+            | -backend-config=resource_group_name=rg-backend-storage   |
+            | -backend-config=subscription_id=sub1                     |
+            | -backend-config=tenant_id=ten1                           |
+            | -backend-config=client_id=servicePrincipal1              |
+            | -backend-config=oidc_token=oidcToken1                    |
+            | -backend-config=use_oidc=true                            |
+        When the terraform cli task is run
+        Then terraform is initialized with the following options
+            | option                                                   |
+            | -backend-config=storage_account_name=storage             |
+            | -backend-config=container_name=container                 |
+            | -backend-config=key=master                               |
+            | -backend-config=resource_group_name=rg-backend-storage   |
+            | -backend-config=subscription_id=sub1                     |
+            | -backend-config=tenant_id=ten1                           |
+            | -backend-config=client_id=servicePrincipal1              |
+            | -backend-config=oidc_token=oidcToken1                    |
+            | -backend-config=use_oidc=true                            |
+        And the terraform cli task is successful
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"

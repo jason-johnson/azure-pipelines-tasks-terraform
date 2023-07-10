@@ -62,7 +62,7 @@ export default class AzureRMBackend implements ITerraformBackend {
                 throw new Error('Workload Identity Federation is not supported for Terraform versions before 0.12.0');
               }
               var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = AzureRMAuthentication.getWorkloadIdentityFederationCredentials(ctx, true);
-              backendConfig.arm_client_id = workloadIdentityFederationCredentials.servicePrincipalId;
+              backendConfig.client_id = workloadIdentityFederationCredentials.servicePrincipalId;
               backendConfig.oidc_token = workloadIdentityFederationCredentials.idToken;
               backendConfig.use_oidc = 'true';
               break;
