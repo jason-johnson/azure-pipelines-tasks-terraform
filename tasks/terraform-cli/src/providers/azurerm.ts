@@ -19,20 +19,27 @@ export default class AzureRMProvider implements ITerraformProvider {
     }
 
     async init(): Promise<void> {
-      var authorizationScheme : AuthorizatonScheme = AuthorizatonScheme[this.ctx.environmentServiceArmAuthorizationScheme.toLowerCase() as keyof typeof AuthorizatonScheme];
+      var authorizationScheme : AuthorizationScheme = AuthorizationScheme.ServicePrincipal;
+
+      try {
+          authorizationScheme = AuthorizationScheme[this.ctx.environmentServiceArmAuthorizationScheme.toLowerCase() as keyof typeof AuthorizationScheme];
+      }
+      catch(error){
+          throw "Terraform only supports service principal, managed service identity or workload identity federation authorization";
+      }
 
       switch(authorizationScheme) {
-        case AuthorizatonScheme.ServicePrincipal:
+        case AuthorizationScheme.ServicePrincipal:
             var servicePrincipalCredentials : ServicePrincipalCredentials = this.getServicePrincipalCredentials();
             process.env['ARM_CLIENT_ID']        = servicePrincipalCredentials.servicePrincipalId;
             process.env['ARM_CLIENT_SECRET']    = servicePrincipalCredentials.servicePrincipalKey;
             break;
 
-        case AuthorizatonScheme.ManagedServiceIdentity:
+        case AuthorizationScheme.ManagedServiceIdentity:
             process.env['ARM_USE_MSI'] = 'true';
             break;
 
-        case AuthorizatonScheme.WorkloadIdentityFederation:
+        case AuthorizationScheme.WorkloadIdentityFederation:
             var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = this.getWorkloadIdentityFederationCredentials();
             process.env['ARM_CLIENT_ID'] = workloadIdentityFederationCredentials.servicePrincipalId;
             process.env['ARM_OIDC_TOKEN'] = workloadIdentityFederationCredentials.idToken;
@@ -83,7 +90,7 @@ interface WorkloadIdentityFederationCredentials {
     idToken: string;
 }
 
-enum AuthorizatonScheme {
+enum AuthorizationScheme {
     ServicePrincipal = "serviceprincipal",
     ManagedServiceIdentity = "managedserviceidentity",
     WorkloadIdentityFederation = "workloadidentityfederation"   

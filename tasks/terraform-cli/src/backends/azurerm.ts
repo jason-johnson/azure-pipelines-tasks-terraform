@@ -9,7 +9,16 @@ export default class AzureRMBackend implements ITerraformBackend {
     ) { }
 
     async init(ctx: ITaskContext): Promise<TerraformBackendInitResult> {
-        var authorizationScheme : AuthorizatonScheme = AuthorizatonScheme[ctx.environmentServiceArmAuthorizationScheme.toLowerCase() as keyof typeof AuthorizatonScheme];
+        var authorizationScheme : AuthorizationScheme = AuthorizationScheme.ServicePrincipal;
+
+        try {
+            authorizationScheme = AuthorizationScheme[ctx.environmentServiceArmAuthorizationScheme.toLowerCase() as keyof typeof AuthorizationScheme];
+        }
+        catch(error){
+            throw "Terraform backend initialization for AzureRM only support service principal, managed service identity or workload identity federation authorization";
+        }
+
+        var authorizationScheme : AuthorizationScheme = AuthorizationScheme[ctx.environmentServiceArmAuthorizationScheme.toLowerCase() as keyof typeof AuthorizationScheme];
 
         let backendConfig: any = {
             storage_account_name: ctx.backendAzureRmStorageAccountName,
@@ -21,7 +30,7 @@ export default class AzureRMBackend implements ITerraformBackend {
         const isPre12 = ctx.terraformVersionMajor === 0 && typeof(ctx.terraformVersionMinor) == 'number' && ctx.terraformVersionMinor < 12;
 
         switch(authorizationScheme) {
-          case AuthorizatonScheme.ServicePrincipal:
+          case AuthorizationScheme.ServicePrincipal:
               var servicePrincipalCredentials : ServicePrincipalCredentials = this.getServicePrincipalCredentials(ctx);
               if(isPre12){
                 backendConfig.arm_client_id        = servicePrincipalCredentials.servicePrincipalId;
@@ -33,14 +42,14 @@ export default class AzureRMBackend implements ITerraformBackend {
               }
               break;
   
-          case AuthorizatonScheme.ManagedServiceIdentity:
+          case AuthorizationScheme.ManagedServiceIdentity:
               if(isPre12){
                 throw new Error('Managed Service Identity is not supported for Terraform versions before 0.12.0');
               }
               backendConfig.use_msi = 'true';
               break;
   
-          case AuthorizatonScheme.WorkloadIdentityFederation:
+          case AuthorizationScheme.WorkloadIdentityFederation:
               if(isPre12){
                 throw new Error('Workload Identity Federation is not supported for Terraform versions before 0.12.0');
               }
@@ -121,7 +130,7 @@ interface WorkloadIdentityFederationCredentials {
     idToken: string;
 }
 
-enum AuthorizatonScheme {
+enum AuthorizationScheme {
     ServicePrincipal = "serviceprincipal",
     ManagedServiceIdentity = "managedserviceidentity",
     WorkloadIdentityFederation = "workloadidentityfederation"   

@@ -247,4 +247,4 @@ Feature: terraform plan
             | clientSecret   | servicePrincipalKey123 |
         And running command "terraform plan" returns successful result
         When the terraform cli task is run
-        Then the terraform cli task fails with message "Terraform only supports service principal authorization for azure"
+        Then the terraform cli task fails with message "Terraform only supports service principal, managed service identity or workload identity federation authorization"
