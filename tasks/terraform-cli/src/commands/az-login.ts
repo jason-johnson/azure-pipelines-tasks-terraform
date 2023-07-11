@@ -47,7 +47,7 @@ export class AzLogin implements ICommand {
                         "-t", ctx.backendServiceArmTenantId,
                         "-u", ctx.backendServiceArmClientId,
                         "--allow-no-subscriptions",
-                        "--federated-token", ctx.backendServiceArmSystemAccessToken
+                        "--federated-token", ctx.backendServiceArmIdToken
                     );
                 }
                 else{
@@ -56,7 +56,7 @@ export class AzLogin implements ICommand {
                         "-t", ctx.environmentServiceArmTenantId,
                         "-u", ctx.environmentServiceArmClientId,
                         "--allow-no-subscriptions",
-                        "--federated-token", ctx.environmentServiceArmSystemAccessToken
+                        "--federated-token", ctx.environmentServiceArmIdToken
                     );
                 }
                 break;

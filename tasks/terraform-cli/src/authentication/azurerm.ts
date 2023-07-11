@@ -20,13 +20,13 @@ export class AzureRMAuthentication {
   static getWorkloadIdentityFederationCredentials(ctx: ITaskContext, isBackend: boolean = false) : WorkloadIdentityFederationCredentials {
     var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = {
       servicePrincipalId: ctx.environmentServiceArmClientId,
-      idToken: ctx.environmentServiceArmSystemAccessToken
+      idToken: ctx.environmentServiceArmIdToken
     }      
 
     if(isBackend){
       workloadIdentityFederationCredentials = {
         servicePrincipalId: ctx.backendServiceArmClientId,
-        idToken: ctx.backendServiceArmSystemAccessToken
+        idToken: ctx.backendServiceArmIdToken
       }
     }
     return workloadIdentityFederationCredentials;

@@ -44,6 +44,8 @@ export default class AzdoTaskContext implements ITaskContext {
         this.setVariable = tasks.setVariable;
         this.getSecureFileName = <(id: string) => string>tasks.getSecureFileName;
         this.startedAt = process.hrtime();
+        this.getOidcAccessToken(this.backendServiceArm, true);
+        this.getOidcAccessToken(this.environmentServiceName, false);
     }
     get name() {
         return this.getInput("command");
@@ -258,32 +260,34 @@ export default class AzdoTaskContext implements ITaskContext {
     get providerGoogleRegion() {
       return this.getInput("providerGoogleRegion");
     }
-    get backendServiceArmSystemAccessToken() {
-        return this.getOidcAccessToken(this.backendServiceArm);
-    }
-    get environmentServiceArmSystemAccessToken() {
-        return this.getOidcAccessToken(this.environmentServiceName);
-    }
+    backendServiceArmIdToken: string = "";
+    environmentServiceArmIdToken: string = "";
 
     finished() {
         this.finishedAt = process.hrtime(this.startedAt);
         this.runTime = this.finishedAt[1] / 1000000;
     }
-    setTerraformVersion(full: string, major: number, minor: number, patch: number){
+    setTerraformVersion(full: string, major: number, minor: number, patch: number) {
         this.terraformVersionFull = full;
         this.terraformVersionMajor = major;
         this.terraformVersionMinor = minor;
         this.terraformVersionPatch = patch;
     }
 
-    private getOidcAccessToken(connectedService: string) : string {
+    private setIdToken(token: string, isBackend: boolean = false) {
+        if(isBackend) {
+            this.backendServiceArmIdToken = token;
+        } else {
+            this.environmentServiceArmIdToken = token;
+        }
+    }
+
+    private getOidcAccessToken(connectedService: string, isBackend : boolean = false) {
         var authorizationScheme = this.getEndpointAuthorizationScheme(this.backendServiceArm, true).toLowerCase();
         if(authorizationScheme != "workloadidentityfederation") {
-            return "";
+            return;
         }
-        var idToken : string = "";
-        this.getIdToken(this.getInput(connectedService, true)).then((token) => { idToken = token; });
-        return idToken;
+        this.getIdToken(this.getInput(connectedService, true)).then((token) => { this.setIdToken(token, isBackend); });
     }
 
     private async getIdToken(connectedService: string) : Promise<string> {
@@ -294,7 +298,7 @@ export default class AzdoTaskContext implements ITaskContext {
         const uri = tasks.getVariable("System.CollectionUri");
         const token = this.getSystemAccessToken();
         
-        if(projectId === undefined || hub === undefined || uri === undefined || token === undefined || jobId === undefined || planId === undefined) {
+        if(!uri || !projectId || !hub || !planId || !jobId) {
             return "";
         }
         const authHandler = getHandlerFromToken(token);

@@ -188,7 +188,7 @@ Feature: terraform apply
             | subscriptionId | sub1                       |
             | tenantId       | ten1                       |
             | clientId       | servicePrincipal1          |
-            | accessToken    | oidcToken1                 |
+            | idToken    | oidcToken1                 |
         And running command "terraform apply -auto-approve" returns successful result
         And azure cli exists
         And running command "az login" with the following options returns successful result

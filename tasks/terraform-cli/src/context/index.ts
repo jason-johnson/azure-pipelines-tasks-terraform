@@ -67,8 +67,8 @@ export interface ITaskContext {
     providerGoogleCredentials?: string;
     providerGoogleProject?: string;
     providerGoogleRegion?: string;
-    backendServiceArmSystemAccessToken: string;
-    environmentServiceArmSystemAccessToken: string;
+    backendServiceArmIdToken: string;
+    environmentServiceArmIdToken: string;
 }
 
 export const TRACKED_CONTEXT_PROPERTIES_METADATA_KEY = Symbol("propLogMetadata");

@@ -343,7 +343,7 @@ Feature: terraform init
             | subscriptionId | sub1                       |
             | tenantId       | ten1                       |
             | clientId       | servicePrincipal1          |
-            | accessToken    | oidcToken1                 |
+            | idToken    | oidcToken1                 |
         And azurerm backend type selected with the following storage account
             | resourceGroup | rg-backend-storage |
             | name          | storage            |
