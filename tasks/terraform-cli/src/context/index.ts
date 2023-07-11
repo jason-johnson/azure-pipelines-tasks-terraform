@@ -69,6 +69,7 @@ export interface ITaskContext {
     providerGoogleRegion?: string;
     backendServiceArmIdToken: string;
     environmentServiceArmIdToken: string;
+    setIdTokens: () => Promise<void>;
 }
 
 export const TRACKED_CONTEXT_PROPERTIES_METADATA_KEY = Symbol("propLogMetadata");

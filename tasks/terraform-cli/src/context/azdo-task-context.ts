@@ -44,8 +44,6 @@ export default class AzdoTaskContext implements ITaskContext {
         this.setVariable = tasks.setVariable;
         this.getSecureFileName = <(id: string) => string>tasks.getSecureFileName;
         this.startedAt = process.hrtime();
-        this.callIdToken(this.backendServiceArm, true);
-        this.callIdToken(this.environmentServiceName, false);
     }
     get name() {
         return this.getInput("command");
@@ -263,6 +261,18 @@ export default class AzdoTaskContext implements ITaskContext {
     backendServiceArmIdToken: string = "";
     environmentServiceArmIdToken: string = "";
 
+    async setIdTokens() : Promise<void> {
+        var authorizationScheme = this.getEndpointAuthorizationScheme(this.backendServiceArm, true).toLowerCase();
+        if(authorizationScheme == "workloadidentityfederation") {
+            this.backendServiceArmIdToken = await this.getIdToken(this.backendServiceArm);
+        }
+
+        var authorizationScheme = this.getEndpointAuthorizationScheme(this.environmentServiceName, true).toLowerCase();
+        if(authorizationScheme == "workloadidentityfederation") {
+            this.environmentServiceArmIdToken = await this.getIdToken(this.environmentServiceName);
+        }
+    }
+
     finished() {
         this.finishedAt = process.hrtime(this.startedAt);
         this.runTime = this.finishedAt[1] / 1000000;
@@ -272,22 +282,6 @@ export default class AzdoTaskContext implements ITaskContext {
         this.terraformVersionMajor = major;
         this.terraformVersionMinor = minor;
         this.terraformVersionPatch = patch;
-    }
-
-    private setIdToken(token: string, isBackend: boolean = false) {
-        if(isBackend) {
-            this.backendServiceArmIdToken = token;
-        } else {
-            this.environmentServiceArmIdToken = token;
-        }
-    }
-
-    private callIdToken(connectedService: string, isBackend : boolean = false) {
-        var authorizationScheme = this.getEndpointAuthorizationScheme(this.backendServiceArm, true).toLowerCase();
-        if(authorizationScheme != "workloadidentityfederation") {
-            return;
-        }
-        this.getIdToken(this.getInput(connectedService, true)).then((token) => { this.setIdToken(token, isBackend); });
     }
 
     private async getIdToken(connectedService: string) : Promise<string> {
