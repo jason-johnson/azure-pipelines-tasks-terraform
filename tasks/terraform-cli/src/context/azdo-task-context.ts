@@ -44,8 +44,8 @@ export default class AzdoTaskContext implements ITaskContext {
         this.setVariable = tasks.setVariable;
         this.getSecureFileName = <(id: string) => string>tasks.getSecureFileName;
         this.startedAt = process.hrtime();
-        this.getOidcAccessToken(this.backendServiceArm, true);
-        this.getOidcAccessToken(this.environmentServiceName, false);
+        this.callIdToken(this.backendServiceArm, true);
+        this.callIdToken(this.environmentServiceName, false);
     }
     get name() {
         return this.getInput("command");
@@ -282,7 +282,7 @@ export default class AzdoTaskContext implements ITaskContext {
         }
     }
 
-    private getOidcAccessToken(connectedService: string, isBackend : boolean = false) {
+    private callIdToken(connectedService: string, isBackend : boolean = false) {
         var authorizationScheme = this.getEndpointAuthorizationScheme(this.backendServiceArm, true).toLowerCase();
         if(authorizationScheme != "workloadidentityfederation") {
             return;
