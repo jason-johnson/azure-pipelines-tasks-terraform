@@ -361,7 +361,7 @@
             "helpMarkDown": "The name of the destination resource"
         },
         {
-            "name": "stateAddresses",
+            "name": "stateSubCommandAddresses",
             "type": "string",
             "label": "State list and rm addresses",
             "required": false,
