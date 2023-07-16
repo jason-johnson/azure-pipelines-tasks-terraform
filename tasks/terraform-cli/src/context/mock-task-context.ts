@@ -74,6 +74,10 @@ export default class MockTaskContext implements ITaskContext {
         this.startedAt = process.hrtime();
     }
 
+    public setIdTokens() : Promise<void> {
+        return Promise.resolve();
+    }
+
     public readonly variables: { [key: string]: { val: string, secret?: boolean }} = {};    
 
     public setVariable(name: string, val: string, secret?: boolean){
