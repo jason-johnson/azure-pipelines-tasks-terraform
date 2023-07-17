@@ -129,3 +129,4 @@ tfplan
 *.tfplan
 
 .idea
+self.json
