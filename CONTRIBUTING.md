@@ -21,3 +21,11 @@
 }
 ```
 7. Run `npm run package:self`.
+1. This will generate a `.vsix` file prefixed with your published name.
+1. Navigate to your publisher portal: https://marketplace.visualstudio.com/manage/publishers
+1. Choose your publisher and select  `New extension` and choose `Azure DevOps`.
+1. You'll be prompted to drag and drop your `.vsix` file, do that and wait for it to be verified. Ensure you choose that your extension will be Private.
+1. Click on the three dots `...` next to the extension name and choose `Share/Unshare`.
+1. Click `+ Organization` and enter the name of your Azure DevOps org.
+1. Now navigate to your Azure DevOps org and install the extension as you would any other.
+1. You are now ready to use the extension and test it.
