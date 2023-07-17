@@ -15,7 +15,7 @@
 1. Create a file called `self.json` inside the root folder. The file contents should look like the following, but replace the `publisher` field with the publisher you setup earlier.
 ```json
 {
-    "name": "Terraform (Dev - Individual)",
+    "name": "Terraform CLI (Dev - Individual)",
     "public": false,
     "publisher": "<replace-me-with-your-publisher>"
 }
