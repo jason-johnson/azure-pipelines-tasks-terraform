@@ -2,6 +2,7 @@ import { ITerraformProvider } from ".";
 import { CommandPipeline } from "../commands";
 import { ITaskContext } from "../context";
 import { IRunner } from "../runners";
+import { AzureRMAuthentication, AuthorizationScheme, ServicePrincipalCredentials, WorkloadIdentityFederationCredentials } from "../authentication/azurerm";
 
 export default class AzureRMProvider implements ITerraformProvider {
     constructor(
@@ -19,9 +20,8 @@ export default class AzureRMProvider implements ITerraformProvider {
     }
 
     async init(): Promise<void> {
-      if(this.ctx.environmentServiceArmAuthorizationScheme != "ServicePrincipal"){
-          throw "Terraform only supports service principal authorization for azure";
-      }
+      const authorizationScheme = AzureRMAuthentication.getAuthorizationScheme(this.ctx.environmentServiceArmAuthorizationScheme);
+ 
       const subscriptionId = this.ctx.providerAzureRmSubscriptionId || this.ctx.environmentServiceArmSubscriptionId;
 
       if(subscriptionId){
@@ -29,9 +29,26 @@ export default class AzureRMProvider implements ITerraformProvider {
       }      
 
       process.env['ARM_TENANT_ID']        = this.ctx.environmentServiceArmTenantId;
-      process.env['ARM_CLIENT_ID']        = this.ctx.environmentServiceArmClientId;
-      process.env['ARM_CLIENT_SECRET']    = this.ctx.environmentServiceArmClientSecret;
 
+      switch(authorizationScheme) {
+        case AuthorizationScheme.ServicePrincipal:
+            var servicePrincipalCredentials : ServicePrincipalCredentials = AzureRMAuthentication.getServicePrincipalCredentials(this.ctx);
+            process.env['ARM_CLIENT_ID']        = servicePrincipalCredentials.servicePrincipalId;
+            process.env['ARM_CLIENT_SECRET']    = servicePrincipalCredentials.servicePrincipalKey;
+            break;
+
+        case AuthorizationScheme.ManagedServiceIdentity:
+            process.env['ARM_USE_MSI'] = 'true';
+            break;
+
+        case AuthorizationScheme.WorkloadIdentityFederation:
+            var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = AzureRMAuthentication.getWorkloadIdentityFederationCredentials(this.ctx);
+            process.env['ARM_CLIENT_ID'] = workloadIdentityFederationCredentials.servicePrincipalId;
+            process.env['ARM_OIDC_TOKEN'] = workloadIdentityFederationCredentials.idToken;
+            process.env['ARM_USE_OIDC'] = 'true';
+            break;
+      }
+  
       if(this.ctx.runAzLogin){
           //run az login so provisioners needing az cli can be run.
           await new CommandPipeline(this.runner)

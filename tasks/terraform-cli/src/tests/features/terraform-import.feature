@@ -140,3 +140,65 @@ Feature: terraform import
             | -p servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+
+    Scenario: import with azurerm and ManagedServiceIdentity auth scheme
+        Given terraform exists
+        And terraform command is "import"
+        And azurerm service connection "dev" exists as
+            | scheme         | ManagedServiceIdentity       |
+            | subscriptionId | sub1                   |
+            | tenantId       | ten1                   |
+        And azure cli exists
+        And running command "az login" with the following options returns successful result
+            | option      |
+            | --identity  |
+        And task configured to run az login
+        And resource target provided with address "azurerm_resource_group.rg" and id "/subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus"
+        And running command "terraform import azurerm_resource_group.rg /subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus" returns successful result
+        When the terraform cli task is run
+        Then the terraform cli task executed command "terraform import azurerm_resource_group.rg /subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus" with the following environment variables
+            | ARM_SUBSCRIPTION_ID | sub1                   |
+            | ARM_TENANT_ID       | ten1                   |
+            | ARM_USE_MSI         | true                   |
+        And azure login is executed with the following options
+            | option      |
+            | --identity  |
+        And the terraform cli task is successful
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
+
+    Scenario: import with azurerm and WorkloadIdentityFederation auth scheme
+        Given terraform exists
+        And terraform command is "import"
+        And azurerm service connection "dev" exists as
+            | scheme         | WorkloadIdentityFederation |
+            | subscriptionId | sub1                       |
+            | tenantId       | ten1                       |
+            | clientId       | servicePrincipal1          |
+            | idToken    | oidcToken1                 |
+        And azure cli exists
+        And running command "az login" with the following options returns successful result
+            | option                       |
+            | --service-principal          |
+            | -t ten1                      |
+            | -u servicePrincipal1         |
+            | --allow-no-subscriptions     |
+            | --federated-token oidcToken1 |
+        And task configured to run az login
+        And resource target provided with address "azurerm_resource_group.rg" and id "/subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus"
+        And running command "terraform import azurerm_resource_group.rg /subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus" returns successful result
+        When the terraform cli task is run
+        Then the terraform cli task executed command "terraform import azurerm_resource_group.rg /subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus" with the following environment variables
+            | ARM_SUBSCRIPTION_ID | sub1                   |
+            | ARM_TENANT_ID       | ten1                   |
+            | ARM_CLIENT_ID       | servicePrincipal1      |
+            | ARM_OIDC_TOKEN      | oidcToken1             |
+            | ARM_USE_OIDC        | true                   |
+        And azure login is executed with the following options
+            | option                       |
+            | --service-principal          |
+            | -t ten1                      |
+            | -u servicePrincipal1         |
+            | --allow-no-subscriptions     |
+            | --federated-token oidcToken1 |
+        And the terraform cli task is successful
+        And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"

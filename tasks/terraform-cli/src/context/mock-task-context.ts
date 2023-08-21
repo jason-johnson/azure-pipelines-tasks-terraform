@@ -67,9 +67,15 @@ export default class MockTaskContext implements ITaskContext {
     providerGoogleCredentials?: string;
     providerGoogleProject?: string;
     providerGoogleRegion?: string;
+    backendServiceArmIdToken: string = "";
+    environmentServiceArmIdToken: string = "";
 
     constructor() {
         this.startedAt = process.hrtime();
+    }
+
+    public setIdTokens() : Promise<void> {
+        return Promise.resolve();
     }
 
     public readonly variables: { [key: string]: { val: string, secret?: boolean }} = {};    

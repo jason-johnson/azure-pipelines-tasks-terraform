@@ -42,6 +42,7 @@ export class TaskContextSteps {
         this.ctx.backendServiceArmClientSecret = endpoint.clientSecret;
         this.ctx.backendServiceArmSubscriptionId = endpoint.subscriptionId;
         this.ctx.backendServiceArmTenantId = endpoint.tenantId;
+        this.ctx.backendServiceArmIdToken = endpoint.idToken;
     }
 
     @given("aws backend service connection {string} exists as")
@@ -74,6 +75,7 @@ export class TaskContextSteps {
         this.ctx.environmentServiceArmClientSecret = endpoint.clientSecret;
         this.ctx.environmentServiceArmSubscriptionId = endpoint.subscriptionId;
         this.ctx.environmentServiceArmTenantId = endpoint.tenantId;
+        this.ctx.environmentServiceArmIdToken = endpoint.idToken;
     }
 
     @given("azurerm subscriptionId is {string}")

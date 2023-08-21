@@ -47,13 +47,14 @@ export class Task {
 
   async exec(): Promise<commands.CommandResponse> {
     let command = this.commands[this.ctx.name];
-
+    
     if (!command) {
       throw new Error(`Support for command "${this.ctx.name}" is not implemented`);
     }
 
     let response: commands.CommandResponse | undefined;
     try {
+      await this.ctx.setIdTokens();
       if (this.ctx.name !== 'version') {
         let version = this.commands['version'];
         response = await version.exec(this.ctx);

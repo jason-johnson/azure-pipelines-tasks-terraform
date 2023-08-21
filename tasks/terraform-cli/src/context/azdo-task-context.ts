@@ -1,6 +1,7 @@
 import { ITaskContext, trackValue } from ".";
 import * as tasks from 'azure-pipelines-task-lib/task';
 import { BackendTypes } from "../backends";
+import { getFederatedToken } from "azure-pipelines-tasks-artifacts-common/webapi";
 
 const isCommand = (...commands: string[]) => (ctx: ITaskContext) => commands.includes(ctx.name);
 const isCommandWithSubCommand = (commands: string[], subCommands: string[], subCommand: (ctx: ITaskContext) => string) => (ctx: ITaskContext) => commands.includes(ctx.name) && subCommands.includes(subCommand(ctx));
@@ -256,11 +257,28 @@ export default class AzdoTaskContext implements ITaskContext {
     get providerGoogleRegion() {
       return this.getInput("providerGoogleRegion");
     }
+    backendServiceArmIdToken: string = "";
+    environmentServiceArmIdToken: string = "";
+
+    async setIdTokens() : Promise<void> {
+        var authorizationScheme = this.getEndpointAuthorizationScheme(this.backendServiceArm, true);
+        if(authorizationScheme && authorizationScheme == "WorkloadIdentityFederation") {
+            tasks.debug("Getting OIDC token for backend.");
+            this.backendServiceArmIdToken = await getFederatedToken(this.backendServiceArm);
+        }
+
+        var authorizationScheme = this.getEndpointAuthorizationScheme(this.environmentServiceName, true);
+        if(authorizationScheme && authorizationScheme == "WorkloadIdentityFederation") {
+            tasks.debug("Getting OIDC token for provider.");
+            this.environmentServiceArmIdToken = await getFederatedToken(this.environmentServiceName);
+        }
+    }
+
     finished() {
         this.finishedAt = process.hrtime(this.startedAt);
         this.runTime = this.finishedAt[1] / 1000000;
     }
-    setTerraformVersion(full: string, major: number, minor: number, patch: number){
+    setTerraformVersion(full: string, major: number, minor: number, patch: number) {
         this.terraformVersionFull = full;
         this.terraformVersionMajor = major;
         this.terraformVersionMinor = minor;

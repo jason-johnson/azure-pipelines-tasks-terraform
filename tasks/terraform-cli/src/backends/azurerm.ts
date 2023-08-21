@@ -2,6 +2,7 @@ import { ITerraformBackend, TerraformBackendInitResult } from ".";
 import { CommandPipeline } from "../commands";
 import { IRunner } from "../runners";
 import { ITaskContext } from "../context";
+import { AzureRMAuthentication, AuthorizationScheme, ServicePrincipalCredentials, WorkloadIdentityFederationCredentials } from "../authentication/azurerm";
 
 export default class AzureRMBackend implements ITerraformBackend {
     constructor(
@@ -9,11 +10,7 @@ export default class AzureRMBackend implements ITerraformBackend {
     ) { }
 
     async init(ctx: ITaskContext): Promise<TerraformBackendInitResult> {
-        if (ctx.backendServiceArmAuthorizationScheme != "ServicePrincipal") {
-            throw "Terraform backend initialization for AzureRM only support service principal authorization";
-        }
-        
-        const subscriptionId = ctx.backendAzureRmSubscriptionId || ctx.backendServiceArmSubscriptionId;
+        const authorizationScheme = AzureRMAuthentication.getAuthorizationScheme(ctx.backendServiceArmAuthorizationScheme);
 
         let backendConfig: any = {
             storage_account_name: ctx.backendAzureRmStorageAccountName,
@@ -22,24 +19,55 @@ export default class AzureRMBackend implements ITerraformBackend {
             resource_group_name: ctx.backendAzureRmResourceGroupName
         }
 
+        const isPre12 = ctx.terraformVersionMajor === 0 && typeof(ctx.terraformVersionMinor) == 'number' && ctx.terraformVersionMinor < 12;
+
+        const subscriptionId = ctx.backendAzureRmSubscriptionId || ctx.backendServiceArmSubscriptionId;
+
         //use the arm_* prefix config only for versions before 0.12.0
-        if(ctx.terraformVersionMajor === 0 && typeof(ctx.terraformVersionMinor) == 'number' && ctx.terraformVersionMinor < 12){
+        if(isPre12){
             if(subscriptionId){
               backendConfig.arm_subscription_id = subscriptionId
             }
             backendConfig.arm_tenant_id = ctx.backendServiceArmTenantId;
-            backendConfig.arm_client_id = ctx.backendServiceArmClientId;
-            backendConfig.arm_client_secret = ctx.backendServiceArmClientSecret;
         }
         else{
             if(subscriptionId){
               backendConfig.subscription_id = subscriptionId
             }
             backendConfig.tenant_id = ctx.backendServiceArmTenantId;
-            backendConfig.client_id = ctx.backendServiceArmClientId;
-            backendConfig.client_secret = ctx.backendServiceArmClientSecret;
         }
 
+        switch(authorizationScheme) {
+          case AuthorizationScheme.ServicePrincipal:
+              var servicePrincipalCredentials : ServicePrincipalCredentials = AzureRMAuthentication.getServicePrincipalCredentials(ctx, true);
+              if(isPre12){
+                backendConfig.arm_client_id        = servicePrincipalCredentials.servicePrincipalId;
+                backendConfig.arm_client_secret    = servicePrincipalCredentials.servicePrincipalKey;
+              }
+              else {
+                backendConfig.client_id        = servicePrincipalCredentials.servicePrincipalId;
+                backendConfig.client_secret    = servicePrincipalCredentials.servicePrincipalKey;
+              }
+              break;
+  
+          case AuthorizationScheme.ManagedServiceIdentity:
+              if(isPre12){
+                throw new Error('Managed Service Identity is not supported for Terraform versions before 0.12.0');
+              }
+              backendConfig.use_msi = 'true';
+              break;
+  
+          case AuthorizationScheme.WorkloadIdentityFederation:
+              if(isPre12){
+                throw new Error('Workload Identity Federation is not supported for Terraform versions before 0.12.0');
+              }
+              var workloadIdentityFederationCredentials : WorkloadIdentityFederationCredentials = AzureRMAuthentication.getWorkloadIdentityFederationCredentials(ctx, true);
+              backendConfig.client_id = workloadIdentityFederationCredentials.servicePrincipalId;
+              backendConfig.oidc_token = workloadIdentityFederationCredentials.idToken;
+              backendConfig.use_oidc = 'true';
+              break;
+        }
+        
         const result = <TerraformBackendInitResult>{
             args: []
         };

@@ -2,7 +2,13 @@
   "name": "azure-pipelines-tasks-terraform",
   "version": "1.0.0",
   "description": "This contains the Azure Pipelines tasks for installing and executing terraform commands.",
-  "scripts": {},
+  "scripts": {
+    "pack-cli": "cd ./tasks/terraform-cli && npm install --include:dev && npm run build && npm run pack && @pwsh -Command ./../../scripts/set-version.ps1",
+    "pack-inst": "cd ./tasks/terraform-installer && npm install --include:dev && npm run build && npm run pack && @pwsh -Command ./../../scripts/set-version.ps1",
+    "pack-views": "cd ./views/terraform-plan && npm install --include:dev && npm run build && npm run pack",
+    "publish:self": "tfx extension create --manifest-globs vss-extension.json vss-extension-alpha.json --overrides-file ./self.json",
+    "package:self": "npm install --include:dev && npm run pack-views && npm run pack-cli && npm run pack-inst && npm run publish:self"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jason-johnson/azure-pipelines-tasks-terraform.git"
@@ -14,6 +20,7 @@
   },
   "homepage": "https://github.com/jason-johnson/azure-pipelines-tasks-terraform#readme",
   "devDependencies": {
-    "cross-var": "^1.1.0"
+    "cross-var": "^1.1.0",
+    "tfx-cli": "0.15.0"
   }
 }
