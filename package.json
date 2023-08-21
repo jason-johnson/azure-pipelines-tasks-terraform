@@ -21,6 +21,6 @@
   "homepage": "https://github.com/jason-johnson/azure-pipelines-tasks-terraform#readme",
   "devDependencies": {
     "cross-var": "^1.1.0",
-    "tfx-cli": "0.15.0"
+    "tfx-cli": "0.16.0"
   }
 }
