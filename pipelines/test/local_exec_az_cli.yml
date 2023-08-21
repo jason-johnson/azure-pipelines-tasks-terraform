@@ -11,7 +11,7 @@ jobs:
       inputs: 
         artifact: terraform_templates
         path: $(terraform_extension_dir)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
       displayName: 'terraform init'
       inputs:
         command: init
@@ -25,11 +25,11 @@ jobs:
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: local_exec_az_cli.tfstate
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
       displayName: 'terraform validate'
       inputs:
         workingDirectory: $(test_templates_dir)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
       displayName: 'terraform plan'
       inputs:
         command: plan
@@ -38,7 +38,7 @@ jobs:
         secureVarsFile: $(tf_variables_secure_file)
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
         runAzLogin: true
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
       displayName: 'terraform apply'
       inputs:
         command: apply
@@ -46,7 +46,7 @@ jobs:
         environmentServiceName: 'env_test'
         commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
         runAzLogin: true
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
       displayName: 'terraform destroy'
       inputs:
         command: destroy
