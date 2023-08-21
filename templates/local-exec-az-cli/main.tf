@@ -47,6 +47,6 @@ resource "azurerm_storage_account" "st_core" {
   
 
   provisioner "local-exec" {
-          command = "az storage blob service-properties update --account-name ${azurerm_storage_account.st_core.name} --static-website --index-document index.html --404-document index.html"
+          command = "az storage blob service-properties update --auth-mode login --account-name ${azurerm_storage_account.st_core.name} --static-website --index-document index.html --404-document index.html"
   }
 }
