@@ -63,7 +63,7 @@ jobs:
         command: state
         stateSubCommand: rm
         stateSubCommandAddresses: random_string.rs
-    - task: TerraformCLI@0
+    - task: TerraformCLI@1
       displayName: 'terraform destroy'
       inputs:
         command: destroy
