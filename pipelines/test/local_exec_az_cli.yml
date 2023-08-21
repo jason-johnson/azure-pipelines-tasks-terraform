@@ -48,6 +48,7 @@ jobs:
         runAzLogin: true
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
       displayName: 'terraform destroy'
+      condition: always()
       inputs:
         command: destroy
         workingDirectory: $(test_templates_dir)
