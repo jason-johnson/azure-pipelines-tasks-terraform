@@ -32,15 +32,24 @@ export class AzureRMAuthentication {
     return workloadIdentityFederationCredentials;
   }
 
-  static getAuthorizationScheme(sourceAuthorizationScheme: string) : AuthorizationScheme {
-    let authorizationScheme : AuthorizationScheme = AuthorizationScheme.ServicePrincipal;
-
-    authorizationScheme = AuthorizationScheme[sourceAuthorizationScheme as keyof typeof AuthorizationScheme];
-    if(!authorizationScheme){
-      throw "Terraform only supports service principal, managed service identity or workload identity federation authorization";
+  static getAuthorizationScheme(authorizationScheme: string) : AuthorizationScheme {
+    if(authorizationScheme == undefined) {
+      throw('The authorization scheme is missing. Terraform only supports service principal, managed service identity or workload identity federation authorization');
     }
 
-    return authorizationScheme;
+    if(authorizationScheme.toLowerCase() == AuthorizationScheme.ServicePrincipal){
+        return AuthorizationScheme.ServicePrincipal;
+    }
+
+    if(authorizationScheme.toLowerCase() == AuthorizationScheme.ManagedServiceIdentity){
+        return AuthorizationScheme.ManagedServiceIdentity;
+    }
+
+    if(authorizationScheme.toLowerCase() == AuthorizationScheme.WorkloadIdentityFederation){
+        return AuthorizationScheme.WorkloadIdentityFederation;
+    }
+
+    throw('No matching authorization scheme was found. Terraform only supports service principal, managed service identity or workload identity federation authorization');
   }
 }
 

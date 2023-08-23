@@ -15,7 +15,7 @@ Feature: terraform plan
         Given terraform exists
         And terraform command is "plan"
         And azurerm service connection "dev" exists as
-            | scheme         | ServicePrincipal       |
+            | scheme         | serviceprincipal       |
             | subscriptionId | sub1                   |
             | tenantId       | ten1                   |
             | clientId       | servicePrincipal1      |
@@ -247,7 +247,20 @@ Feature: terraform plan
             | clientSecret   | servicePrincipalKey123 |
         And running command "terraform plan" returns successful result
         When the terraform cli task is run
-        Then the terraform cli task fails with message "Terraform only supports service principal, managed service identity or workload identity federation authorization"
+        Then the terraform cli task fails with message "No matching authorization scheme was found. Terraform only supports service principal, managed service identity or workload identity federation authorization"
+
+    Scenario: plan with empty auth scheme
+        Given terraform exists
+        And terraform command is "plan"
+        And azurerm service connection "dev" exists as
+            | scheme         |  |
+            | subscriptionId | sub1                   |
+            | tenantId       | ten1                   |
+            | clientId       | servicePrincipal1      |
+            | clientSecret   | servicePrincipalKey123 |
+        And running command "terraform plan" returns successful result
+        When the terraform cli task is run
+        Then the terraform cli task fails with message "No matching authorization scheme was found. Terraform only supports service principal, managed service identity or workload identity federation authorization"
 
     Scenario: plan with azurerm and ManagedServiceIdentity auth scheme
         Given terraform exists

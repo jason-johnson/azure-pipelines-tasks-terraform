@@ -146,7 +146,7 @@ Feature: terraform destroy
             | clientSecret   | servicePrincipalKey123 |
         And running command "terraform destroy" returns successful result
         When the terraform cli task is run
-        Then the terraform cli task fails with message "Terraform only supports service principal, managed service identity or workload identity federation authorization"
+        Then the terraform cli task fails with message "No matching authorization scheme was found. Terraform only supports service principal, managed service identity or workload identity federation authorization"
 
     Scenario: destroy with azurerm and ManagedServiceIdentity auth scheme
         Given terraform exists
