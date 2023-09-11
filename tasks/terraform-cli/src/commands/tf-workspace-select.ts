@@ -11,6 +11,7 @@ export class TerraformWorkspaceSelect implements ICommand {
 
     async exec(ctx: ITaskContext): Promise<CommandResponse> {
         const options = await new RunWithTerraform(ctx, false, ctx.workspaceSubCommand, [ctx.name])
+            .withCommandOptions(ctx.commandOptions)
             .withWorkspace(ctx.workspaceName)
             .build();
 
