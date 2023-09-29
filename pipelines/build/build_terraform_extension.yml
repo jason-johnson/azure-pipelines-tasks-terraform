@@ -40,7 +40,7 @@ jobs:
           package*.json
           vss-extension*.json
           vss-extension-icon.png
-          **/*.sh
+          **/poll_task_install.sh
         targetFolder: $(build.artifactstagingdirectory)/terraform_extension
     - task: PublishBuildArtifacts@1
       inputs:
