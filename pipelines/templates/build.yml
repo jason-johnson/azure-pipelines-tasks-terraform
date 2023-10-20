@@ -9,7 +9,7 @@ jobs:
     steps:
       - template: build_npm.yml
         parameters:
-          workingDir: ${{ parameters.workingDir }}/terraform-cli
+          workingDir: ${{ parameters.workingDir }}/tasks/terraform-cli
           artifact: ${{ parameters.instance }}_terraform_cli
           runTests: true
 
@@ -17,5 +17,16 @@ jobs:
     steps:
       - template: build_npm.yml
         parameters:
-          workingDir: ${{ parameters.workingDir }}/terraform-installer
+          workingDir: ${{ parameters.workingDir }}/tasks/terraform-installer
           artifact: ${{ parameters.instance }}_terraform_installer
+
+  - job: ${{ parameters.instance }}_terraform_plan
+    steps:
+      - template: build_npm.yml
+        parameters:
+          workingDir: ${{ parameters.workingDir }}/views/terraform-plan
+          artifact: ${{ parameters.instance }}_terraform_plan
+          runTests: true
+
+
+          
