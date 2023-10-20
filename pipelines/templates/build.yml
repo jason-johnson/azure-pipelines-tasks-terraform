@@ -26,7 +26,20 @@ jobs:
         parameters:
           workingDir: ${{ parameters.workingDir }}/views/terraform-plan
           artifact: ${{ parameters.instance }}_terraform_plan
-          runTests: true
+
+      # Unfortunately, terraform plan view needs some work to have it complay with test_npm.yml so we hard code the steps for now
+      - task: Npm@1
+        displayName: test
+        inputs:
+          workingDir: ${{ parameters.workingDir }}/views/terraform-plan
+          command: custom
+          customCommand: run test
+      - task: PublishTestResults@2
+        displayName: test - publish results
+        inputs:
+          testResultsFormat: JUnit
+          testResultsFiles: 'results.xml'
+          searchFolder: ${{ parameters.workingDir }}/views/terraform-plan/.tests
 
 
           
