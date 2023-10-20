@@ -61,4 +61,3 @@ stages:
     parameters:
       instance: main
       workingDir: tasks
-      runTests: true
