@@ -44,7 +44,7 @@ steps:
   displayName: stage artifacts
   inputs:
     contents: |
-      tasks/terraform-cli/.dist/**/*
+      ${{ parameters.workingDir }}/.dist/**/*
     targetFolder: $(Build.ArtifactStagingDirectory)
 - publish: '$(Build.ArtifactStagingDirectory)'
   artifact: ${{ parameters.artifact }}
