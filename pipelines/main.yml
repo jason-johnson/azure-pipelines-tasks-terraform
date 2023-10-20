@@ -57,9 +57,8 @@ stages:
       value: $[ dependencies.version.outputs['version.GitVersion.Patch'] ]
     - group: build
   jobs:
-  - job: main_terraform_cli
-    steps:
-      - template: templates/build_npm.yml
-        parameters:
-          workingDir: tasks/terraform-cli
-          runTests: true
+  - template: templates/build.yml
+    parameters:
+      instance: main
+      workingDir: tasks/terraform-cli
+      runTests: true

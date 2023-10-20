@@ -1,0 +1,16 @@
+parameters:
+  - name: instance
+    type: string
+  - name: workingDir
+    type: string
+  - name: runTests
+    type: boolean
+    default: "false"
+
+jobs:
+  - job: ${{ parameters.instance }}_terraform_cli
+    steps:
+      - template: templates/build_npm.yml
+        parameters:
+          workingDir: ${{ parameters.workingDir }}
+          runTests: ${{ parameters.runTests }}
