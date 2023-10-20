@@ -10,7 +10,7 @@ parameters:
 jobs:
   - job: ${{ parameters.instance }}_terraform_cli
     steps:
-      - template: templates/build_npm.yml
+      - template: build_npm.yml
         parameters:
           workingDir: ${{ parameters.workingDir }}
           runTests: ${{ parameters.runTests }}
