@@ -43,3 +43,23 @@ stages:
     steps:
     - script: scripts/max_tags.sh
       name: tags
+
+- stage: build
+  dependsOn: setup
+  variables:
+    - name: GitVersion.SemVer
+      value: $[ dependencies.version.outputs['version.GitVersion.SemVer'] ]
+    - name: GitVersion.Major
+      value: $[ dependencies.version.outputs['version.GitVersion.Major'] ]
+    - name: GitVersion.Minor
+      value: $[ dependencies.version.outputs['version.GitVersion.Minor'] ]
+    - name: GitVersion.Patch
+      value: $[ dependencies.version.outputs['version.GitVersion.Patch'] ]
+    - group: build
+  jobs:
+  - job: main_terraform_cli
+    steps:
+      - template: templates/build_npm.yml
+        inputs:
+          workingDir: tasks/terraform-cli
+          runTests: true
