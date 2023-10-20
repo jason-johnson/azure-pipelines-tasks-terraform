@@ -37,6 +37,7 @@ stages:
     - task: gitversion/execute@0
       displayName: set version
       name: version
+
   - job: tags
     steps:
     - script: scripts/max_tags.sh
