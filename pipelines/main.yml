@@ -48,13 +48,13 @@ stages:
   dependsOn: setup
   variables:
     - name: GitVersion.SemVer
-      value: $[ stageDependencies.setup.outputs['version.GitVersion.SemVer'] ]
+      value: $[ stageDependencies.setup.version.outputs['version.GitVersion.SemVer'] ]
     - name: GitVersion.Major
-      value: $[ stageDependencies.setup.outputs['version.GitVersion.Major'] ]
+      value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Major'] ]
     - name: GitVersion.Minor
-      value: $[ stageDependencies.setup.outputs['version.GitVersion.Minor'] ]
+      value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Minor'] ]
     - name: GitVersion.Patch
-      value: $[ stageDependencies.setup.outputs['version.GitVersion.Patch'] ]
+      value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Patch'] ]
     - group: build
   jobs:
   - template: templates/build_tasks.yml
@@ -62,7 +62,7 @@ stages:
       instance: main
       workingDir: $(System.DefaultWorkingDirectory)
 
-  - ${{ each tag in split(stageDependencies.setup.outputs['tags.tags'], ',')}}:
+  - ${{ each tag in split(stageDependencies.setup.tags.outputs['tags.tags'], ',')}}:
     - job: ${{ tag }}_foo
       steps:
         - script: echo checkout tag ${{ tag }}
