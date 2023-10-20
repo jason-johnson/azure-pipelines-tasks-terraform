@@ -47,5 +47,5 @@ steps:
       tasks/terraform-cli/.dist/**/*
     targetFolder: $(Build.ArtifactStagingDirectory)
 - publish: '$(Build.ArtifactStagingDirectory)'
-  artifact: terraform_cli
+  artifact: ${{ parameters.artifact }}
   displayName: publish artifacts
