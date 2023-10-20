@@ -1,0 +1,24 @@
+parameters:
+  - name: instance
+    type: string
+  - name: workingDir
+    type: string
+
+jobs:
+  - job: ${{ parameters.instance }}_terraform_cli
+    steps:
+      - template: build_npm.yml
+        parameters:
+          workingDir: ${{ parameters.workingDir }}/tasks/terraform-cli
+          artifact: ${{ parameters.instance }}_terraform_cli
+          runTests: true
+
+  - job: ${{ parameters.instance }}_terraform_installer
+    steps:
+      - template: build_npm.yml
+        parameters:
+          workingDir: ${{ parameters.workingDir }}/tasks/terraform-installer
+          artifact: ${{ parameters.instance }}_terraform_installer
+
+
+          

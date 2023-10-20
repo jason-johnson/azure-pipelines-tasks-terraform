@@ -57,7 +57,41 @@ stages:
       value: $[ dependencies.version.outputs['version.GitVersion.Patch'] ]
     - group: build
   jobs:
-  - template: templates/build.yml
+  - template: templates/build_tasks.yml
     parameters:
       instance: main
       workingDir: $(System.DefaultWorkingDirectory)
+
+  - job: terraform_plan
+    steps:
+      - template: templates/build_npm.yml
+        parameters:
+          workingDir: $(System.DefaultWorkingDirectory)/views/terraform-plan
+          artifact: terraform_plan
+
+      # Unfortunately, terraform plan view needs some work to have it complay with test_npm.yml so we hard code the steps for now
+      - task: Npm@1
+        displayName: test
+        inputs:
+          workingDir: $(System.DefaultWorkingDirectory)/views/terraform-plan
+          command: custom
+          customCommand: run test
+      - task: PublishTestResults@2
+        displayName: test - publish results
+        inputs:
+          testResultsFormat: JUnit
+          testResultsFiles: 'results.xml'
+          searchFolder: $(System.DefaultWorkingDirectory)/views/terraform-plan/.tests
+
+  - job: terraform_templates
+    steps:
+      - task: CopyFiles@2
+        displayName: terraform templates
+        inputs:
+          contents: |   
+            templates/**/*
+          targetFolder: $(Build.ArtifactStagingDirectory)/terraform_templates
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathToPublish: '$(Build.ArtifactStagingDirectory)/terraform_templates'
+          artifactName: terraform_templates
