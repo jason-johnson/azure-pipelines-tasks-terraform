@@ -60,5 +60,5 @@ stages:
   - template: templates/build.yml
     parameters:
       instance: main
-      workingDir: tasks/terraform-cli
+      workingDir: terraform-cli
       runTests: true

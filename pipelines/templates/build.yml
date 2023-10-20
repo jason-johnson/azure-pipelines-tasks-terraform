@@ -12,5 +12,5 @@ jobs:
     steps:
       - template: build_npm.yml
         parameters:
-          workingDir: ${{ parameters.workingDir }}
+          workingDir: ${{ parameters.workingDir }}/terraform-cli
           runTests: ${{ parameters.runTests }}
