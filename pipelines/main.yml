@@ -55,6 +55,8 @@ stages:
       value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Minor'] ]
     - name: GitVersion.Patch
       value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Patch'] ]
+    - name: tags
+      value: $[ stageDependencies.setup.tags.outputs['tags.tags'] ]
     - group: build
   jobs:
   - template: templates/build_tasks.yml
@@ -62,7 +64,7 @@ stages:
       instance: main
       workingDir: $(System.DefaultWorkingDirectory)
 
-  - ${{ each tag in split(stageDependencies.setup.tags.outputs['tags.tags'], ',')}}:
+  - ${{ each tag in split($(tags), ',')}}:
     - job: ${{ tag }}_foo
       steps:
         - script: echo checkout tag ${{ tag }}
