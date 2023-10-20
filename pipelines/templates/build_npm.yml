@@ -25,7 +25,7 @@ steps:
     customCommand: run build
 - ${{ if eq(parameters.dependsOn, true) }}:
   - template: test_npm.yml
-    inputs:
+    parameters:
       workingDir: ${{ parameters.workingDir }}
 - task: qetza.replacetokens.replacetokens-task.replacetokens@3
   displayName: version tasks

@@ -60,6 +60,6 @@ stages:
   - job: main_terraform_cli
     steps:
       - template: templates/build_npm.yml
-        inputs:
+        parameters:
           workingDir: tasks/terraform-cli
           runTests: true
