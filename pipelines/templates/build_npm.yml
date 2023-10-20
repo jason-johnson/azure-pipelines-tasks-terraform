@@ -23,7 +23,7 @@ steps:
     workingDir: ${{ parameters.workingDir }}
     command: custom
     customCommand: run build
-- ${{ if eq(parameters.dependsOn, true) }}:
+- ${{ if eq(parameters.runTests, true) }}:
   - template: test_npm.yml
     parameters:
       workingDir: ${{ parameters.workingDir }}
