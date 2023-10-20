@@ -60,4 +60,4 @@ stages:
   - template: templates/build.yml
     parameters:
       instance: main
-      workingDir: .
+      workingDir: $(System.DefaultWorkingDirectory)
