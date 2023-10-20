@@ -3,9 +3,6 @@ parameters:
     type: string
   - name: workingDir
     type: string
-  - name: runTests
-    type: boolean
-    default: "false"
 
 jobs:
   - job: ${{ parameters.instance }}_terraform_cli
@@ -13,4 +10,12 @@ jobs:
       - template: build_npm.yml
         parameters:
           workingDir: ${{ parameters.workingDir }}/terraform-cli
-          runTests: ${{ parameters.runTests }}
+          artifact: ${{ parameters.instance }}_terraform_cli
+          runTests: true
+
+  - job: ${{ parameters.instance }}_terraform_installer
+    steps:
+      - template: build_npm.yml
+        parameters:
+          workingDir: ${{ parameters.workingDir }}/terraform-installer
+          artifact: ${{ parameters.instance }}_terraform_installer

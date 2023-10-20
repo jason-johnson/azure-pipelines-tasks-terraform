@@ -4,6 +4,8 @@ parameters:
   - name: runTests
     type: boolean
     default: "false"
+  - name: artifact
+    type: string
 
 steps:
 - task: Npm@1
