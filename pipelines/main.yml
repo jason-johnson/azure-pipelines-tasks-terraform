@@ -62,7 +62,7 @@ stages:
       instance: main
       workingDir: $(System.DefaultWorkingDirectory)
 
-  - ${{ each tag in split($[ stageDependencies.setup.outputs['tags.tags'] ], ',')}}:
+  - ${{ each tag in split(stageDependencies.setup.outputs['tags.tags'], ',')}}:
     - job: ${{ tag }}_foo
       steps:
         - script: echo checkout tag ${{ tag }}
