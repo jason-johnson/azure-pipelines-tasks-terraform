@@ -67,7 +67,7 @@ stages:
       workingDir: $(System.DefaultWorkingDirectory)
 
   - ${{ each tag in split(parameters.tags, ',')}}:
-    - job: ${{ replace(tag, '.', '_') }}_foo
+    - job: foo_${{ replace(tag, '.', '_') }}
       steps:
         - script: echo checkout tag ${{ tag }}
 
