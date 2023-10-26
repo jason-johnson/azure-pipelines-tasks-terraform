@@ -69,6 +69,7 @@ stages:
   - ${{ each tag in split(parameters.tags, ',')}}:
     - job: foo_${{ replace(tag, '.', '_') }}
       steps:
+        - checkout: self@refs/tags/${{ tag }}
         - script: echo checkout tag ${{ tag }}
 
   - job: terraform_plan
