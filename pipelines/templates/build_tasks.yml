@@ -3,8 +3,6 @@ parameters:
     type: string
   - name: checkout
     default: self
-  - name: workingDir
-    type: string
 
 jobs:
   - job: terraform_cli_${{ parameters.instance }}
@@ -12,7 +10,7 @@ jobs:
       - checkout: ${{ parameters.checkout }}
       - template: build_npm.yml
         parameters:
-          workingDir: ${{ parameters.workingDir }}/tasks/terraform-cli
+          workingDir: $(System.DefaultWorkingDirectory)/tasks/terraform-cli
           artifact: ${{ parameters.instance }}_terraform_cli
           runTests: true
 
@@ -21,7 +19,7 @@ jobs:
       - checkout: ${{ parameters.checkout }}
       - template: build_npm.yml
         parameters:
-          workingDir: ${{ parameters.workingDir }}/tasks/terraform-installer
+          workingDir: $(System.DefaultWorkingDirectory)/tasks/terraform-installer
           artifact: ${{ parameters.instance }}_terraform_installer
 
 
