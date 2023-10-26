@@ -175,12 +175,12 @@ stages:
               artifact: terraform_extension
               path: $(System.DefaultWorkingDirectory)
           - task: DownloadPipelineArtifact@2
-            displayName: download terraform installer - 2
+            displayName: download terraform_installer@2
             inputs: 
               artifact: terraform_installer_main
               path: $(System.DefaultWorkingDirectory)/tasks/terraform-installer/v2
           - task: DownloadPipelineArtifact@2
-            displayName: download terraform cli - 2
+            displayName: download terraform_cli@2
             inputs:
               artifact: terraform_cli_main
               path: $(System.DefaultWorkingDirectory)/tasks/terraform-cli/v2
@@ -191,12 +191,12 @@ stages:
               path: $(System.DefaultWorkingDirectory)/views/terraform-plan
           - ${{ each tag in split(parameters.tags, ',')}}:
             - task: DownloadPipelineArtifact@2
-              displayName: download terraform installer - ${{ split(tag, '.')[0] }}
+              displayName: download terraform_installer@${{ split(tag, '.')[0] }}
               inputs: 
                 artifact: terraform_installer_${{ replace(tag, '.', '_') }}
                 path: $(System.DefaultWorkingDirectory)/tasks/terraform-installer/v${{ split(tag, '.')[0] }}
             - task: DownloadPipelineArtifact@2
-              displayName: download terraform cli - ${{ split(tag, '.')[0] }}
+              displayName: download terraform_cli@${{ split(tag, '.')[0] }}
               inputs: 
                 artifact: terraform_cli_${{ replace(tag, '.', '_') }}
                 path: $(System.DefaultWorkingDirectory)/tasks/terraform-cli/v${{ split(tag, '.')[0] }}
