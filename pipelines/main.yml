@@ -203,11 +203,13 @@ stages:
           - script: |
               find . -type f -maxdepth 5 -print
             displayName: display folders
+          - bash: echo "$(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch)"
+            displayName: show version string
           - task: TfxInstaller@3
             displayName: 'install tfx-cli'
             inputs:
               version: '0.8.x'
-              checkLatest: true  
+              checkLatest: true
           - bash: tfx extension unpublish 
               --publisher $(marketplace_publisher) 
               --extension-id azure-pipelines-tasks-terraform-rc
