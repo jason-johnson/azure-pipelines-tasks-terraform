@@ -117,3 +117,10 @@ stages:
         inputs:
           pathToPublish: '$(Build.ArtifactStagingDirectory)/terraform_templates'
           artifactName: terraform_templates
+
+  - job: terraform_extension
+    steps:
+      - template: templates/build_npm.yml
+        parameters:
+          workingDir: $(System.DefaultWorkingDirectory)
+          artifact: terraform_extension
