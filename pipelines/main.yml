@@ -120,7 +120,30 @@ stages:
 
   - job: terraform_extension
     steps:
-      - template: templates/build_npm.yml
-        parameters:
+      - task: Npm@1
+        displayName: version
+        inputs:
           workingDir: $(System.DefaultWorkingDirectory)
-          artifact: terraform_extension
+          command: custom
+          customCommand: version $(GitVersion.SemVer) --no-git-tag-version --allow-same-version
+      - task: Npm@1
+        displayName: install
+        inputs:
+          workingDir: $(System.DefaultWorkingDirectory)
+          command: ci
+      - task: CopyFiles@2
+        displayName: stage extension
+        inputs:
+          contents: |
+            !node_modules/.bin/*
+            screenshots/*
+            overview.md
+            package*.json
+            vss-extension*.json
+            vss-extension-icon.png
+            **/poll_task_install.sh
+          targetFolder: $(Build.ArtifactStagingDirectory)/terraform_extension
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathToPublish: '$(Build.ArtifactStagingDirectory)/terraform_extension'
+          artifactName: terraform_extension
