@@ -181,13 +181,13 @@ stages:
               path: $(System.DefaultWorkingDirectory)/tasks/terraform-installer/v2
           - task: DownloadPipelineArtifact@2
             displayName: download terraform cli - 2
-            inputs: 
+            inputs:
               artifact: terraform_cli_main
               path: $(System.DefaultWorkingDirectory)/tasks/terraform-cli/v2
           - task: DownloadPipelineArtifact@2
             displayName: download views terraform plan
             inputs: 
-              artifact: views_terraform_plan
+              artifact: terraform_plan
               path: $(System.DefaultWorkingDirectory)
           - ${{ each tag in split(parameters.tags, ',')}}:
             - task: DownloadPipelineArtifact@2
