@@ -149,7 +149,9 @@ stages:
           artifactName: terraform_extension
 
 - stage: publish
-  dependsOn: build
+  dependsOn:
+    - setup
+    - build
   variables:
     - group: env_rc
   jobs:
