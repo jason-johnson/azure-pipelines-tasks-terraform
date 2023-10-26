@@ -80,10 +80,11 @@ stages:
       workingDir: $(System.DefaultWorkingDirectory)
 
   - ${{ each tag in split(parameters.tags, ',')}}:
-    - job: foo_${{ replace(tag, '.', '_') }}
-      steps:
-        - checkout: repo_${{ replace(tag, '.', '_') }}
-        - script: echo checkout tag ${{ tag }}
+    - template: templates/build_tasks.yml
+      parameters:
+        checkout: repo_${{ replace(tag, '.', '_') }}
+        instance: ${{ replace(tag, '.', '_') }}
+        workingDir: $(System.DefaultWorkingDirectory)
 
   - job: terraform_plan
     steps:

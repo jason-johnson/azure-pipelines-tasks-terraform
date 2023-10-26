@@ -1,12 +1,15 @@
 parameters:
   - name: instance
     type: string
+  - name: checkout
+    default: self
   - name: workingDir
     type: string
 
 jobs:
   - job: terraform_cli_${{ parameters.instance }}
     steps:
+      - checkout: ${{ parameters.checkout }}
       - template: build_npm.yml
         parameters:
           workingDir: ${{ parameters.workingDir }}/tasks/terraform-cli
@@ -15,6 +18,7 @@ jobs:
 
   - job: terraform_installer_${{ parameters.instance }}
     steps:
+      - checkout: ${{ parameters.checkout }}
       - template: build_npm.yml
         parameters:
           workingDir: ${{ parameters.workingDir }}/tasks/terraform-installer
