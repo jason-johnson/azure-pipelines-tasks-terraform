@@ -5,7 +5,7 @@ parameters:
     type: string
 
 jobs:
-  - job: ${{ parameters.instance }}_terraform_cli
+  - job: terraform_cli_${{ parameters.instance }}
     steps:
       - template: build_npm.yml
         parameters:
@@ -13,7 +13,7 @@ jobs:
           artifact: ${{ parameters.instance }}_terraform_cli
           runTests: true
 
-  - job: ${{ parameters.instance }}_terraform_installer
+  - job: terraform_installer_${{ parameters.instance }}
     steps:
       - template: build_npm.yml
         parameters:
