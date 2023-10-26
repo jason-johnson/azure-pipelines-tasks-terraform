@@ -13,9 +13,9 @@
         "default": "vss-extension-icon.png"
     },
     "files": [
-        { "path": "tasks/terraform-cli/.dist", "packagePath": "TerraformCLI" },
-        { "path": "tasks/terraform-installer/.dist", "packagePath": "TerraformInstaller" },
-        { "path": "views/terraform-plan/.dist", "addressable": true}
+        { "path": "tasks/terraform-cli/", "packagePath": "TerraformCLI" },
+        { "path": "tasks/terraform-installer/", "packagePath": "TerraformInstaller" },
+        { "path": "views/terraform-plan/", "addressable": true}
     ],
     "repository" : {
         "type" : "git",
