@@ -43,8 +43,9 @@ steps:
 - task: CopyFiles@2
   displayName: stage artifacts
   inputs:
+    sourceFolder: ${{ parameters.workingDir }}/.dist/
     contents: |
-      ${{ parameters.workingDir }}/.dist/**/*
+      **/*
     targetFolder: $(Build.ArtifactStagingDirectory)
 - publish: '$(Build.ArtifactStagingDirectory)'
   artifact: ${{ parameters.artifact }}
