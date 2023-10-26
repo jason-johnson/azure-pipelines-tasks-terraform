@@ -186,7 +186,7 @@ stages:
               path: $(System.DefaultWorkingDirectory)/tasks/terraform-cli/v2
           - task: DownloadPipelineArtifact@2
             displayName: download views terraform plan
-            inputs: 
+            inputs:
               artifact: terraform_plan
               path: $(System.DefaultWorkingDirectory)
           - ${{ each tag in split(parameters.tags, ',')}}:
@@ -200,3 +200,6 @@ stages:
               inputs: 
                 artifact: terraform_cli_${{ replace(tag, '.', '_') }}
                 path: $(System.DefaultWorkingDirectory)/tasks/terraform-cli/v${{ split(tag, '.')[0] }}
+          - script: |
+              find . -type f -print
+            displayName: display folders
