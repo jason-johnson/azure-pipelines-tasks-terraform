@@ -19,13 +19,14 @@ parameters:
     type: string
     default: "1.0.5,0.7.11"
 
-repositories:
-  - ${{ each tag in split(parameters.tags, ',')}}:
-    - repository: repo_${{ replace(tag, '.', '_') }}
-      endpoint: "azure-pipelines-terraform-rc (1)"
-      name: jason-johnson/azure-pipelines-tasks-terraform
-      ref: refs/tags/${{ tag }}
-      type: github
+resources: 
+  repositories:
+    - ${{ each tag in split(parameters.tags, ',')}}:
+      - repository: repo_${{ replace(tag, '.', '_') }}
+        endpoint: "azure-pipelines-terraform-rc (1)"
+        name: jason-johnson/azure-pipelines-tasks-terraform
+        ref: refs/tags/${{ tag }}
+        type: github
   
 variables:
   Agent.Source.Git.ShallowFetchDepth: 0
