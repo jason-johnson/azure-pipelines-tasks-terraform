@@ -147,3 +147,56 @@ stages:
         inputs:
           pathToPublish: '$(Build.ArtifactStagingDirectory)/terraform_extension'
           artifactName: terraform_extension
+
+- stage: publish
+  dependsOn: build
+  variables:
+    - group: env_rc
+  jobs:
+  - deployment: publish_private_rc
+    displayName: publish private rc
+    environment: marketplace_rc
+    variables:
+        - name: GitVersion.SemVer
+          value: $[ stageDependencies.setup.version.outputs['version.GitVersion.SemVer'] ]
+        - name: GitVersion.Major
+          value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Major'] ]
+        - name: GitVersion.Minor
+          value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Minor'] ]
+        - name: GitVersion.Patch
+          value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Patch'] ]
+    strategy:
+      runOnce:
+        deploy:
+          steps:    
+          - task: DownloadPipelineArtifact@2
+            displayName: download terraform extension
+            inputs: 
+              artifact: terraform_extension
+              path: $(System.DefaultWorkingDirectory)
+          - task: DownloadPipelineArtifact@2
+            displayName: download terraform installer - 2
+            inputs: 
+              artifact: terraform_installer_main
+              path: $(System.DefaultWorkingDirectory)/tasks/terraform-installer/v2
+          - task: DownloadPipelineArtifact@2
+            displayName: download terraform cli - 2
+            inputs: 
+              artifact: terraform_cli_main
+              path: $(System.DefaultWorkingDirectory)/tasks/terraform-cli/v2
+          - task: DownloadPipelineArtifact@2
+            displayName: download views terraform plan
+            inputs: 
+              artifact: views_terraform_plan
+              path: $(System.DefaultWorkingDirectory)
+          - ${{ each tag in split(parameters.tags, ',')}}:
+            - task: DownloadPipelineArtifact@2
+              displayName: download terraform installer - ${{ split(tag, '.')[0] }}
+              inputs: 
+                artifact: terraform_installer_${{ replace(tag, '.', '_') }}
+                path: $(System.DefaultWorkingDirectory)/tasks/terraform-installer/v${{ split(tag, '.')[0] }}
+            - task: DownloadPipelineArtifact@2
+              displayName: download terraform cli - ${{ split(tag, '.')[0] }}
+              inputs: 
+                artifact: terraform_cli_${{ replace(tag, '.', '_') }}
+                path: $(System.DefaultWorkingDirectory)/tasks/terraform-cli/v${{ split(tag, '.')[0] }}
