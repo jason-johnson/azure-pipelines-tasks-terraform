@@ -188,7 +188,7 @@ stages:
             displayName: download views terraform plan
             inputs:
               artifact: terraform_plan
-              path: $(System.DefaultWorkingDirectory)
+              path: $(System.DefaultWorkingDirectory)/views/terraform-plan
           - ${{ each tag in split(parameters.tags, ',')}}:
             - task: DownloadPipelineArtifact@2
               displayName: download terraform installer - ${{ split(tag, '.')[0] }}
