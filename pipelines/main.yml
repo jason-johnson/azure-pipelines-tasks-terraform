@@ -203,3 +203,40 @@ stages:
           - script: |
               find . -type f -maxdepth 5 -print
             displayName: display folders
+          - task: TfxInstaller@3
+            displayName: 'install tfx-cli'
+            inputs:
+              version: '0.8.x'
+              checkLatest: true  
+          - bash: tfx extension unpublish 
+              --publisher $(marketplace_publisher) 
+              --extension-id azure-pipelines-tasks-terraform-rc
+              -t $(marketplace_access_token)
+            displayName: unpublish extension
+          - task: PublishAzureDevOpsExtension@4
+            name: publish
+            inputs:
+              connectedServiceName: 'marketplace_jasonbjohnson'
+              rootFolder: $(System.DefaultWorkingDirectory)
+              patternManifest: |
+               vss-extension.json
+               vss-extension-rc.json
+              extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch)
+              shareWith: $(marketplace_share_with)
+          - task: InstallAzureDevOpsExtension@4
+            displayName: 'Install Extension'
+            inputs:
+              connectedServiceName: 'marketplace_jasonbjohnson'
+              publisherId: $(marketplace_publisher)
+              extensionId: azure-pipelines-tasks-terraform-rc
+              accounts: $(ado_service_url)
+          - task: Bash@3
+            name: wait_tasks_terraform_installer
+            inputs:
+              filePath: $(Build.SourcesDirectory)/pipelines/publish/poll_task_install.sh
+              arguments: -s $(ado_service_url) -t $(organization_access_token) -c 2b4600b9-5cd9-4e3b-9c8b-553c8e58383a          
+          - task: Bash@3
+            name: wait_tasks_terraform_cli
+            inputs:
+              filePath: $(terraform_extension_dir)/pipelines/publish/poll_task_install.sh
+              arguments: -s $(ado_service_url) -t $(organization_access_token) -c 51355d76-dd54-4754-919d-bba27fdf59e4
