@@ -203,6 +203,8 @@ stages:
           value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Minor'] ]
         - name: GitVersion.Patch
           value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Patch'] ]
+        - name: GitVersion.CommitsSinceVersionSource
+          value: $[ stageDependencies.setup.version.outputs['version.GitVersion.CommitsSinceVersionSource'] ]
     strategy:
       runOnce:
         deploy:
@@ -241,7 +243,7 @@ stages:
           - script: |
               find . -type f -maxdepth 5 -print
             displayName: display folders
-          - bash: echo "$(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch)"
+          - bash: echo "$(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch).$(GitVersion.CommitsSinceVersionSource)"
             displayName: show version string
           - task: TfxInstaller@3
             displayName: 'install tfx-cli'
@@ -261,7 +263,7 @@ stages:
               patternManifest: |
                vss-extension.json
                vss-extension-rc.json
-              extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch)
+              extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch).$(GitVersion.CommitsSinceVersionSource)
               shareWith: $(marketplace_share_with)
           - task: InstallAzureDevOpsExtension@4
             displayName: 'Install Extension'
