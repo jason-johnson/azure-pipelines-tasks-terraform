@@ -235,6 +235,42 @@ stages:
               publisherId: $(marketplace_publisher)
               extensionId: azure-pipelines-tasks-terraform-rc
               accounts: $(ado_service_url)
+
+          - bash: |
+              echo "Major: ${{ GitVersion_Major }}"
+              echo "Minor: ${{ GitVersion_Minor }}"
+              echo "Patch: ${{ GitVersion_Patch }}"
+              echo "PreReleaseTag: ${{ GitVersion_PreReleaseTag }}"
+              echo "PreReleaseTagWithDash: ${{ GitVersion_PreReleaseTagWithDash }}"
+              echo "PreReleaseLabel: ${{ GitVersion_PreReleaseLabel }}"
+              echo "PreReleaseNumber: ${{ GitVersion_PreReleaseNumber }}"
+              echo "WeightedPreReleaseNumber: ${{ GitVersion_WeightedPreReleaseNumber }}"
+              echo "BuildMetaData: ${{ GitVersion_BuildMetaData }}"
+              echo "BuildMetaDataPadded: ${{ GitVersion_BuildMetaDataPadded }}"
+              echo "FullBuildMetaData: ${{ GitVersion_FullBuildMetaData }}"
+              echo "MajorMinorPatch: ${{ GitVersion_MajorMinorPatch }}"
+              echo "SemVer: ${{ GitVersion_SemVer }}"
+              echo "LegacySemVer: ${{ GitVersion_LegacySemVer }}"
+              echo "LegacySemVerPadded: ${{ GitVersion_LegacySemVerPadded }}"
+              echo "AssemblySemVer: ${{ GitVersion_AssemblySemVer }}"
+              echo "AssemblySemFileVer: ${{ GitVersion_AssemblySemFileVer }}"
+              echo "FullSemVer: ${{ GitVersion_FullSemVer }}"
+              echo "InformationalVersion: ${{ GitVersion_InformationalVersion }}"
+              echo "BranchName: ${{ GitVersion_BranchName }}"
+              echo "EscapedBranchName: ${{ GitVersion_EscapedBranchName }}"
+              echo "Sha: ${{ GitVersion_Sha }}"
+              echo "ShortSha: ${{ GitVersion_ShortSha }}"
+              echo "NuGetVersionV2: ${{ GitVersion_NuGetVersionV2 }}"
+              echo "NuGetVersion: ${{ GitVersion_NuGetVersion }}"
+              echo "NuGetPreReleaseTagV2: ${{ GitVersion_NuGetPreReleaseTagV2 }}"
+              echo "NuGetPreReleaseTag: ${{ GitVersion_NuGetPreReleaseTag }}"
+              echo "VersionSourceSha: ${{ GitVersion_VersionSourceSha }}"
+              echo "CommitsSinceVersionSource: ${{ GitVersion_CommitsSinceVersionSource }}"
+              echo "CommitsSinceVersionSourcePadded: ${{ GitVersion_CommitsSinceVersionSourcePadded }}"
+              echo "UncommittedChanges: ${{ GitVersion_UncommittedChanges }}"
+              echo "CommitDate: ${{ GitVersion_CommitDate }}"
+            displayName: Display GitVersion variables (with prefix)
+
           - task: Bash@3
             name: wait_tasks_terraform_installer
             inputs:
