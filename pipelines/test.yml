@@ -5,10 +5,7 @@ resources:
   pipelines:
   - pipeline: main
     source: main
-    branch: package-versions-2
-    trigger:
-      branches:
-      - '*'
+    trigger: true
 
 steps:
 - bash: echo "test runs after main completes"
