@@ -1,0 +1,8 @@
+resources:
+  pipelines:
+  - pipeline: main # Name of the pipeline resource.
+    source: main # The name of the pipeline referenced by this pipeline resource.
+    trigger: true
+
+steps:
+- bash: echo "test runs after main completes"
