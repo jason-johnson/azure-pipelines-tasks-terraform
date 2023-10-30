@@ -45,8 +45,6 @@ name: $(GitVersion.FullSemVer)
 
 stages:
 - stage: setup
-  variables:
-    - group: build
   jobs:
   - job: version
     steps:
