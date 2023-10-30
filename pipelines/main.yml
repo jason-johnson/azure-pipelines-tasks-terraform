@@ -73,6 +73,7 @@ stages:
       value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Minor'] ]
     - name: GitVersion.Patch
       value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Patch'] ]
+    - group: build
   jobs:
   - template: templates/build_tasks.yml
     parameters:
