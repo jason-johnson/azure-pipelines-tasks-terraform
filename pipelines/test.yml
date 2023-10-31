@@ -7,6 +7,9 @@ resources:
     source: main
     trigger: true
 
+variables:
+  tf_variables_secure_file: 4a0c36e2-bb51-41ed-87b1-2e668c64bb69
+
 stages:
 - template: templates/integration_tests.yml
   parameters:
