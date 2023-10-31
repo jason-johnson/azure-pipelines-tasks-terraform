@@ -6,6 +6,7 @@ jobs:
       inputs:
         buildType: specific
         pipeline: main
+        project: azure-pipelines-terraform-rc
         artifact: terraform_templates
         path: $(terraform_extension_dir)
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@1
