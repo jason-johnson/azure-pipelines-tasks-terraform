@@ -5,12 +5,12 @@ jobs:
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
+    - task: TerraformCLI@2
       displayName: 'check version'
       inputs:
         command: version
         workingDirectory: $(terraform_templates_dir)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
+    - task: TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init
@@ -25,7 +25,7 @@ jobs:
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: azurerm_mgmt_group_service_connection.tfstate
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
+    - task: TerraformCLI@2
       displayName: 'terraform plan'
       inputs:
         command: plan
@@ -34,7 +34,7 @@ jobs:
         providerAzureRmSubscriptionId: $(azure_subscription_id)
         secureVarsFile: azurerm-mgmt-group-scope.vars
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode'
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
+    - task: TerraformCLI@2
       displayName: 'terraform apply'
       inputs:
         command: apply
@@ -42,7 +42,7 @@ jobs:
         environmentServiceName: 'env_test_mgmt'
         providerAzureRmSubscriptionId: $(azure_subscription_id)
         commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
+    - task: TerraformCLI@2
       displayName: 'terraform destroy'
       inputs:
         command: destroy

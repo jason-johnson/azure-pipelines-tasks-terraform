@@ -5,7 +5,7 @@ jobs:
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
+    - task: TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init
@@ -19,7 +19,7 @@ jobs:
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: plan_with_comand_options_var_file.tfstate
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
+    - task: TerraformCLI@2
       displayName: 'terraform plan'
       inputs:
         command: plan

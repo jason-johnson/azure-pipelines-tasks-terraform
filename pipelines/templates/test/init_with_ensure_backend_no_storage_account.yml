@@ -9,7 +9,7 @@ jobs:
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
+    - task: TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init
