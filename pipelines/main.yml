@@ -103,19 +103,6 @@ stages:
           testResultsFiles: 'results.xml'
           searchFolder: $(System.DefaultWorkingDirectory)/views/terraform-plan/.tests
 
-  - job: terraform_templates
-    steps:
-      - task: CopyFiles@2
-        displayName: terraform templates
-        inputs:
-          contents: |   
-            templates/**/*
-          targetFolder: $(Build.ArtifactStagingDirectory)/terraform_templates
-      - task: PublishBuildArtifacts@1
-        inputs:
-          pathToPublish: '$(Build.ArtifactStagingDirectory)/terraform_templates'
-          artifactName: terraform_templates
-
   - job: terraform_extension
     steps:
       - task: Npm@1
