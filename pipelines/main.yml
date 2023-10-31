@@ -190,9 +190,14 @@ stages:
                 artifact: terraform_cli_${{ replace(tag, '.', '_') }}
                 path: $(System.DefaultWorkingDirectory)/tasks/terraform-cli/v${{ split(tag, '.')[0] }}
 
-          # TODO: Remove this
+          # TODO: Remove this block
           - bash: echo "$(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch).$(GitVersion.CommitsSinceVersionSource)"
             displayName: show version string
+
+          - bash: find . -type f -maxdepth 5 -print
+            displayName: show folders
+
+          # TODO: end remove block
 
           - task: TfxInstaller@3
             displayName: 'install tfx-cli'
