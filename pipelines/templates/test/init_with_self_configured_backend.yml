@@ -9,7 +9,7 @@ jobs:
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@1
       displayName: install terraform
       inputs:
-        terraformVersion: 1.0.10
+        terraformVersion: $(terraformVersion)
     - task: DownloadSecureFile@1
       name: backend_config_file
       displayName: 'download backend config file'

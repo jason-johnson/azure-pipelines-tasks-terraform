@@ -7,13 +7,15 @@ jobs:
   steps:
     - task: DownloadPipelineArtifact@2
       displayName: download terraform templates
-      inputs: 
+      inputs:
+        buildType: specific
+        pipeline: main
         artifact: terraform_templates
         path: $(terraform_extension_dir)
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@1
       displayName: install terraform
       inputs:
-        terraformVersion: 1.0.10
+        terraformVersion: $(terraformVersion)
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
       displayName: 'terraform init'
       inputs:
