@@ -1,11 +1,15 @@
 parameters:
   - name: instance
     type: string
+  - name: majorNumber
+    type: string
   - name: checkout
     default: self
 
 jobs:
   - job: terraform_cli_${{ parameters.instance }}
+    variables:
+      majorNumber: ${{ parameters.majorNumber }}
     steps:
       - checkout: ${{ parameters.checkout }}
       - template: build_npm.yml
@@ -15,6 +19,8 @@ jobs:
           runTests: true
 
   - job: terraform_installer_${{ parameters.instance }}
+    variables:
+      majorNumber: ${{ parameters.majorNumber }}
     steps:
       - checkout: ${{ parameters.checkout }}
       - template: build_npm.yml

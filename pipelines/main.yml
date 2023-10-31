@@ -18,6 +18,8 @@ parameters:
   - name: tags
     type: string
     default: "1.0.5,0.7.11"
+  - name: experimentalVersion
+    default: "2"
 
 resources: 
   repositories:
@@ -75,12 +77,14 @@ stages:
   - template: templates/build_tasks.yml
     parameters:
       instance: main
+      majorNumber: ${{ parameters.experimentalVersion }}
 
   - ${{ each tag in split(parameters.tags, ',')}}:
     - template: templates/build_tasks.yml
       parameters:
         checkout: repo_${{ replace(tag, '.', '_') }}
         instance: ${{ replace(tag, '.', '_') }}
+        majorNumber: ${{ split(tag, '.')[0] }}
 
   - job: terraform_plan
     steps:
@@ -167,12 +171,12 @@ stages:
             displayName: download terraform_installer@2
             inputs: 
               artifact: terraform_installer_main
-              path: $(System.DefaultWorkingDirectory)/tasks/terraform-installer/v2
+              path: $(System.DefaultWorkingDirectory)/tasks/terraform-installer/v${{ parameters.experimentalVersion }}
           - task: DownloadPipelineArtifact@2
             displayName: download terraform_cli@2
             inputs:
               artifact: terraform_cli_main
-              path: $(System.DefaultWorkingDirectory)/tasks/terraform-cli/v2
+              path: $(System.DefaultWorkingDirectory)/tasks/terraform-cli/v${{ parameters.experimentalVersion }}
           - task: DownloadPipelineArtifact@2
             displayName: download views terraform plan
             inputs:
@@ -196,7 +200,6 @@ stages:
 
           - bash: find . -type f -maxdepth 5 -print
             displayName: show folders
-
           # TODO: end remove block
 
           - task: TfxInstaller@3
