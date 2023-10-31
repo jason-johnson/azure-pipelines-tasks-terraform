@@ -3,11 +3,11 @@ jobs:
   variables: 
     test_templates_dir: $(terraform_templates_dir)/aws
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init
@@ -18,25 +18,25 @@ jobs:
         # AWS_DEFAULT_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
         # see also https://www.terraform.io/docs/language/settings/backends/s3.html#configuration
         secureVarsFile: self-configured-aws.env
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: 'terraform validate'
       inputs:
         workingDirectory: $(test_templates_dir)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: 'terraform plan'
       inputs:
         command: plan
         workingDirectory: $(test_templates_dir)
         secureVarsFile: self-configured-aws.env
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: 'terraform apply'
       inputs:
         command: apply
         workingDirectory: $(test_templates_dir)
         secureVarsFile: self-configured-aws.env
         commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: 'terraform destroy'
       inputs:
         command: destroy

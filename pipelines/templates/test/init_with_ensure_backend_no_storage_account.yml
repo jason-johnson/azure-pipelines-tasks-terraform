@@ -5,11 +5,11 @@ jobs:
     backend_arm_storage_name: sttrfrmrcnchjbj
     backend_arm_storage_container: azure-pipelines-terraform
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init

@@ -3,11 +3,11 @@ jobs:
   variables: 
     test_templates_dir: $(terraform_templates_dir)/version11
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
       displayName: install terraform
       inputs:
         terraformVersion: 0.11.14
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init

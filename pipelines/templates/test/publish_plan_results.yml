@@ -1,11 +1,11 @@
 jobs:
 - job: publish_plan_results_rc
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init
@@ -19,7 +19,7 @@ jobs:
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: publish_plan_results.tfstate
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: 'terraform plan'
       inputs:
         command: plan

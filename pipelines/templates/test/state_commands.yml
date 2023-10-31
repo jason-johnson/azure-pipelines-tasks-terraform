@@ -1,11 +1,11 @@
 jobs:
 - job: state_commands_rc
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init
@@ -19,20 +19,20 @@ jobs:
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: state_commands.tfstate
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: 'terraform apply'
       inputs:
         command: apply
         workingDirectory: $(terraform_templates_dir)
         environmentServiceName: 'env_test'
         secureVarsFile: state_commands.vars
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: list terraform resources
       inputs:
         workingDirectory: $(terraform_templates_dir)
         command: state
         stateSubCommand: list
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: mv terraform resource
       inputs:
         workingDirectory: $(terraform_templates_dir)
@@ -40,7 +40,7 @@ jobs:
         stateSubCommand: mv
         stateMoveSource: random_string.rs
         stateMoveDestination: random_string.rs_new
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: mv back terraform resource
       inputs:
         workingDirectory: $(terraform_templates_dir)
@@ -48,7 +48,7 @@ jobs:
         stateSubCommand: mv
         stateMoveSource: random_string.rs_new
         stateMoveDestination: random_string.rs
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@2
       displayName: rm terraform resource
       inputs:
         workingDirectory: $(terraform_templates_dir)
