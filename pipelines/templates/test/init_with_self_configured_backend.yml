@@ -10,7 +10,7 @@ jobs:
       displayName: 'download backend config file'
       inputs:
         secureFile: 'backend_rc.vars'
-    - task: TerraformCLI@21
+    - task: TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init
