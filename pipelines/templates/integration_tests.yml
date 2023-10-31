@@ -20,5 +20,3 @@ stages:
   jobs:
     - ${{ each scenario in parameters.scenarios }}:
       - template: ${{ scenario }}
-        parameters:
-          stage: rc

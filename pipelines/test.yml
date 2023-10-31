@@ -11,16 +11,16 @@ stages:
 - template: templates/integration_tests.yml
   parameters:
     scenarios:
-      - smoke_test.yml
-      - publish_plan_results.yml
-      - plan_with_command_options_var_file.yml
-      - local_exec_az_cli.yml
-      - init_with_ensure_backend_no_storage_account.yml
-      - init_with_self_configured_backend.yml
-      - switch_workspaces.yml
-      # - aws_self_configured.yml
-      # - aws_service_connection.yml
-      - init_without_ensure_backend.yml
-      # - gcp_credential_file.yml
-      # - azurerm_mgmt_group_service_connection.yml       # will need another subscription to do this one
-      - state_commands.yml
+      - test/smoke_test.yml
+      - test/publish_plan_results.yml
+      - test/plan_with_command_options_var_file.yml
+      - test/local_exec_az_cli.yml
+      - test/init_with_ensure_backend_no_storage_account.yml
+      - test/init_with_self_configured_backend.yml
+      - test/switch_workspaces.yml
+      # - test/aws_self_configured.yml
+      # - test/aws_service_connection.yml
+      - test/init_without_ensure_backend.yml
+      # - test/gcp_credential_file.yml
+      # - test/azurerm_mgmt_group_service_connection.yml       # will need another subscription to do this one
+      - test/state_commands.yml
