@@ -1,7 +1,7 @@
 jobs:
 - job: init_with_self_configured_backend_rc
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@1
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)

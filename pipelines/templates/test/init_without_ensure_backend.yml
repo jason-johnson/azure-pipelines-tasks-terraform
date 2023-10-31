@@ -1,11 +1,11 @@
 jobs:
 - job: init_without_ensure_backend_rc
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@1
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
       displayName: 'terraform init'
       inputs:
         command: init

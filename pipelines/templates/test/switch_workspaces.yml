@@ -9,11 +9,11 @@ jobs:
         project: azure-pipelines-terraform-rc
         artifact: terraform_templates
         path: $(terraform_extension_dir)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@1
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
       displayName: 'terraform init'
       inputs:
         command: init
@@ -27,14 +27,14 @@ jobs:
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: workspace_switch.tfstate
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
       displayName: new workspace foo
       inputs:
         workingDirectory: $(terraform_templates_dir)
         command: workspace        
         workspaceSubCommand: new
         workspaceName: foo
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
       displayName: new workspace foo skip existing
       inputs:
         workingDirectory: $(terraform_templates_dir)
@@ -42,7 +42,7 @@ jobs:
         workspaceSubCommand: new
         workspaceName: foo
         skipExistingWorkspace: true
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-cli.TerraformCLI
       displayName: select workspace default
       inputs:
         workingDirectory: $(terraform_templates_dir)
