@@ -1,13 +1,6 @@
 jobs:
 - job: azurerm_mgmt_group_service_connection_rc
   steps:
-    - task: DownloadPipelineArtifact@2
-      displayName: download terraform templates
-      inputs:
-        buildType: specific
-        pipeline: main
-        artifact: terraform_templates
-        path: $(terraform_extension_dir)
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
       displayName: install terraform
       inputs:

@@ -1,11 +1,6 @@
 jobs:
 - job: init_with_self_configured_backend_rc
   steps:
-    - task: DownloadPipelineArtifact@2
-      displayName: download terraform templates
-      inputs: 
-        artifact: terraform_templates
-        path: $(terraform_extension_dir)
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@1
       displayName: install terraform
       inputs:
