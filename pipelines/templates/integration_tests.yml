@@ -1,0 +1,23 @@
+parameters:
+  - name: scenarios
+    default: []
+
+stages:
+- stage: test_rc
+  variables:
+    - group: env_rc
+    - name: backendAzureRmResourceGroupName
+      value: rg-trfrm-rc-chn-jbj
+    - name: backendAzureRmResourceGroupLocation
+      value: switzerlandnorth
+    - name: backendAzureRmStorageAccountName
+      value: sttrfrmrcchnjbj
+    - name: backendAzureRmStorageAccountSku
+      value: Standard_RAGRS
+    - name: backendAzureRmContainerName
+      value: azure-pipelines-terraform
+  jobs:
+    - ${{ each scenario in parameters.scenarios }}:
+      - template: ${{ scenario }}
+        parameters:
+          stage: rc
