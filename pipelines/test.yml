@@ -15,6 +15,7 @@ resources:
     trigger: true
 
 variables:
+  Agent.Source.Git.ShallowFetchDepth: 0
   tf_variables_secure_file: 4a0c36e2-bb51-41ed-87b1-2e668c64bb69
   terraform_templates_dir: $(System.DefaultWorkingDirectory)/templates
   terraformVersion: 1.0.10
