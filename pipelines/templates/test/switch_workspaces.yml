@@ -1,16 +1,6 @@
 jobs:
 - job: switch_workspaces_rc
   steps:
-    # TODO: This is only here to try and force the pipeline trigger to fire.  I'm not sure if it will if there are no artifacts used from the other pipeline
-    - task: DownloadPipelineArtifact@2
-      displayName: download terraform templates
-      inputs:
-        buildType: specific
-        pipeline: main
-        project: azure-pipelines-terraform-rc
-        artifact: terraform_extension
-        path: $(System.DefaultWorkingDirectory)/test_please_remove
-    # TODO: end of test - please remove if we prove it's not needed
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
       displayName: install terraform
       inputs:
