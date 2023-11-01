@@ -39,6 +39,7 @@ stages:
       - test/state_commands.yml
 
 - stage: publish_public
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
   variables:
     - group: env_rc
   jobs:
