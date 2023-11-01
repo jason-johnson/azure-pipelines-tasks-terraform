@@ -201,11 +201,7 @@ stages:
           - bash: find . -type f -maxdepth 5 -print
             displayName: show folders
           # TODO: end remove block
-
-          - task: PublishBuildArtifacts@1
-            inputs:
-              pathToPublish: $(System.DefaultWorkingDirectory)
-              artifactName: terraform_extension_final
+          
           - task: TfxInstaller@3
             displayName: 'install tfx-cli'
             inputs:
