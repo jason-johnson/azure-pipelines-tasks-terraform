@@ -164,8 +164,8 @@ stages:
           steps:    
           - template: templates/download_artifacts.yml
             parameters:
-              tags: ${{ parameters.tags )}}
-              experimentalVersion: ${{ parameters.experimentalVersion )}}
+              tags: ${{ parameters.tags }}
+              experimentalVersion: ${{ parameters.experimentalVersion }}
 
           # TODO: Remove this block
           - bash: echo "$(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch).$(GitVersion.CommitsSinceVersionSource)"
