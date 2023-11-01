@@ -125,7 +125,7 @@ stages:
             inputs:
               connectTo: 'VsTeam'
               connectedServiceName: 'marketplace_jasonbjohnson'
-              cwd: $(terraform_extension_dir)
+              cwd:  $(System.DefaultWorkingDirectory)
               extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch).$(GitVersion.CommitsSinceVersionSource)
               patternManifest: |
                 vss-extension.json
