@@ -39,7 +39,7 @@ stages:
 
 - stage: publish_public
   variables:
-    - group: env_ga
+    - group: env_rc
   jobs:
   - job: version
     steps:
