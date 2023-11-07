@@ -46,6 +46,12 @@ The Terraform CLI task supports the following terraform backends
 
 The tasks can execute on all supported build agent operating systems **including Ubuntu and MacOS**.
 
+## (NEW) Task versions
+
+All tasks supported by this extension (TerraformCLI and TerraformInstaller) support different versions.  Each version will be the highest tag of that major version.  There is also always one version which is higher than the highest major version tag: *this version is unstable*.
+
+For example, currently  TerraformCLI@0 and TerraformInstaller@0 will point to the version with the tag 0.7.11.  TerraformCLI@1 and TerraformInstaller@1 will point to the version with the tag 1.1.0 and TerraformCLI@2 and TerraformInstaller@2 will point to the unstable version, basically the latest version which has been published to the main branch of the project.
+
 ## Separate Task for Terraform Installation
 
 The dedicated `Terraform Installer` task allows for complete control over how frequently and on which agents terraform is installed. This prevents from having to install terraform before executing each terraform task. However, if necessary, this can be installed multiple times to support pipelines that span multiple build agents
@@ -55,7 +61,7 @@ The dedicated `Terraform Installer` task allows for complete control over how fr
 The installer task supports installing the latest terraform version by using the keyword `latest` as the version specified. This is the default option when the installer is added to a pipeline. Specifying latest will instruct the task to lookup and install the latest version of the terraform executable.
 
 ```yaml
-- task: TerraformInstaller
+- task: TerraformInstaller@1
   displayName: install terraform
   inputs:
     terraformVersion: latest
@@ -64,14 +70,14 @@ The installer task supports installing the latest terraform version by using the
 If `terraformVersion` not provided, task defaults to `latest`
 
 ```yaml
-- task: TerraformInstaller
+- task: TerraformInstaller@1
   displayName: install terraform
 ```
 
 ### Install Specific Version
 
 ```yaml
-- task: TerraformInstaller
+- task: TerraformInstaller@1
   displayName: install terraform
   inputs:
     terraformVersion: 0.14.3
@@ -103,7 +109,7 @@ The TerraformCLI task supports configuring the following public cloud providers.
 When executing commands that interact with Azure such as `plan`, `apply`, and `destroy`, the task will utilize an Azure Service Connection to authorize operations against the target subscription. This is specified via the `environmentServiceName` input
 
 ```yaml
-- task: TerraformCLI
+- task: TerraformCLI@1
   displayName: 'terraform apply'
   inputs:
     command: apply
@@ -177,7 +183,7 @@ resource "azurerm_storage_account" "st_core" {
 When executing commands that interact with AWS such as `plan`, `apply`, and `destroy`, the task can utilize AWS Service Connection to authorize operations. This is specified via the `providerServiceAws` input. The region can also be provided via `providerAwsRegion` input.
 
 ```yaml
-- task: TerraformCLI
+- task: TerraformCLI@1
   displayName: 'terraform apply'
   inputs:
     command: apply
@@ -226,7 +232,7 @@ The task currently supports the following backend configurations
 If azurerm selected, the task will prompt for a service connection and storage account details to use for the backend. *The task supports both Subscription and Management Group scoped service connections*
 
 ```yaml
-- task: TerraformCLI
+- task: TerraformCLI@0
   displayName: 'terraform init'
   inputs:
     command: init
