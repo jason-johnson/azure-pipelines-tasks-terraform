@@ -1,0 +1,29 @@
+parameters:
+  - name: workingDir
+    type: string
+
+steps:
+  - task: Npm@1
+    displayName: test - report coverage
+    inputs:  
+      workingDir: ${{ parameters.workingDir }}
+      command: custom
+      customCommand: run test:coverage
+  - task: PublishCodeCoverageResults@1
+    displayName: test - publish coverage
+    inputs:
+      codeCoverageTool: cobertura
+      summaryFileLocation: ${{ parameters.workingDir }}/.tests/coverage/cobertura-coverage.xml
+      reportDirectory: ${{ parameters.workingDir }}/.tests/coverage
+  - task: Npm@1
+    displayName: test - report results
+    inputs:            
+      workingDir: ${{ parameters.workingDir }}
+      command: custom
+      customCommand: run test:report
+  - task: PublishTestResults@2
+    displayName: test - publish results
+    inputs:
+      testResultsFormat: JUnit
+      testResultsFiles: 'results.xml' 
+      searchFolder: ${{ parameters.workingDir }}/.tests    

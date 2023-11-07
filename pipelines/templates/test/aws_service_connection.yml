@@ -1,21 +1,13 @@
-parameters:
-  stage: ''
-
 jobs:
-- job: aws_service_connection_${{ parameters.stage }}
+- job: aws_service_connection_rc
   variables: 
     test_templates_dir: $(terraform_templates_dir)/aws
   steps:
-    - task: DownloadPipelineArtifact@2
-      displayName: download terraform templates
-      inputs: 
-        artifact: terraform_templates
-        path: $(terraform_extension_dir)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
       displayName: install terraform
       inputs:
-        terraformVersion: 1.0.10
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+        terraformVersion: $(terraformVersion)
+    - task: TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init
@@ -23,13 +15,13 @@ jobs:
         backendType: aws
         backendServiceAws: env_test_aws
         backendAwsRegion: us-east-1
-        backendAwsBucket: s3-trfrm-${{ parameters.stage }}-eus-czp
+        backendAwsBucket: s3-trfrm-rc-eus-czp
         backendAwsKey: 'azure-pipelines-terraform/aws-service-connection'
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: TerraformCLI@2
       displayName: 'terraform validate'
       inputs:
         workingDirectory: $(test_templates_dir)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: TerraformCLI@2
       displayName: 'terraform plan'
       inputs:
         command: plan
@@ -37,7 +29,7 @@ jobs:
         providerServiceAws: env_test_aws
         providerAwsRegion: us-east-1
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: TerraformCLI@2
       displayName: 'terraform apply'
       inputs:
         command: apply
@@ -45,7 +37,7 @@ jobs:
         providerServiceAws: env_test_aws
         providerAwsRegion: us-east-1
         commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: TerraformCLI@2
       displayName: 'terraform destroy'
       inputs:
         command: destroy

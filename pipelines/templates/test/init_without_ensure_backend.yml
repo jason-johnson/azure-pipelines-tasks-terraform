@@ -1,0 +1,18 @@
+jobs:
+- job: init_without_ensure_backend_rc
+  steps:
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
+      displayName: install terraform
+      inputs:
+        terraformVersion: $(terraformVersion)
+    - task: TerraformCLI@2
+      displayName: 'terraform init'
+      inputs:
+        command: init
+        workingDirectory: $(terraform_templates_dir)
+        backendType: azurerm
+        backendServiceArm: 'env_test'
+        backendAzureRmResourceGroupName: $(backendAzureRmResourceGroupName)
+        backendAzureRmStorageAccountName: $(backendAzureRmStorageAccountName)
+        backendAzureRmContainerName: $(backendAzureRmContainerName)
+        backendAzureRmKey: init_without_ensure_backend.tfstate

@@ -5,6 +5,12 @@
 1. Navigate to `cd tasks\terraform-cli`.
 1. Run `npm run test`.
 
+## Build in VS Code with docker (including with Github Codespaces)
+
+We have a devcontainer setup so you can run your development environment in Docker or in Github Codespaces.  If locally, you will be asked to restart in remote container.  To do this you'll need a local docker.  Otherwise you can just run the codespace directly from Github.
+
+In either case, you should have everything required to build and test the project.
+
 ## Build Locally
 
 1. Downgrade to node V6.

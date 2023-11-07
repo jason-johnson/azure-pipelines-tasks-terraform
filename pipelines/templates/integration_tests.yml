@@ -1,17 +1,18 @@
 parameters:
-  stage: ''
-  scenarios: 
+  - name: scenarios
+    type: object
+    default: []
 
 stages:
-- stage: test_${{ parameters.stage }}
+- stage: test_rc
   variables:
-    - group: env_${{ parameters.stage }}
+    - group: env_rc
     - name: backendAzureRmResourceGroupName
-      value: rg-trfrm-${{ parameters.stage }}-chn-jbj
+      value: rg-trfrm-rc-chn-jbj
     - name: backendAzureRmResourceGroupLocation
       value: switzerlandnorth
     - name: backendAzureRmStorageAccountName
-      value: sttrfrm${{ parameters.stage }}chnjbj
+      value: sttrfrmrcchnjbj
     - name: backendAzureRmStorageAccountSku
       value: Standard_RAGRS
     - name: backendAzureRmContainerName
@@ -19,7 +20,3 @@ stages:
   jobs:
     - ${{ each scenario in parameters.scenarios }}:
       - template: ${{ scenario }}
-        parameters:
-          stage: ${{ parameters.stage }}
-
-    

@@ -1,23 +1,15 @@
-parameters:
-  stage: ''
-
 jobs:
 - job: init_with_ensure_backend_no_storage_account
   variables: 
-    backend_arm_resource_group: rg-trfrm-${{ parameters.stage }}-nch-jbj
-    backend_arm_storage_name: sttrfrm${{ parameters.stage }}nchjbj
+    backend_arm_resource_group: rg-trfrm-rc-nch-jbj
+    backend_arm_storage_name: sttrfrmrcnchjbj
     backend_arm_storage_container: azure-pipelines-terraform
   steps:
-    - task: DownloadPipelineArtifact@2
-      displayName: download terraform templates
-      inputs: 
-        artifact: terraform_templates
-        path: $(terraform_extension_dir)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@1
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
       displayName: install terraform
       inputs:
-        terraformVersion: 1.0.10
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
+        terraformVersion: $(terraformVersion)
+    - task: TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init
