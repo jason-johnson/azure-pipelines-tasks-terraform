@@ -264,17 +264,13 @@ export default class AzdoTaskContext implements ITaskContext {
         var authorizationScheme = this.getEndpointAuthorizationScheme(this.backendServiceArm, true);
         if(authorizationScheme && authorizationScheme == "WorkloadIdentityFederation") {
             tasks.debug("Getting OIDC token for backend.");
-            const token = await getFederatedToken(this.backendServiceArm);
-            tasks.setSecret(token);
-            this.backendServiceArmIdToken = token;
+            this.backendServiceArmIdToken = await getFederatedToken(this.backendServiceArm);
         }
 
         var authorizationScheme = this.getEndpointAuthorizationScheme(this.environmentServiceName, true);
         if(authorizationScheme && authorizationScheme == "WorkloadIdentityFederation") {
             tasks.debug("Getting OIDC token for provider.");
-            const token = await getFederatedToken(this.environmentServiceName);
-            tasks.setSecret(token);
-            this.environmentServiceArmIdToken = token;
+            this.environmentServiceArmIdToken = await getFederatedToken(this.environmentServiceName);
         }
     }
 
