@@ -39,7 +39,7 @@ stages:
       - test/state_commands.yml
 
 - stage: publish_public
-  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startswith(variables['Build.SourceBranch'], 'refs/tags/'))
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startswith(variables['Build.SourceBranch'], 'refs/tags/')))
   variables:
     - group: env_rc
   jobs:
