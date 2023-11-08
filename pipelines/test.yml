@@ -4,7 +4,7 @@ pr: none
 parameters:
   - name: tags
     type: string
-    default: "1.1.0,0.8.0"
+    default: "1.1.1,0.8.0"
   - name: experimentalVersion
     default: "2"
 
@@ -39,7 +39,7 @@ stages:
       - test/state_commands.yml
 
 - stage: publish_public
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startswith(variables['Build.SourceBranch'], 'refs/tags/')))
   variables:
     - group: env_rc
   jobs:

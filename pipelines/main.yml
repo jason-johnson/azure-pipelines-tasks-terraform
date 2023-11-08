@@ -17,13 +17,13 @@ trigger:
 parameters:
   - name: tags
     type: string
-    default: "1.1.0,0.8.0"
+    default: "1.1.1,0.8.0"
   - name: experimentalVersion
     default: "2"
 
 resources: 
   repositories:
-    - repository: repo_1_1_0
+    - repository: repo_1_1_1
       type: github
       endpoint: "azure-pipelines-terraform-rc (1)"
       name: jason-johnson/azure-pipelines-tasks-terraform
