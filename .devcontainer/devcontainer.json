@@ -18,6 +18,7 @@
 		"streetsidesoftware.code-spell-checker",
 		"alexkrechik.cucumberautocomplete",
 		"ms-azure-devops.azure-pipelines",
+		"github.copilot",
 		"4ops.terraform"
 	],
 	"postCreateCommand": "npm install -g typescript && npm install",
