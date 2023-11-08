@@ -29,6 +29,9 @@ steps:
   - template: test_npm.yml
     parameters:
       workingDir: ${{ parameters.workingDir }}
+- pwsh: |
+    (Get-Content ${{ parameters.workingDir }}/task.json).replace('#{GitVersion.Major}#', '#{majorNumber}#') | Set-Content ${{ parameters.workingDir }}/task.json
+  displayName: update task.json
 - task: qetza.replacetokens.replacetokens-task.replacetokens@3
   displayName: version tasks
   inputs:
