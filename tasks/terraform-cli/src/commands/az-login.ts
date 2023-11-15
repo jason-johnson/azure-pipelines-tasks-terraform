@@ -21,7 +21,7 @@ export class AzLogin implements ICommand {
                         "--service-principal", 
                         "-t", ctx.backendServiceArmTenantId,
                         "-u", ctx.backendServiceArmClientId,
-                        "-p", ctx.backendServiceArmClientSecret
+                        `-p=${ctx.backendServiceArmClientSecret}`
                     );
                 }
                 else{
@@ -29,7 +29,7 @@ export class AzLogin implements ICommand {
                         "--service-principal", 
                         "-t", ctx.environmentServiceArmTenantId,
                         "-u", ctx.environmentServiceArmClientId,
-                        "-p", ctx.environmentServiceArmClientSecret
+                        `-p=${ctx.backendServiceArmClientSecret}`
                     );
                 }
                 break;
