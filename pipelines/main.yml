@@ -1,0 +1,214 @@
+pr:
+  - main
+trigger:
+  batch: "true"
+  branches:
+    include: 
+      - '*'
+  tags:
+    include:
+    - '*'
+  paths:
+    exclude: 
+      - '_test-agent/*'
+      - '.vscode/*'
+      - '.devcontainer/*'
+
+parameters:
+  - name: tags
+    type: string
+    default: "1.1.1,0.8.0"
+  - name: experimentalVersion
+    default: "2"
+
+resources: 
+  repositories:
+    - repository: repo_1_1_1
+      type: github
+      endpoint: "azure-pipelines-terraform-rc (1)"
+      name: jason-johnson/azure-pipelines-tasks-terraform
+      ref: refs/tags/${{ split(parameters.tags, ',')[0] }}
+    - repository: repo_0_8_0
+      type: github
+      endpoint: "azure-pipelines-terraform-rc (1)"
+      name: jason-johnson/azure-pipelines-tasks-terraform
+      ref: refs/tags/${{ split(parameters.tags, ',')[1] }}
+  
+variables:
+  Agent.Source.Git.ShallowFetchDepth: 0
+  marketplace_publisher: JasonBJohnson
+  ado_service_url: https://dev.azure.com/azure-pipelines-terraform-rc
+
+pool:
+  vmImage: ubuntu-latest
+
+name: $(GitVersion.FullSemVer)
+
+stages:
+- stage: setup
+  jobs:
+  - job: version
+    steps:
+    - task: gitversion/setup@0
+      displayName: install GitVersion
+      inputs:
+        versionSpec: '5.x'
+    - task: gitversion/execute@0
+      displayName: set version
+      name: version
+  - job: tags
+    steps:
+    - script: scripts/max_tags.sh
+      name: tags
+
+- stage: build
+  dependsOn: setup
+  variables:
+    - name: GitVersion.SemVer
+      value: $[ stageDependencies.setup.version.outputs['version.GitVersion.SemVer'] ]
+    - name: GitVersion.Major
+      value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Major'] ]
+    - name: GitVersion.Minor
+      value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Minor'] ]
+    - name: GitVersion.Patch
+      value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Patch'] ]
+    - group: build
+  jobs:
+  - template: templates/build_tasks.yml
+    parameters:
+      instance: main
+      majorNumber: ${{ parameters.experimentalVersion }}
+
+  - ${{ each tag in split(parameters.tags, ',')}}:
+    - template: templates/build_tasks.yml
+      parameters:
+        checkout: repo_${{ replace(tag, '.', '_') }}
+        instance: ${{ replace(tag, '.', '_') }}
+        majorNumber: ${{ split(tag, '.')[0] }}
+
+  - job: terraform_plan
+    steps:
+      - template: templates/build_npm.yml
+        parameters:
+          workingDir: $(System.DefaultWorkingDirectory)/views/terraform-plan
+          artifact: terraform_plan
+
+      # Unfortunately, terraform plan view needs some work to have it complay with test_npm.yml so we hard code the steps for now
+      - task: Npm@1
+        displayName: test
+        inputs:
+          workingDir: $(System.DefaultWorkingDirectory)/views/terraform-plan
+          command: custom
+          customCommand: run test
+      - task: PublishTestResults@2
+        displayName: test - publish results
+        inputs:
+          testResultsFormat: JUnit
+          testResultsFiles: 'results.xml'
+          searchFolder: $(System.DefaultWorkingDirectory)/views/terraform-plan/.tests
+
+  - job: terraform_extension
+    steps:
+      - task: Npm@1
+        displayName: version
+        inputs:
+          workingDir: $(System.DefaultWorkingDirectory)
+          command: custom
+          customCommand: version $(GitVersion.SemVer) --no-git-tag-version --allow-same-version
+      - task: Npm@1
+        displayName: install
+        inputs:
+          workingDir: $(System.DefaultWorkingDirectory)
+          command: ci
+      - task: CopyFiles@2
+        displayName: stage extension
+        inputs:
+          contents: |
+            !node_modules/.bin/*
+            screenshots/*
+            overview.md
+            package*.json
+            vss-extension*.json
+            vss-extension-icon.png
+            **/poll_task_install.sh
+          targetFolder: $(Build.ArtifactStagingDirectory)/terraform_extension
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathToPublish: '$(Build.ArtifactStagingDirectory)/terraform_extension'
+          artifactName: terraform_extension
+
+- stage: publish
+  dependsOn:
+    - setup
+    - build
+  variables:
+    - group: env_rc
+  jobs:
+  - deployment: publish_private_rc
+    displayName: publish private rc
+    environment: marketplace_rc
+    variables:
+        - name: GitVersion.SemVer
+          value: $[ stageDependencies.setup.version.outputs['version.GitVersion.SemVer'] ]
+        - name: GitVersion.Major
+          value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Major'] ]
+        - name: GitVersion.Minor
+          value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Minor'] ]
+        - name: GitVersion.Patch
+          value: $[ stageDependencies.setup.version.outputs['version.GitVersion.Patch'] ]
+        - name: GitVersion.CommitsSinceVersionSource
+          value: $[ stageDependencies.setup.version.outputs['version.GitVersion.CommitsSinceVersionSource'] ]
+    strategy:
+      runOnce:
+        deploy:
+          steps:    
+          - template: templates/download_artifacts.yml
+            parameters:
+              tags: ${{ parameters.tags }}
+              experimentalVersion: ${{ parameters.experimentalVersion }}
+
+          # TODO: Remove this block
+          - bash: echo "$(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch).$(GitVersion.CommitsSinceVersionSource)"
+            displayName: show version string
+
+          - bash: find . -type f -maxdepth 5 -print
+            displayName: show folders
+          # TODO: end remove block
+
+          - task: TfxInstaller@3
+            displayName: 'install tfx-cli'
+            inputs:
+              version: '0.8.x'
+              checkLatest: true
+          - bash: tfx extension unpublish 
+              --publisher $(marketplace_publisher) 
+              --extension-id azure-pipelines-tasks-terraform-rc
+              -t $(marketplace_access_token)
+            displayName: unpublish extension
+          - task: PublishAzureDevOpsExtension@4
+            name: publish
+            inputs:
+              connectedServiceName: 'marketplace_jasonbjohnson'
+              rootFolder: $(System.DefaultWorkingDirectory)
+              patternManifest: |
+               vss-extension.json
+               vss-extension-rc.json
+              extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch).$(GitVersion.CommitsSinceVersionSource)
+              shareWith: $(marketplace_share_with)
+          - task: InstallAzureDevOpsExtension@4
+            displayName: 'Install Extension'
+            inputs:
+              connectedServiceName: 'marketplace_jasonbjohnson'
+              publisherId: $(marketplace_publisher)
+              extensionId: azure-pipelines-tasks-terraform-rc
+              accounts: $(ado_service_url)
+          - task: Bash@3
+            name: wait_tasks_terraform_installer
+            inputs:
+              filePath: $(Build.SourcesDirectory)/pipelines/publish/poll_task_install.sh
+              arguments: -s $(ado_service_url) -t $(organization_access_token) -c 2b4600b9-5cd9-4e3b-9c8b-553c8e58383a          
+          - task: Bash@3
+            name: wait_tasks_terraform_cli
+            inputs:
+              filePath: $(Build.SourcesDirectory)/pipelines/publish/poll_task_install.sh
+              arguments: -s $(ado_service_url) -t $(organization_access_token) -c 51355d76-dd54-4754-919d-bba27fdf59e4

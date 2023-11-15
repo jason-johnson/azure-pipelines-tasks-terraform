@@ -1,0 +1,132 @@
+trigger: none
+pr: none
+
+parameters:
+  - name: tags
+    type: string
+    default: "1.1.1,0.8.0"
+  - name: experimentalVersion
+    default: "2"
+
+resources:
+  pipelines:
+  - pipeline: main
+    source: main
+    trigger: true
+
+variables:
+  Agent.Source.Git.ShallowFetchDepth: 0
+  tf_variables_secure_file: 4a0c36e2-bb51-41ed-87b1-2e668c64bb69
+  terraform_templates_dir: $(System.DefaultWorkingDirectory)/templates
+  terraformVersion: 1.0.10
+
+stages:
+- template: templates/integration_tests.yml
+  parameters:
+    scenarios:
+      - test/smoke_test.yml
+      - test/publish_plan_results.yml
+      - test/plan_with_command_options_var_file.yml
+      - test/local_exec_az_cli.yml
+      - test/init_with_ensure_backend_no_storage_account.yml
+      - test/init_with_self_configured_backend.yml
+      - test/switch_workspaces.yml
+      # - test/aws_self_configured.yml
+      # - test/aws_service_connection.yml
+      - test/init_without_ensure_backend.yml
+      # - test/gcp_credential_file.yml
+      # - test/azurerm_mgmt_group_service_connection.yml       # will need another subscription to do this one
+      - test/state_commands.yml
+
+- stage: publish_public
+  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), startswith(variables['Build.SourceBranch'], 'refs/tags/')))
+  variables:
+    - group: env_rc
+  jobs:
+  - job: version
+    steps:
+    - task: gitversion/setup@0
+      displayName: install GitVersion
+      inputs:
+        versionSpec: '5.x'
+    - task: gitversion/execute@0
+      displayName: set version
+      name: version
+
+  - deployment: publish_public_ga
+    dependsOn: version
+    displayName: publish public ga
+    environment: marketplace_ga
+    variables:
+        GitVersion.Major: $[ dependencies.version.outputs['version.GitVersion.Major'] ]
+        GitVersion.Minor: $[ dependencies.version.outputs['version.GitVersion.Minor'] ]
+        GitVersion.Patch: $[ dependencies.version.outputs['version.GitVersion.Patch'] ]
+        GitVersion.CommitsSinceVersionSource: $[ dependencies.version.outputs['version.GitVersion.CommitsSinceVersionSource'] ]
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: download terraform extension
+            inputs:
+              buildType: specific
+              pipeline: main
+              project: azure-pipelines-terraform-rc
+              artifact: terraform_extension
+              path: $(System.DefaultWorkingDirectory)
+          - task: DownloadPipelineArtifact@2
+            displayName: download terraform_installer@2
+            inputs:
+              buildType: specific
+              pipeline: main
+              project: azure-pipelines-terraform-rc
+              artifact: terraform_installer_main
+              path: $(System.DefaultWorkingDirectory)/tasks/terraform-installer/v${{ parameters.experimentalVersion }}
+          - task: DownloadPipelineArtifact@2
+            displayName: download terraform_cli@2
+            inputs:
+              buildType: specific
+              pipeline: main
+              project: azure-pipelines-terraform-rc
+              artifact: terraform_cli_main
+              path: $(System.DefaultWorkingDirectory)/tasks/terraform-cli/v${{ parameters.experimentalVersion }}
+          - task: DownloadPipelineArtifact@2
+            displayName: download views terraform plan
+            inputs:
+              buildType: specific
+              pipeline: main
+              project: azure-pipelines-terraform-rc
+              artifact: terraform_plan
+              path: $(System.DefaultWorkingDirectory)/views/terraform-plan
+          - ${{ each tag in split(parameters.tags, ',')}}:
+            - task: DownloadPipelineArtifact@2
+              displayName: download terraform_installer@${{ split(tag, '.')[0] }}
+              inputs:
+                buildType: specific
+                pipeline: main
+                project: azure-pipelines-terraform-rc
+                artifact: terraform_installer_${{ replace(tag, '.', '_') }}
+                path: $(System.DefaultWorkingDirectory)/tasks/terraform-installer/v${{ split(tag, '.')[0] }}
+            - task: DownloadPipelineArtifact@2
+              displayName: download terraform_cli@${{ split(tag, '.')[0] }}
+              inputs:
+                buildType: specific
+                pipeline: main
+                project: azure-pipelines-terraform-rc
+                artifact: terraform_cli_${{ replace(tag, '.', '_') }}
+                path: $(System.DefaultWorkingDirectory)/tasks/terraform-cli/v${{ split(tag, '.')[0] }}
+          - task: TfxInstaller@3
+            displayName: 'install tfx-cli'
+            inputs:
+              version: '0.8.x'
+              checkLatest: true
+          - task: PublishAzureDevOpsExtension@3
+            name: publish
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'marketplace_jasonbjohnson'
+              cwd:  $(System.DefaultWorkingDirectory)
+              extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch).$(GitVersion.CommitsSinceVersionSource)
+              patternManifest: |
+                vss-extension.json
+                vss-extension-ga.json

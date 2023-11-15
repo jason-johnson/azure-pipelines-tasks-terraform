@@ -1,21 +1,13 @@
-parameters:
-  stage: ''
-
 jobs:
-- job: init_with_version_11${{ parameters.stage }}
+- job: init_with_version_11rc
   variables: 
     test_templates_dir: $(terraform_templates_dir)/version11
   steps:
-    - task: DownloadPipelineArtifact@2
-      displayName: download terraform templates
-      inputs: 
-        artifact: terraform_templates
-        path: $(terraform_extension_dir)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
       displayName: install terraform
       inputs:
         terraformVersion: 0.11.14
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+    - task: TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init

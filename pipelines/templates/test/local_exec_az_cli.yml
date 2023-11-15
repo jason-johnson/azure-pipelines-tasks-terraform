@@ -1,17 +1,9 @@
-parameters:
-  stage: ''
-
 jobs:
-- job: local_exec_az_cli_${{ parameters.stage }}
+- job: local_exec_az_cli_rc
   variables: 
     test_templates_dir: $(terraform_templates_dir)/local-exec-az-cli
   steps:
-    - task: DownloadPipelineArtifact@2
-      displayName: download terraform templates
-      inputs: 
-        artifact: terraform_templates
-        path: $(terraform_extension_dir)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
+    - task: TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init
@@ -25,11 +17,11 @@ jobs:
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: local_exec_az_cli.tfstate
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
+    - task: TerraformCLI@2
       displayName: 'terraform validate'
       inputs:
         workingDirectory: $(test_templates_dir)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
+    - task: TerraformCLI@2
       displayName: 'terraform plan'
       inputs:
         command: plan
@@ -38,7 +30,7 @@ jobs:
         secureVarsFile: $(tf_variables_secure_file)
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
         runAzLogin: true
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
+    - task: TerraformCLI@2
       displayName: 'terraform apply'
       inputs:
         command: apply
@@ -46,7 +38,7 @@ jobs:
         environmentServiceName: 'env_test'
         commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
         runAzLogin: true
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
+    - task: TerraformCLI@2
       displayName: 'terraform destroy'
       condition: always()
       inputs:

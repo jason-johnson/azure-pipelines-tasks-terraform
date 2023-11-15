@@ -1,0 +1,32 @@
+parameters:
+  - name: instance
+    type: string
+  - name: majorNumber
+    type: string
+  - name: checkout
+    default: self
+
+jobs:
+  - job: terraform_cli_${{ parameters.instance }}
+    variables:
+      majorNumber: ${{ parameters.majorNumber }}
+    steps:
+      - checkout: ${{ parameters.checkout }}
+      - template: build_npm.yml
+        parameters:
+          workingDir: $(System.DefaultWorkingDirectory)/tasks/terraform-cli
+          artifact: terraform_cli_${{ parameters.instance }}
+          runTests: true
+
+  - job: terraform_installer_${{ parameters.instance }}
+    variables:
+      majorNumber: ${{ parameters.majorNumber }}
+    steps:
+      - checkout: ${{ parameters.checkout }}
+      - template: build_npm.yml
+        parameters:
+          workingDir: $(System.DefaultWorkingDirectory)/tasks/terraform-installer
+          artifact: terraform_installer_${{ parameters.instance }}
+
+
+          

@@ -1,19 +1,11 @@
-parameters:
-  stage: ''
-
 jobs:
-- job: plan_with_comand_options_var_file_${{ parameters.stage }}
+- job: plan_with_comand_options_var_file_rc
   steps:
-    - task: DownloadPipelineArtifact@2
-      displayName: download terraform templates
-      inputs: 
-        artifact: terraform_templates
-        path: $(terraform_extension_dir)
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-installer.TerraformInstaller@1
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
       displayName: install terraform
       inputs:
-        terraformVersion: 1.0.10
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
+        terraformVersion: $(terraformVersion)
+    - task: TerraformCLI@2
       displayName: 'terraform init'
       inputs:
         command: init
@@ -27,7 +19,7 @@ jobs:
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: plan_with_comand_options_var_file.tfstate
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-${{ parameters.stage }}.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
+    - task: TerraformCLI@2
       displayName: 'terraform plan'
       inputs:
         command: plan
