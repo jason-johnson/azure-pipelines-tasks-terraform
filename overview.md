@@ -239,6 +239,8 @@ If azurerm selected, the task will prompt for a service connection and storage a
     backendType: azurerm
     # Service connection to authorize backend access. Supports Subscription & Management Group Scope
     backendServiceArm: 'My Azure Service Connection'
+    # Tenant id of the target backend. This can be used to override the default tenant id inherited from the service connection
+    backendAzureRmTenantId: 'my-tenant-id'
     # Subscription id of the target backend. This can be used to specify the subscription when using Management Group scoped
     # Service connection or to override the subscription id defined in a Subscription scoped service connection
     backendAzureRmSubscriptionId: 'my-backend-subscription-id'

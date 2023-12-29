@@ -10,6 +10,7 @@ export default class MockTaskContext implements ITaskContext {
     backendType: string = "";
     ensureBackend?: boolean | undefined;
     backendServiceArm: string = "";
+    backendAzureRmTenantId?: string;
     backendAzureRmSubscriptionId?: string;
     backendAzureRmResourceGroupName: string = "";
     backendAzureRmResourceGroupLocation: string = "";
