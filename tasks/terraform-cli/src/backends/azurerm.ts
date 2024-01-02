@@ -32,7 +32,8 @@ export default class AzureRMBackend implements ITerraformBackend {
             }
             if(tenantId){
               backendConfig.arm_tenant_id = tenantId
-            } else {
+            } 
+            else {
               backendConfig.arm_tenant_id = ctx.backendServiceArmTenantId;
             }
         }
@@ -42,7 +43,8 @@ export default class AzureRMBackend implements ITerraformBackend {
             }
             if(tenantId){
               backendConfig.tenant_id = tenantId;
-            } else {
+            } 
+            else {
               backendConfig.tenant_id = ctx.backendServiceArmTenantId;
             }
         }
