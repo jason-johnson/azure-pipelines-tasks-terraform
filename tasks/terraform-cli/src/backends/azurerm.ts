@@ -31,15 +31,20 @@ export default class AzureRMBackend implements ITerraformBackend {
               backendConfig.arm_subscription_id = subscriptionId
             }
             if(tenantId){
-              backendConfig.tenant_id = tenantId
+              backendConfig.arm_tenant_id = tenantId
+            } else {
+              backendConfig.arm_tenant_id = ctx.backendServiceArmTenantId;
             }
-            backendConfig.arm_tenant_id = ctx.backendServiceArmTenantId;
         }
         else{
             if(subscriptionId){
               backendConfig.subscription_id = subscriptionId
             }
-            backendConfig.tenant_id = ctx.backendServiceArmTenantId;
+            if(tenantId){
+              backendConfig.tenant_id = tenantId;
+            } else {
+              backendConfig.tenant_id = ctx.backendServiceArmTenantId;
+            }
         }
 
         switch(authorizationScheme) {
