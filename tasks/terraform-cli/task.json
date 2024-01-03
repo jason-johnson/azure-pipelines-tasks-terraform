@@ -205,6 +205,14 @@
             "groupName": "backendAzureRm"
         },
         {
+            "name": "backendAzureRmTenantId",
+            "type": "string",
+            "label": "Azure Tenant Id",
+            "required": false,
+            "helpMarkDown": "The tenant id where the backend should be located. If provided, this will override the tenant id defined within the service connection.",
+            "groupName": "backendAzureRm"
+        },
+        {
             "name": "backendAzureRmSubscriptionId",
             "type": "string",
             "label": "Azure Subscription Id",

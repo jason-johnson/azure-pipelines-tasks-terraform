@@ -22,19 +22,31 @@ export default class AzureRMBackend implements ITerraformBackend {
         const isPre12 = ctx.terraformVersionMajor === 0 && typeof(ctx.terraformVersionMinor) == 'number' && ctx.terraformVersionMinor < 12;
 
         const subscriptionId = ctx.backendAzureRmSubscriptionId || ctx.backendServiceArmSubscriptionId;
+        
+        const tenantId = ctx.backendAzureRmTenantId
 
         //use the arm_* prefix config only for versions before 0.12.0
         if(isPre12){
             if(subscriptionId){
               backendConfig.arm_subscription_id = subscriptionId
             }
-            backendConfig.arm_tenant_id = ctx.backendServiceArmTenantId;
+            if(tenantId){
+              backendConfig.arm_tenant_id = tenantId
+            } 
+            else {
+              backendConfig.arm_tenant_id = ctx.backendServiceArmTenantId;
+            }
         }
         else{
             if(subscriptionId){
               backendConfig.subscription_id = subscriptionId
             }
-            backendConfig.tenant_id = ctx.backendServiceArmTenantId;
+            if(tenantId){
+              backendConfig.tenant_id = tenantId;
+            } 
+            else {
+              backendConfig.tenant_id = ctx.backendServiceArmTenantId;
+            }
         }
 
         switch(authorizationScheme) {

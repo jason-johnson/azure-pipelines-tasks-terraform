@@ -72,6 +72,10 @@ export default class AzdoTaskContext implements ITaskContext {
     get backendServiceArm() {
         return this.getInput("backendServiceArm");
     }
+    @trackValue("inputs.backends.azurerm.tenant", usesBackend(BackendTypes.azurerm), true)
+    get backendAzureRmTenantId() {
+        return this.getInput("backendAzureRmTenantId");
+    }
     @trackValue("inputs.backends.azurerm.sub", usesBackend(BackendTypes.azurerm), true)
     get backendAzureRmSubscriptionId() {
         return this.getInput("backendAzureRmSubscriptionId");
