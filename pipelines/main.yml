@@ -58,6 +58,9 @@ stages:
       name: version
   - job: tags
     steps:
+    - script: |
+        chmod +x scripts/max_tags.sh
+      displayName: set max_tags.sh permissions
     - script: scripts/max_tags.sh
       name: tags
 
