@@ -48,9 +48,9 @@ The tasks can execute on all supported build agent operating systems **including
 
 ## (NEW) Task versions
 
-All tasks supported by this extension (TerraformCLI and TerraformInstaller) support different versions.  Each version will be the highest tag of that major version.  There is also always one version which is higher than the highest major version tag: *this version is unstable*.
+All tasks supported by this extension (TerraformCLI and TerraformInstaller) support different versions. Each version will be the highest tag of that major version. There is also always one version which is higher than the highest major version tag: *this version is unstable*.
 
-For example, currently  TerraformCLI@0 and TerraformInstaller@0 will point to the version with the tag 0.7.11.  TerraformCLI@1 and TerraformInstaller@1 will point to the version with the tag 1.1.0 and TerraformCLI@2 and TerraformInstaller@2 will point to the unstable version, basically the latest version which has been published to the main branch of the project.
+For example, currently TerraformCLI@0 and TerraformInstaller@0 will point to the version with the tag 0.7.11. TerraformCLI@1 and TerraformInstaller@1 will point to the version with the tag 1.1.0 and TerraformCLI@2 and TerraformInstaller@2 will point to the unstable version, basically the latest version which has been published to the main branch of the project.
 
 ## Separate Task for Terraform Installation
 
@@ -88,7 +88,7 @@ If `terraformVersion` not provided, task defaults to `latest`
 The task supports running `terraform version` individually. When run, if the version is out of date, the task will log a warning to the pipeline summary if there is a newer version of terraform available.
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'check terraform version'
   inputs:
     command: version
@@ -198,7 +198,7 @@ When executing commands that interact with AWS such as `plan`, `apply`, and `des
 When executing commands that interact with GCP such as `plan`, `apply`, and `destroy`, the task can utilize a JSON formatted key file uploaded to Azure DevOps Secure Files to authorize operations. This is specified via the `providerGoogleCredentials` input. This input should be the name of the secure file containing the JSON formatted key.
 
 ```yaml
-- task: JasonBJohnson.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@0
+- task: JasonBJohnson.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-cli.TerraformCLI@1
   displayName: 'terraform plan'
   inputs:
     command: plan
@@ -232,7 +232,7 @@ The task currently supports the following backend configurations
 If azurerm selected, the task will prompt for a service connection and storage account details to use for the backend. *The task supports both Subscription and Management Group scoped service connections*
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'terraform init'
   inputs:
     command: init
@@ -267,7 +267,7 @@ The task supports automatically creating the resource group, storage account, an
 If aws selected, the task allows for configuring a service connection as well as the bucket details to use for the backend.
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'terraform init'
   inputs:
     command: init
@@ -289,7 +289,7 @@ If aws selected, the task allows for configuring a service connection as well as
 If gcp selected, the task allows for defining gcs backend configuration. The authentication is done via a key in json file format provided by Google Cloud IAM. The key file can be uploaded to Secure Files in Azure DevOps and referenced from the task. The task will then use the key file for authentication.
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'terraform init'
   inputs:
     command: init
@@ -308,7 +308,7 @@ If gcp selected, the task allows for defining gcs backend configuration. The aut
 There are multiple methods to provide secrets within the vars provided to terraform commands. The `commandOptions` input can be used to specify individual `-var` inputs. When using this approach pipeline variables can be used as `-var secret=$(mySecretPipelineVar)`. Additionally, either a terraform variables file or a env file secured in Secure Files Library of Azure DevOps pipeline can be specified. Storing sensitive var and env files in the Secure Files Library not only provides encryption at rest, it also allows the files to have different access control applied than that of the Source Repository and Build/Release Pipelines.
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'terraform plan'
   inputs:
     command: plan
@@ -322,7 +322,7 @@ There are multiple methods to provide secrets within the vars provided to terraf
 The name of the secure file can also be used.
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'terraform plan'
   inputs:
     command: plan
@@ -369,7 +369,7 @@ output "some_sensitive_string" {
 Pipeline configuration to run terraform `output` command
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'terraform output'
   inputs:
     command: output
@@ -398,7 +398,7 @@ The extension includes a feature to render terraform plans within the pipeline r
 > **Important** - When enabling `publishPlanResults` the `-detailed-exitcode` option will be added when running terraform plan if it was not already provided in the `commandOptions` input. This will cause `TERRAFORM_LAST_EXITCODE` to be `2` when plan includes changes; which is a successful exitcode. Additionally, warnings will be logged to the pipeline summary when changes are present as a means to alert that changes will be made if the templates are applied.
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'terraform plan'
   inputs:
     command: plan
@@ -419,7 +419,7 @@ If the `publishPlanResults` input is not provided, then no plans will be publish
 When running terraform plan with `-detailed-exitcode`, a pipeline variable will be set to indicate if any changes exist in the plan. `TERRAFORM_PLAN_HAS_CHANGES` will be set to `true` if plan detected changes. Otherwise, this variable will be set to `false`. This can be used in conjunction with `Custom Condition` expression under `Control Options` tab of the task to skip terraform apply if no changes were detected.
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'terraform plan'
   inputs:
     command: plan
@@ -430,7 +430,7 @@ When running terraform plan with `-detailed-exitcode`, a pipeline variable will 
 Run apply only if changes are detected.
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'terraform apply'
   condition: and(succeeded(), eq(variables['TERRAFORM_PLAN_HAS_CHANGES'], 'true'))
   inputs:
@@ -444,7 +444,7 @@ Run apply only if changes are detected.
 The task now has the ability to set a pipeline variable `TERRAFORM_PLAN_HAS_DESTROY_CHANGES` if a generated plan has destroy operations. To utilize this, run terraform plan and set the `-out=my-plan-file-path` to write the generated plan to a file. Then run `terraform show` and provide the path to the generated plan file in the `Target Plan or State File Path` input field. If show, detects a destroy operation within the plan file, then the pipeline variable `TERRAFORM_PLAN_HAS_DESTROY_CHANGES` will be set to true.
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'terraform plan'
   inputs:
     command: plan
@@ -455,7 +455,7 @@ The task now has the ability to set a pipeline variable `TERRAFORM_PLAN_HAS_DEST
 Run show to detect destroy operations
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'terraform show'
   inputs:
     command: show
@@ -465,7 +465,7 @@ Run show to detect destroy operations
 Skip apply if destroy operations
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'terraform apply'
   condition: and(succeeded(), eq(variables['TERRAFORM_PLAN_HAS_DESTROY_CHANGES'], 'false'))
   inputs:
@@ -481,7 +481,7 @@ The task supports managing workspaces within pipelines. The following workspace 
 ### Workspace Select
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: select workspace foo
   inputs:
     workingDirectory: $(terraform_templates_dir)
@@ -493,7 +493,7 @@ The task supports managing workspaces within pipelines. The following workspace 
 ### Workspace New
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: select workspace foo
   inputs:
     workingDirectory: $(terraform_templates_dir)
@@ -509,7 +509,7 @@ The task supports importing existing resources.
 ### Import
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   displayName: 'terraform import env'
   inputs:
     command: import
@@ -525,7 +525,7 @@ The task supports managing state within pipelines. The following state subcomman
 ### State List
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   diplayName: 'terraform state list'
   inputs:
     command: state
@@ -537,7 +537,7 @@ The task supports managing state within pipelines. The following state subcomman
 ### State Move
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   diplayName: 'terraform state mv'
   inputs:
     command: state
@@ -549,7 +549,7 @@ The task supports managing state within pipelines. The following state subcomman
 ### State Remove
 
 ```yaml
-- task: TerraformCLI@0
+- task: TerraformCLI@1
   diplayName: 'terraform state rm'
   inputs:
     command: state
