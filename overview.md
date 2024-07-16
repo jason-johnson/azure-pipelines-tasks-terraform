@@ -48,9 +48,9 @@ The tasks can execute on all supported build agent operating systems **including
 
 ## (NEW) Task versions
 
-All tasks supported by this extension (TerraformCLI and TerraformInstaller) support different versions.  Each version will be the highest tag of that major version.  There is also always one version which is higher than the highest major version tag: *this version is unstable*.
+All tasks supported by this extension (TerraformCLI and TerraformInstaller) support different versions. Each version will be the highest tag of that major version. There is also always one version which is higher than the highest major version tag: *this version is unstable*.
 
-For example, currently  TerraformCLI@1 and TerraformInstaller@1 will point to the version with the tag 0.7.11.  TerraformCLI@1 and TerraformInstaller@1 will point to the version with the tag 1.1.0 and TerraformCLI@2 and TerraformInstaller@2 will point to the unstable version, basically the latest version which has been published to the main branch of the project.
+For example, currently TerraformCLI@0 and TerraformInstaller@0 will point to the version with the tag 0.7.11. TerraformCLI@1 and TerraformInstaller@1 will point to the version with the tag 1.1.0 and TerraformCLI@2 and TerraformInstaller@2 will point to the unstable version, basically the latest version which has been published to the main branch of the project.
 
 ## Separate Task for Terraform Installation
 
