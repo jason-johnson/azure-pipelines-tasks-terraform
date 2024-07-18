@@ -80,7 +80,7 @@ If `terraformVersion` not provided, task defaults to `latest`
 - task: TerraformInstaller@1
   displayName: install terraform
   inputs:
-    terraformVersion: 0.14.3
+    terraformVersion: 1.8.5
 ```
 
 ## Check Terraform Version

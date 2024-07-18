@@ -28,19 +28,19 @@
     },
     "screenshots": [
         {
-            "path": "screenshots/overview-tfcli-azure-sub.jpg"
+            "path": "screenshots/overview-tfcli-azure-sub.png"
         },
         {
-            "path": "screenshots/overview-tfcli-backend-azurerm.jpg"
+            "path": "screenshots/overview-tfcli-backend-azurerm.png"
         },
         {
-            "path": "screenshots/overview-tfinstall-task-fields.jpg"
+            "path": "screenshots/overview-tfinstall-task-fields.png"
         },
         {
             "path": "screenshots/overview-tfcli-secure-vars.jpg"
         },
         {
-            "path": "screenshots/overview-tfcli-ensure-backend.jpg"
+            "path": "screenshots/overview-tfcli-ensure-backend.png"
         },
         {
             "path": "screenshots/overview-tfplan-view-no-plans.jpg"
