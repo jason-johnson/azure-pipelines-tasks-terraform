@@ -23,11 +23,11 @@ The Terraform CLI task supports executing the following commands
 
 ## Supported Public Cloud Providers
 
-The Terraform CLI task support the following [Public Cloud](https://registry.terraform.io/browse/providers?category=public-cloud) providers
+The Terraform CLI task supports the following [Public Cloud](https://registry.terraform.io/browse/providers?category=public-cloud) providers
 
-- azurerm
-- aws
-- google
+- Azure
+- AWS
+- Google
 
 > NOTE: It is possible to leverage other providers by providing configuration via environment variables using [secure files](#secure-variable-secrets) or, `-backend-config=key=value` within `commandOptions` input.
 
@@ -42,23 +42,23 @@ The Terraform CLI task supports the following terraform backends
 
 > NOTE: It is possible to leverage other backends by providing configuration via environment variables using [secure files](#secure-variable-secrets) or, `-backend-config=key=value` within `commandOptions` input.
 
-## Compatible with Linux Build Agents
+## Compatibility with Build Agents
 
-The tasks can execute on all supported build agent operating systems **including Ubuntu and MacOS**.
+The tasks can be executed on all supported build agent operating systems **including Ubuntu and MacOS**.
 
 ## (NEW) Task versions
 
-All tasks supported by this extension (TerraformCLI and TerraformInstaller) support different versions. Each version will be the highest tag of that major version. There is also always one version which is higher than the highest major version tag: *this version is unstable*.
+All tasks supported by this extension (`TerraformCLI` and `TerraformInstaller`) support different versions. Each version will be the highest tag of that major version. There is also always one version which is higher than the highest major version tag: *this version is unstable*.
 
-For example, currently TerraformCLI@0 and TerraformInstaller@0 will point to the version with the tag 0.7.11. TerraformCLI@1 and TerraformInstaller@1 will point to the version with the tag 1.1.0 and TerraformCLI@2 and TerraformInstaller@2 will point to the unstable version, basically the latest version which has been published to the main branch of the project.
+For example, currently `TerraformCLI@0` and `TerraformInstaller@0` will point to the version with the tag `0.7.11`. `TerraformCLI@1` and `TerraformInstaller@1` will point to the version with the tag `1.1.0` and `TerraformCLI@2` and `TerraformInstaller@2` will point to the unstable version, basically the latest version which has been published to the `main` branch of the project.
 
 ## Separate Task for Terraform Installation
 
-The dedicated `Terraform Installer` task allows for complete control over how frequently and on which agents terraform is installed. This prevents from having to install terraform before executing each terraform task. However, if necessary, this can be installed multiple times to support pipelines that span multiple build agents
+The dedicated `TerraformInstaller` task allows for complete control over how frequently and on which agents terraform is installed. This prevents from having to install terraform before executing each terraform task. However, if necessary, this can be installed multiple times to support pipelines that span multiple build agents.
 
 ### Install Latest Version
 
-The installer task supports installing the latest terraform version by using the keyword `latest` as the version specified. This is the default option when the installer is added to a pipeline. Specifying latest will instruct the task to lookup and install the latest version of the terraform executable.
+The installer task supports installing the latest terraform version by using the keyword `latest` as the version specified. This is the default option when the installer is added to a pipeline. Specifying `latest` will instruct the task to lookup and install the latest version of the terraform executable.
 
 ```yaml
 - task: TerraformInstaller@1
@@ -98,11 +98,11 @@ When running the other commands, `terraform version` is also run so that the ver
 
 ## Public Cloud Terraform Provider Integrations
 
-The TerraformCLI task supports configuring the following public cloud providers. The task supports configuring multiple providers simultaneously to support multi-cloud deployments.
+The `TerraformCLI` task supports configuring the following public cloud providers. The task supports configuring multiple providers simultaneously to support multi-cloud deployments.
 
-- azurerm - Authenticates via Azure Resource Manager Service Connection included within Azure DevOps.
-- aws - Authenticates via AWS Service Connection made available via the [AWS Toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.aws-vsts-tools) extension.
-- google - Authenticates via service account JSON formatted key file uploaded to Azure DevOps secure files.
+- Azure - Authenticates via Azure Resource Manager Service Connection included within Azure DevOps.
+- AWS - Authenticates via AWS Service Connection made available via the [AWS Toolkit](https://marketplace.visualstudio.com/items?itemName=AmazonWebServices.aws-vsts-tools) extension.
+- Google - Authenticates via service account JSON formatted key file uploaded to Azure DevOps secure files.
 
 ### Azure Service Connection / Service Principal Integration
 
@@ -121,12 +121,12 @@ When executing commands that interact with Azure such as `plan`, `apply`, and `d
 
 #### Execute Azure CLI From Local-Exec Provisioner
 
-When an azure service connection is provided and `runAzLogin` is set to `true`, the terraform cli task will run `az login` using the service connection credentials. This is intended to enable templates to execute az cli commands from a `local-exec` provisioner.
+When an Azure Service connection is provided and `runAzLogin` is set to `true`, the terraform CLI task will run `az login` using the service connection credentials. This is intended to enable templates to execute az cli commands from a `local-exec` provisioner.
 
 Setting `runAzLogin` to `true` will indicate the task should execute `az login` with specified service connection.
 
 ```yaml
-- task: TerraformCLI
+- task: TerraformCLI@1
   displayName: 'terraform apply'
   inputs:
     command: apply
@@ -135,28 +135,26 @@ Setting `runAzLogin` to `true` will indicate the task should execute `az login` 
     runAzLogin: true
 ```
 
-Setting `runAzLogin` to `false` will indicate the task should not execute `az login` with specified service connection.
+Setting `runAzLogin` to `false` will indicate the task should NOT execute `az login` with specified service connection.
 
 ```yaml
-- task: TerraformCLI
+- task: TerraformCLI@1
   displayName: 'terraform apply'
   inputs:
     command: apply
     environmentServiceName: 'My Azure Service Connection'
-    # indicate az login should be run as part of this command
-    runAzLogin: true
+    # indicate az login should NOT be run as part of this command
+    runAzLogin: false
 ```
 
 `runAzLogin`  will default to `false` when not specified; indicating the task should NOT run `az login`
 
 ```yaml
-- task: TerraformCLI
+- task: TerraformCLI@1
   displayName: 'terraform apply'
   inputs:
     command: apply
     environmentServiceName: 'My Azure Service Connection'
-    # indicate az login should be run as part of this command
-    runAzLogin: true
 ```
 
 This should allow the following template configuation to be run using this task
