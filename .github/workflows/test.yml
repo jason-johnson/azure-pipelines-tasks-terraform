@@ -8,12 +8,13 @@ on:
         branches: [ main ]
 
 jobs:
-    build:
+    test-cli:
         runs-on: ubuntu-latest
 
         strategy:
             matrix:
                 node-version: ['18.x', '20.x']
+                working-dir: ['./tasks/terraform-cli', './tasks/terraform-installer']
 
         steps:
         - uses: actions/checkout@v4
@@ -21,9 +22,6 @@ jobs:
           uses: actions/setup-node@v4
           with:
             node-version: ${{ matrix.node-version }}
-            
-        - name: Install dependencies
-          run: npm install
-
-        - name: Run tests
-          run: npm test
+            working-directory: ${{ matrix.working-dir }}
+        - run: npm ci
+        - run: npm test
