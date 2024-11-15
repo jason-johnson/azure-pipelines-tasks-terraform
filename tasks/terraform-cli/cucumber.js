@@ -4,7 +4,6 @@ let common = [
     '--require src/tests/steps/**/*.ts', // Load step definitions
     '--format progress-bar', // Load custom formatter    
     '--format @cucumber/pretty-formatter', // Load custom formatter
-    '--publish-quiet'
 ].join(' ');
 
 let report = [

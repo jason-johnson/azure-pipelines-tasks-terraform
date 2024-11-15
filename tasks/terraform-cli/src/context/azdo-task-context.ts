@@ -1,7 +1,7 @@
 import { ITaskContext, trackValue } from ".";
 import * as tasks from 'azure-pipelines-task-lib/task';
 import { BackendTypes } from "../backends";
-import { getFederatedToken } from "azure-pipelines-tasks-artifacts-common/webapi";
+import { getFederatedToken } from 'azure-pipelines-tasks-azure-arm-rest/azCliUtility';
 
 const isCommand = (...commands: string[]) => (ctx: ITaskContext) => commands.includes(ctx.name);
 const isCommandWithSubCommand = (commands: string[], subCommands: string[], subCommand: (ctx: ITaskContext) => string) => (ctx: ITaskContext) => commands.includes(ctx.name) && subCommands.includes(subCommand(ctx));

@@ -1,5 +1,5 @@
-import { TelemetryClient } from "applicationinsights";
-import { RequestTelemetry, ExceptionTelemetry } from "applicationinsights/out/Declarations/Contracts";
+import { TelemetryClient, ExceptionTelemetry } from "applicationinsights";
+import { RequestTelemetry } from "applicationinsights/out/src/declarations/contracts";
 import { ILogger } from ".";
 import { ITaskContext, getTrackedProperties } from "../context";
 
@@ -15,7 +15,7 @@ export default class ApplicationInsightsLogger implements ILogger{
           this.telemetry.trackRequest(<RequestTelemetry>{
               name: this.ctx.name,
               success: success,
-              resultCode: success ? 200 : 500,
+              resultCode: success ? "200" : "500",
               duration: duration,
               properties: getTrackedProperties(this.ctx)
           });
