@@ -13,7 +13,7 @@ import fs from 'fs';
 import { publishedPlanAttachmentType } from '../../commands/tf-plan';
 import util from 'util';
 
-const vsoWarningFormat = '##vso[task.issue type=warning;]%s';
+const vsoWarningFormat = '##vso[task.issue type=warning;source=TaskInternal;]%s';
 
 @binding([TaskRunner, MockTaskContext, TaskAnswers])
 export class TerraformSteps {
