@@ -19,7 +19,8 @@
 		"alexkrechik.cucumberautocomplete",
 		"ms-azure-devops.azure-pipelines",
 		"github.copilot",
-		"4ops.terraform"
+		"4ops.terraform",
+		"github.vscode-github-actions"
 	],
 	"postCreateCommand": "npm install -g typescript && npm install",
 }
