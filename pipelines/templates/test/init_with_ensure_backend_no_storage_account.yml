@@ -18,7 +18,7 @@ jobs:
         backendServiceArm: 'env_test'
         ensureBackend: true
         backendAzureRmResourceGroupName: '$(backend_arm_resource_group)$(Build.BuildId)'
-        backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
+        backendAzureRmResourceGroupLocation: westeurope
         backendAzureRmStorageAccountName: '$(backend_arm_storage_name)$(Build.BuildId)'
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: '$(backend_arm_storage_container)$(Build.BuildId)'
