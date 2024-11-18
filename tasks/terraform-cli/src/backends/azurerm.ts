@@ -3,10 +3,12 @@ import { CommandPipeline } from "../commands";
 import { IRunner } from "../runners";
 import { ITaskContext } from "../context";
 import { AzureRMAuthentication, AuthorizationScheme, ServicePrincipalCredentials, WorkloadIdentityFederationCredentials } from "../authentication/azurerm";
+import { ILogger } from "../logger";
 
 export default class AzureRMBackend implements ITerraformBackend {
     constructor(
-        private readonly runner: IRunner
+        private readonly runner: IRunner,
+        private readonly logger: ILogger
     ) { }
 
     async init(ctx: ITaskContext): Promise<TerraformBackendInitResult> {
@@ -98,6 +100,7 @@ export default class AzureRMBackend implements ITerraformBackend {
     }
 
     private async ensureBackend(ctx: ITaskContext) {
+      this.logger.warning("ensureBackend: is depreciated and will be removed in a future release. If your pipeline requires creating the storage account used by terraform, please implement it in your pipeline in a prior step.");
       await new CommandPipeline(this.runner)
         .azLogin()
         .azAccountSet()

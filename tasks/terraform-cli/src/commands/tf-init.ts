@@ -23,7 +23,7 @@ export class TerraformInit implements ICommand {
         let backend: ITerraformBackend | undefined;
         switch(ctx.backendType){
             case BackendTypes.azurerm:
-              backend = new AzureRMBackend(this.runner);
+              backend = new AzureRMBackend(this.runner, this.logger);
               break;
             case BackendTypes.aws:
               backend = new AwsBackend();
