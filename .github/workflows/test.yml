@@ -8,6 +8,21 @@ on:
         branches: [ main ]
 
 jobs:
+    setup:
+        runs-on: ubuntu-latest
+        steps: 
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+            - name: Install GitVersion
+              uses: gittools/actions/gitversion/setup@v3.0.2
+              with:
+                versionSpec: '6.x'
+            - name: Determine Version
+              id: version_step # step id used as reference for output values
+              uses: gittools/actions/gitversion/execute@v3.0.2
+
     test-cli:
         runs-on: ubuntu-latest
         defaults:
