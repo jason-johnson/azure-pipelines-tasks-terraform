@@ -93,6 +93,7 @@ export default class AzureRMBackend implements ITerraformBackend {
         }
 
         if (ctx.ensureBackend === true) {
+            this.logger.warning("ensureBackend: is depreciated and will be removed in a future release. If your pipeline requires creating the storage account used by terraform, please implement it in your pipeline in a prior step.");
             await this.ensureBackend(ctx);
         }
 
@@ -100,7 +101,6 @@ export default class AzureRMBackend implements ITerraformBackend {
     }
 
     private async ensureBackend(ctx: ITaskContext) {
-      this.logger.warning("ensureBackend: is depreciated and will be removed in a future release. If your pipeline requires creating the storage account used by terraform, please implement it in your pipeline in a prior step.");
       await new CommandPipeline(this.runner)
         .azLogin()
         .azAccountSet()
