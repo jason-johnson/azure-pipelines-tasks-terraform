@@ -242,8 +242,6 @@ If azurerm selected, the task will prompt for a service connection and storage a
     # Subscription id of the target backend. This can be used to specify the subscription when using Management Group scoped
     # Service connection or to override the subscription id defined in a Subscription scoped service connection
     backendAzureRmSubscriptionId: 'my-backend-subscription-id'
-    # create backend storage account if doesn't exist
-    ensureBackend: true
     backendAzureRmResourceGroupName: 'my-backend-resource-group'
     # azure location shortname of the backend resource group and storage account
     backendAzureRmResourceGroupLocation: 'eastus'
@@ -256,9 +254,9 @@ If azurerm selected, the task will prompt for a service connection and storage a
     backendAzureRmKey: infrax.tfstate
 ```
 
-#### Automated Remote Backend Creation for Azure Storage
+#### Automated Remote Backend Creation for Azure Storage - Deprecated
 
-The task supports automatically creating the resource group, storage account, and container for remote azurerm backend. To enable this, set the `ensureBackend` input to `true` and provide the resource group, location, and storage account sku. The defaults are 'eastus' and 'Standard_RAGRS' respectively. The task will utilize AzureCLI to create the resource group, storage account, and container as specified in the backend configuration.
+The task has deprecated support for automatically creating the resource group, storage account, and container for remote azurerm backend and will remove it in later versions. It was enabled with the `ensureBackend` input to `true`.  If you need the storage account to be created before running terraform, please create steps prior to terraform init to create it.
 
 ### AWS S3
 

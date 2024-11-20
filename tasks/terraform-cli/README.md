@@ -87,7 +87,6 @@ INPUT_BACKENDTYPE=local
 
 # If using 'azurerm' backend, these indicate the resource group, storage account name, container name, and file name used to store state.
 # These are not required if using local backend
-# INPUT_ENSUREBACKEND=true
 # INPUT_BACKENDAZURERMRESOURCEGROUPNAME=my-resource-group-name-here
 # INPUT_BACKENDAZURERMRESOURCEGROUPLOCATION=my-resource-group-location
 # INPUT_BACKENDAZURERMSTORAGEACCOUNTNAME=my-storage-account-name

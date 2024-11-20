@@ -18,7 +18,6 @@ jobs:
         backendType: azurerm
         backendServiceArm: 'env_test_mgmt'
         backendAzureRmSubscriptionId: $(azure_subscription_id)
-        ensureBackend: true
         backendAzureRmResourceGroupName: $(backendAzureRmResourceGroupName)
         backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
         backendAzureRmStorageAccountName: $(backendAzureRmStorageAccountName)
