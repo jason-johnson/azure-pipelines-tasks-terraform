@@ -24,7 +24,9 @@ provider "azurerm" {
 }
 
 terraform {
-  backend "azurerm" {}
+  backend "azurerm" {
+    use_azuread_auth = true
+  }
   required_version = ">= 0.12"
 }
 
