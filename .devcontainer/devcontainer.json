@@ -1,6 +1,6 @@
 {
-	"name": " Node",
-	"image": "mcr.microsoft.com/devcontainers/javascript-node:0-18-bullseye",
+	"name": "Node.js & TypeScript",
+	"image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
 	"features": {
 		"ghcr.io/devcontainers/features/azure-cli:1": {},
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
@@ -12,23 +12,19 @@
 		"vscode": {
 			"extensions": [
 				"eamodio.gitlens",
-				"cschleiden.vscode-github-actions",
 				"redhat.vscode-yaml",
-				"bierner.markdown-preview-github-styles",
-				"coenraads.bracket-pair-colorizer",
 				"vscode-icons-team.vscode-icons",
 				"editorconfig.editorconfig",
 				"dbaeumer.vscode-eslint",
-				"ms-vscode.vscode-typescript-next",
+				"ms-vscode.vscode-typescript-next",   # remove last
 				"ecmel.vscode-html-css",
 				"streetsidesoftware.code-spell-checker",
-				"alexkrechik.cucumberautocomplete",
+				"cucumberopen.cucumber-official",
 				"ms-azure-devops.azure-pipelines",
 				"github.copilot",
-				"4ops.terraform",
+				"hashicorp.terraform",
 				"github.vscode-github-actions"
 			]
 		}
-	},
-	"postCreateCommand": "npm install -g typescript && npm install",
+	}
 }
