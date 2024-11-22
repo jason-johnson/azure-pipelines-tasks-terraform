@@ -12,7 +12,6 @@ jobs:
         workingDirectory: $(terraform_templates_dir)
         backendType: azurerm
         backendServiceArm: 'env_test'
-        ensureBackend: true
         backendAzureRmResourceGroupName: $(backendAzureRmResourceGroupName)
         backendAzureRmResourceGroupLocation: $(backendAzureRmResourceGroupLocation)
         backendAzureRmStorageAccountName: $(backendAzureRmStorageAccountName)
