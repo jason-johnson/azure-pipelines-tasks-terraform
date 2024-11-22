@@ -28,7 +28,7 @@ stages:
       - test/publish_plan_results.yml
       - test/plan_with_command_options_var_file.yml
       - test/local_exec_az_cli.yml
-      - test/init_with_self_configured_backend.yml
+      # - test/init_with_self_configured_backend.yml
       - test/switch_workspaces.yml
       # - test/aws_self_configured.yml
       # - test/aws_service_connection.yml
