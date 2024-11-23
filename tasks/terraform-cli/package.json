@@ -30,7 +30,7 @@
     "applicationinsights": "^1.8.8",
     "azure-devops-node-api": "^12.0.0",
     "azure-pipelines-task-lib": "^4.6.1",
-    "azure-pipelines-tasks-artifacts-common": "2.241.1",
+    "azure-pipelines-tasks-azure-arm-rest": "3.249.0",
     "dotenv": "^8.2.0",
     "intercept-stdout": "^0.1.2",
     "mock-require": "^3.0.3",
