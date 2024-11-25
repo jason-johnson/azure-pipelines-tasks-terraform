@@ -1,5 +1,5 @@
-import { TelemetryClient, ExceptionTelemetry } from "applicationinsights";
-import { RequestTelemetry } from "applicationinsights/out/src/declarations/contracts";
+import { TelemetryClient } from "applicationinsights";
+import { RequestTelemetry, ExceptionTelemetry } from "applicationinsights/out/Declarations/Contracts";
 import { ILogger } from ".";
 import { ITaskContext, getTrackedProperties } from "../context";
 
