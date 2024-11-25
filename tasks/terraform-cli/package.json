@@ -47,7 +47,7 @@
     "@types/mock-require": "^3.0.0",
     "@types/node": "^22.9.0",
     "@types/q": "^1.5.8",
-    "chai": "^5.1.2",
+    "chai": "^4.2.0",
     "chai-arrays": "^2.2.0",
     "copyfiles": "^2.4.1",
     "cucumber-junit": "^1.7.1",
