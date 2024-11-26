@@ -16,7 +16,7 @@
         "Minor": "#{GitVersion.Minor}#",
         "Patch": "#{GitVersion.Patch}#"
     },
-    "minimumAgentVersion": "1.95.0",
+    "minimumAgentVersion": "3.248.0",
     "instanceNameFormat": "terraform $(command)",
     "groups": [{
             "name": "backendAzureRm",
