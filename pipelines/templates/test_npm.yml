@@ -9,7 +9,7 @@ steps:
       workingDir: ${{ parameters.workingDir }}
       command: custom
       customCommand: run test:coverage
-  - task: PublishCodeCoverageResults@1
+  - task: PublishCodeCoverageResults@2
     displayName: test - publish coverage
     inputs:
       codeCoverageTool: cobertura
