@@ -33,7 +33,7 @@ steps:
   displayName: version tasks
   inputs:
     targetFiles: ${{ parameters.workingDir }}/task.json
-    escapeType: none
+    escape: off
 - task: Npm@1
   displayName: pack
   inputs:  
