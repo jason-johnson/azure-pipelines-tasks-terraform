@@ -49,11 +49,11 @@ stages:
   jobs:
   - job: version
     steps:
-    - task: gitversion/setup@0
+    - task: gitversion/setup@3
       displayName: install GitVersion
       inputs:
         versionSpec: '5.x'
-    - task: gitversion/execute@0
+    - task: gitversion/execute@3
       displayName: set version
       name: version
   - job: tags
@@ -178,7 +178,7 @@ stages:
             displayName: show folders
           # TODO: end remove block
 
-          - task: TfxInstaller@3
+          - task: TfxInstaller@5
             displayName: 'install tfx-cli'
             inputs:
               version: '0.8.x'
