@@ -15,7 +15,7 @@ export default class ApplicationInsightsLogger implements ILogger{
           this.telemetry.trackRequest(<RequestTelemetry>{
               name: this.ctx.name,
               success: success,
-              resultCode: success ? 200 : 500,
+              resultCode: success ? "200" : "500",
               duration: duration,
               properties: getTrackedProperties(this.ctx)
           });
