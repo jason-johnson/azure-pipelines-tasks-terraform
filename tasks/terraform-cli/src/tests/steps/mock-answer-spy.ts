@@ -23,6 +23,7 @@ export class MockAnswers {
         requestedAnswers[cmd].push(key);
         let response = this.mockAnswers.getResponse(cmd, key, debug);
         if(!response && cmd == `exec`){
+            // TODO: Why doesn't this bubble up to the tests?
             throw new Error(`No exec answer found for command "${key}". Make sure to mock answer for commands!`);
         }
         return response;
