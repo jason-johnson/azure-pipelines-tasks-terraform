@@ -6,7 +6,7 @@
     "pack-cli": "cd ./tasks/terraform-cli && npm install --include:dev && npm run build && npm run pack && sh ./../../scripts/set-version.sh",
     "pack-inst": "cd ./tasks/terraform-installer && npm install --include:dev && npm run build && npm run pack && sh ./../../scripts/set-version.sh",
     "pack-views": "cd ./views/terraform-plan && npm install --include:dev && npm run build && npm run pack",
-    "publish:self": "tfx extension create --manifest-globs vss-extension.json vss-extension-alpha.json --overrides-file ./self.json",
+    "publish:self": "tfx extension create --manifest-globs vss-extension.json vss-extension-rc.json --overrides-file ./self.json",
     "package:self": "npm install --include:dev && npm run pack-views && npm run pack-cli && npm run pack-inst && npm run publish:self"
   },
   "repository": {
