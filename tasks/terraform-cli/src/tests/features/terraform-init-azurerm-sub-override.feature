@@ -114,7 +114,7 @@ Feature: terraform init azurerm with subscription override
       | --service-principal       |
       | -t ten1                   |
       | -u servicePrincipal1      |
-      | -p servicePrincipalKey123 |
+      | -p=servicePrincipalKey123 |
     And running command "az account set -s sub2" returns successful result
     And running command "az group create --name rg-backend-storage --location eastus" returns successful result
     And running command "az storage account show --name storage --resource-group rg-backend-storage" fails with error "The Resource 'Microsoft.Storage/storageAccounts/storage' under resource group 'rg-backend-storage' was not found."
@@ -195,7 +195,7 @@ Feature: terraform init azurerm with subscription override
       | --service-principal       |
       | -t ten1                   |
       | -u servicePrincipal1      |
-      | -p servicePrincipalKey123 |
+      | -p=servicePrincipalKey123 |
     And running command "az account set -s sub2" returns successful result
     And running command "az group create --name rg-backend-storage --location eastus" returns successful result
     And running command "az storage account show --name storage --resource-group rg-backend-storage" returns successful result

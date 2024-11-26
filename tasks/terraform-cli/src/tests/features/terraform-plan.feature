@@ -26,7 +26,7 @@ Feature: terraform plan
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And running command "terraform plan" returns successful result
         When the terraform cli task is run
@@ -40,7 +40,7 @@ Feature: terraform plan
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
 
@@ -59,7 +59,7 @@ Feature: terraform plan
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And running command "terraform plan -input=true -lock=false -no-color" returns successful result
         When the terraform cli task is run        
@@ -73,7 +73,7 @@ Feature: terraform plan
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
 
@@ -112,7 +112,7 @@ Feature: terraform plan
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And running command "terraform plan -input=true -lock=false -no-color -detailed-exitcode" returns successful result with exit code 2
         When the terraform cli task is run        
@@ -126,7 +126,7 @@ Feature: terraform plan
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "2"        
         And pipeline variable "TERRAFORM_PLAN_HAS_CHANGES" is set to "true"
@@ -146,7 +146,7 @@ Feature: terraform plan
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And running command "terraform plan -input=true -lock=false -no-color -detailed-exitcode" returns successful result with exit code 0
         When the terraform cli task is run        
@@ -160,7 +160,7 @@ Feature: terraform plan
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"        
         And pipeline variable "TERRAFORM_PLAN_HAS_CHANGES" is set to "false"
@@ -180,7 +180,7 @@ Feature: terraform plan
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And secure file specified with id "6b4ef608-ca4c-4185-92fb-0554b8a2ec72" and name "./src/tests/default.vars"
         And running command "terraform plan -var-file=./src/tests/default.vars" returns successful result
@@ -195,7 +195,7 @@ Feature: terraform plan
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
 
@@ -214,7 +214,7 @@ Feature: terraform plan
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And secure file specified with id "6b4ef608-ca4c-4185-92fb-0554b8a2ec72" and name "./src/tests/default.env"
         And running command "terraform plan" returns successful result
@@ -232,7 +232,7 @@ Feature: terraform plan
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
 

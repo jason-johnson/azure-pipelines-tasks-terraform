@@ -18,7 +18,7 @@ Feature: terraform import azurerm with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And resource target provided with address "azurerm_resource_group.rg" and id "/subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus"
         And running command "terraform import azurerm_resource_group.rg /subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus" returns successful result
@@ -33,7 +33,7 @@ Feature: terraform import azurerm with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
 
@@ -53,7 +53,7 @@ Feature: terraform import azurerm with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And resource target provided with address "azurerm_resource_group.rg" and id "/subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus"
         And running command "terraform import azurerm_resource_group.rg /subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus" returns successful result
@@ -68,6 +68,6 @@ Feature: terraform import azurerm with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"

@@ -16,20 +16,18 @@ export class AzLogin implements ICommand {
  
         switch(authorizationScheme) {
             case AuthorizationScheme.ServicePrincipal:
-                if(ctx.backendServiceArm){
+                const ctxTenantId = ctx.backendServiceArm ? ctx.backendServiceArmTenantId : ctx.environmentServiceArmTenantId;
+                const ctxClientId = ctx.backendServiceArm ? ctx.backendServiceArmClientId : ctx.environmentServiceArmClientId;
+                const ctxClientSecret = ctx.backendServiceArm ? ctx.backendServiceArmClientSecret : ctx.environmentServiceArmClientSecret;
+
+                options.addArgs(
+                    "--service-principal", 
+                    "-t", ctxTenantId,
+                    "-u", ctxClientId
+                );
+                if(ctxClientSecret && ctxClientSecret.length > 0){
                     options.addArgs(
-                        "--service-principal", 
-                        "-t", ctx.backendServiceArmTenantId,
-                        "-u", ctx.backendServiceArmClientId,
-                        "-p", ctx.backendServiceArmClientSecret
-                    );
-                }
-                else{
-                    options.addArgs(
-                        "--service-principal", 
-                        "-t", ctx.environmentServiceArmTenantId,
-                        "-u", ctx.environmentServiceArmClientId,
-                        "-p", ctx.environmentServiceArmClientSecret
+                        `-p=${ctxClientSecret}`
                     );
                 }
                 break;
