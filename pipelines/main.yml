@@ -178,7 +178,7 @@ stages:
             displayName: show folders
           # TODO: end remove block
 
-          - task: TfxInstaller@3
+          - task: TfxInstaller@5
             displayName: 'install tfx-cli'
             inputs:
               version: '0.8.x'
