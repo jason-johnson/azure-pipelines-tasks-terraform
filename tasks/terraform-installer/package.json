@@ -25,6 +25,7 @@
   "homepage": "https://github.com/jason-johnson/azure-pipelines-tasks-terraform#readme",
   "devDependencies": {
     "@types/node": "^22.10.0",
+    "@types/q": "^1.5.8",
     "copyfiles": "^2.4.0",
     "dotenv": "^16.4.5",
     "tfx-cli": "^0.17.0",
@@ -32,7 +33,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "azure-pipelines-task-lib": "^4.1.0",
+    "azure-pipelines-task-lib": "^4.17.3",
     "azure-pipelines-tool-lib": "^2.0.8",
     "node-fetch-with-proxy": "^0.1.6"
   }
