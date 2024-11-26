@@ -29,7 +29,7 @@ steps:
   - template: test_npm.yml
     parameters:
       workingDir: ${{ parameters.workingDir }}
-- task: qetza.replacetokens.replacetokens-task.replacetokens@3
+- task: qetza.replacetokens.replacetokens-task.replacetokens@6
   displayName: version tasks
   inputs:
     targetFiles: ${{ parameters.workingDir }}/task.json
