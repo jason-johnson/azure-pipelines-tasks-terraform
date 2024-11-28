@@ -20,6 +20,8 @@ export default class AzureRMProvider implements ITerraformProvider {
     }
 
     async init(): Promise<void> {
+      process.env['TF_IN_AUTOMATION']        = 'True';
+
       const authorizationScheme = AzureRMAuthentication.getAuthorizationScheme(this.ctx.environmentServiceArmAuthorizationScheme);
  
       const subscriptionId = this.ctx.providerAzureRmSubscriptionId || this.ctx.environmentServiceArmSubscriptionId;
