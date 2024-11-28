@@ -18,6 +18,8 @@ export class TerraformProviderContext {
   }
 
   async init(): Promise<void>{
+    process.env['TF_IN_AUTOMATION']        = 'True';
+    
     for(let i = 0; i < this.providers.length; i++){
       if(this.providers[i].isDefined()){
         await this.providers[i].init();
