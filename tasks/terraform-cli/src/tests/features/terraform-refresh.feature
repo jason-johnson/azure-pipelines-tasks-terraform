@@ -26,7 +26,7 @@ Feature: terraform refresh
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And running command "terraform refresh" returns successful result
         When the terraform cli task is run
@@ -40,7 +40,7 @@ Feature: terraform refresh
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
 
@@ -79,7 +79,7 @@ Feature: terraform refresh
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And secure file specified with id "6b4ef608-ca4c-4185-92fb-0554b8a2ec72" and name "./src/tests/default.vars"
         And running command "terraform refresh -var-file=./src/tests/default.vars" returns successful result
@@ -94,7 +94,7 @@ Feature: terraform refresh
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
 
@@ -113,7 +113,7 @@ Feature: terraform refresh
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And secure file specified with id "6b4ef608-ca4c-4185-92fb-0554b8a2ec72" and name "./src/tests/default.env"
         And running command "terraform refresh" returns successful result
@@ -131,7 +131,7 @@ Feature: terraform refresh
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
 

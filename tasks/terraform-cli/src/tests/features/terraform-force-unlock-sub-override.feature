@@ -17,7 +17,7 @@ Feature: terraform force-unlock with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And force-unlock is run with lock id "3ea12870-968e-b9b9-cf3b-f4c3fbe36684"
         And running command "terraform force-unlock -force 3ea12870-968e-b9b9-cf3b-f4c3fbe36684" returns successful result
@@ -32,7 +32,7 @@ Feature: terraform force-unlock with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
 
@@ -52,7 +52,7 @@ Feature: terraform force-unlock with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And force-unlock is run with lock id "3ea12870-968e-b9b9-cf3b-f4c3fbe36684"
         And running command "terraform force-unlock -force 3ea12870-968e-b9b9-cf3b-f4c3fbe36684" returns successful result
@@ -67,6 +67,6 @@ Feature: terraform force-unlock with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"

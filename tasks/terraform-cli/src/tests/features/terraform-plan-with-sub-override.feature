@@ -17,7 +17,7 @@ Feature: terraform plan azurerm with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And running command "terraform plan" returns successful result
         When the terraform cli task is run
@@ -31,7 +31,7 @@ Feature: terraform plan azurerm with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
 
@@ -51,7 +51,7 @@ Feature: terraform plan azurerm with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And running command "terraform plan" returns successful result
         When the terraform cli task is run
@@ -65,7 +65,7 @@ Feature: terraform plan azurerm with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
 
@@ -84,7 +84,7 @@ Feature: terraform plan azurerm with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And task configured to run az login
         And running command "terraform plan" returns successful result
         When the terraform cli task is run
@@ -97,6 +97,6 @@ Feature: terraform plan azurerm with subscription override
             | --service-principal       |
             | -t ten1                   |
             | -u servicePrincipal1      |
-            | -p servicePrincipalKey123 |
+            | -p=servicePrincipalKey123 |
         And the terraform cli task is successful
         And pipeline variable "TERRAFORM_LAST_EXITCODE" is set to "0"
