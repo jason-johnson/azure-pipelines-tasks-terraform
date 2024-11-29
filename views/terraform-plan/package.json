@@ -27,8 +27,8 @@
   },
   "homepage": "https://github.com/jason-johnson/azure-pipelines-tasks-terraform#readme",
   "dependencies": {
-    "azure-devops-extension-api": "^1.158.0",
-    "azure-devops-extension-sdk": "^2.0.7",
+    "azure-devops-extension-api": "^4.246.0",
+    "azure-devops-extension-sdk": "^4.0.2",
     "azure-devops-ui": "^2.246.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
