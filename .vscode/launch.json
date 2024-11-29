@@ -58,8 +58,11 @@
             "type": "node",
             "request": "launch",
             "name": "debug:tests - views/terraform-plan",
-            "program": "${workspaceFolder}/node_modules/jest/bin/jest",
-            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+              "run-script", "test",
+            ],
+            "cwd": "${workspaceFolder}/views/terraform-plan",
             "args": [
             ]
         },
