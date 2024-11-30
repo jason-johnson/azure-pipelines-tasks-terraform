@@ -38,6 +38,7 @@ variables:
   Agent.Source.Git.ShallowFetchDepth: 0
   marketplace_publisher: JasonBJohnson
   ado_service_url: https://dev.azure.com/azure-pipelines-terraform-rc
+  marketplace_service_connection: 'de06ce2d-1242-4fe5-b0bd-620b4fd8122b'
 
 pool:
   vmImage: ubuntu-latest
@@ -96,7 +97,7 @@ stages:
           workingDir: $(System.DefaultWorkingDirectory)/views/terraform-plan
           artifact: terraform_plan
 
-      # Unfortunately, terraform plan view needs some work to have it complay with test_npm.yml so we hard code the steps for now
+      # Unfortunately, terraform plan view needs some work to have it comply with test_npm.yml so we hard code the steps for now
       - task: Npm@1
         displayName: test
         inputs:
@@ -178,30 +179,43 @@ stages:
             displayName: show folders
           # TODO: end remove block
 
+          - task: AzureCLI@2
+            displayName: 'set access token'
+            inputs:
+              azureSubscription: 'terraform-cli-marketplace'
+              scriptType: 'pscore'
+              scriptLocation: 'inlineScript'
+              useGlobalConfig: true
+              inlineScript: |
+                $accessToken = az account get-access-token --resource 499b84ac-1321-427f-aa17-267ca6975798 --query "accessToken" --output tsv
+                write-host "##vso[task.setsecret]$accessToken"
+                write-host "##vso[task.setendpoint id=$env:MARKETPLACE_SERVICE_CONNECTION;field=authParameter;key=password]$accessToken"
+
           - task: TfxInstaller@5
             displayName: 'install tfx-cli'
             inputs:
               version: '0.8.x'
               checkLatest: true
-          - bash: tfx extension unpublish 
-              --publisher $(marketplace_publisher) 
-              --extension-id azure-pipelines-tasks-terraform-rc
-              -t $(marketplace_access_token)
+          - task: UnpublishAzureDevOpsExtension@5
+            inputs:
+              connectedServiceNameAzureRM: 'marketplace_jasonbjohnson'
+              publisherId: $(marketplace_publisher)
+              extensionId: azure-pipelines-tasks-terraform-rc
             displayName: unpublish extension
-          - task: PublishAzureDevOpsExtension@4
+          - task: PublishAzureDevOpsExtension@5
             name: publish
             inputs:
-              connectedServiceName: 'marketplace_jasonbjohnson'
+              connectedServiceNameAzureRM: 'marketplace_jasonbjohnson'
               rootFolder: $(System.DefaultWorkingDirectory)
               patternManifest: |
                vss-extension.json
                vss-extension-rc.json
               extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch).$(GitVersion.CommitsSinceVersionSource)
               shareWith: $(marketplace_share_with)
-          - task: InstallAzureDevOpsExtension@4
+          - task: InstallAzureDevOpsExtension@5
             displayName: 'Install Extension'
             inputs:
-              connectedServiceName: 'marketplace_jasonbjohnson'
+              connectedServiceNameAzureRM: 'marketplace_jasonbjohnson'
               publisherId: $(marketplace_publisher)
               extensionId: azure-pipelines-tasks-terraform-rc
               accounts: $(ado_service_url)
