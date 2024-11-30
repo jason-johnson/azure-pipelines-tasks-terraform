@@ -38,7 +38,6 @@ variables:
   Agent.Source.Git.ShallowFetchDepth: 0
   marketplace_publisher: JasonBJohnson
   ado_service_url: https://dev.azure.com/azure-pipelines-terraform-rc
-  marketplace_service_connection: 'de06ce2d-1242-4fe5-b0bd-620b4fd8122b'
 
 pool:
   vmImage: ubuntu-latest

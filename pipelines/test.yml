@@ -119,11 +119,10 @@ stages:
             inputs:
               version: '0.8.x'
               checkLatest: true
-          - task: PublishAzureDevOpsExtension@3
+          - task: PublishAzureDevOpsExtension@5
             name: publish
             inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace_jasonbjohnson'
+              connectedServiceNameAzureRM: 'terraform-cli-marketplace'
               cwd:  $(System.DefaultWorkingDirectory)
               extensionVersion: $(GitVersion.Major).$(GitVersion.Minor).$(GitVersion.Patch).$(GitVersion.CommitsSinceVersionSource)
               patternManifest: |
