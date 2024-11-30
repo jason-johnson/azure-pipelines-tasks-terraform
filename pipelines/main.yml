@@ -199,16 +199,14 @@ stages:
               checkLatest: true
           - task: UnpublishAzureDevOpsExtension@5
             inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace_jasonbjohnson'
+              connectedServiceNameAzureRM: 'terraform-cli-marketplace'
               publisherId: $(marketplace_publisher)
               extensionId: azure-pipelines-tasks-terraform-rc
             displayName: unpublish extension
           - task: PublishAzureDevOpsExtension@5
             name: publish
             inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace_jasonbjohnson'
+              connectedServiceNameAzureRM: 'terraform-cli-marketplace'
               rootFolder: $(System.DefaultWorkingDirectory)
               patternManifest: |
                vss-extension.json
@@ -218,8 +216,7 @@ stages:
           - task: InstallAzureDevOpsExtension@5
             displayName: 'Install Extension'
             inputs:
-              connectTo: 'VsTeam'
-              connectedServiceName: 'marketplace_jasonbjohnson'
+              connectedServiceNameAzureRM: 'terraform-cli-marketplace'
               publisherId: $(marketplace_publisher)
               extensionId: azure-pipelines-tasks-terraform-rc
               accounts: $(ado_service_url)
