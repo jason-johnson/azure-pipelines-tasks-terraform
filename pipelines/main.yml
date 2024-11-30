@@ -189,6 +189,7 @@ stages:
               inlineScript: |
                 $accessToken = az account get-access-token --resource 499b84ac-1321-427f-aa17-267ca6975798 --query "accessToken" --output tsv
                 write-host "##vso[task.setsecret]$accessToken"
+                write-host "##vso[task.setvariable variable=publish_accessToken]$accessToken"
                 write-host "##vso[task.setendpoint id=$env:MARKETPLACE_SERVICE_CONNECTION;field=authParameter;key=password]$accessToken"
 
           - task: TfxInstaller@5
@@ -226,9 +227,9 @@ stages:
             name: wait_tasks_terraform_installer
             inputs:
               filePath: $(Build.SourcesDirectory)/pipelines/publish/poll_task_install.sh
-              arguments: -s $(ado_service_url) -t $(organization_access_token) -c 2b4600b9-5cd9-4e3b-9c8b-553c8e58383a          
+              arguments: -s $(ado_service_url) -t $(publish_accessToken) -c 2b4600b9-5cd9-4e3b-9c8b-553c8e58383a          
           - task: Bash@3
             name: wait_tasks_terraform_cli
             inputs:
               filePath: $(Build.SourcesDirectory)/pipelines/publish/poll_task_install.sh
-              arguments: -s $(ado_service_url) -t $(organization_access_token) -c 51355d76-dd54-4754-919d-bba27fdf59e4
+              arguments: -s $(ado_service_url) -t $(publish_accessToken) -c 51355d76-dd54-4754-919d-bba27fdf59e4
