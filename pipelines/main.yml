@@ -190,7 +190,6 @@ stages:
                 $accessToken = az account get-access-token --resource 499b84ac-1321-427f-aa17-267ca6975798 --query "accessToken" --output tsv
                 write-host "##vso[task.setsecret]$accessToken"
                 write-host "##vso[task.setvariable variable=publish_accessToken]$accessToken"
-                write-host "##vso[task.setendpoint id=$env:MARKETPLACE_SERVICE_CONNECTION;field=authParameter;key=password]$accessToken"
 
           - task: TfxInstaller@5
             displayName: 'install tfx-cli'
