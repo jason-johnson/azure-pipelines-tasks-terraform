@@ -188,6 +188,7 @@ stages:
               useGlobalConfig: true
               inlineScript: |
                 $accessToken = az account get-access-token --resource 499b84ac-1321-427f-aa17-267ca6975798 --query "accessToken" --output tsv
+                write-host "Access token length: $(($accessToken).Length)"
                 write-host "##vso[task.setsecret]$accessToken"
                 write-host "##vso[task.setvariable variable=publish_accessToken]$accessToken"
 
