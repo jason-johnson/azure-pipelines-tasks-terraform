@@ -60,7 +60,8 @@ export default class TaskAgent implements ITaskAgent {
 
     writeFile(workingDirectory: string, fileName: string, content: string): string {
         const filePath = tasks.resolve(workingDirectory, fileName);
-        fs.mkdirSync(path.dirname(filePath), { recursive: true });
+        const dirname = path.dirname(filePath);
+        fs.existsSync(dirname) || fs.mkdirSync(dirname, { recursive: true });
         tasks.writeFile(filePath, content);
         return filePath;
     }
