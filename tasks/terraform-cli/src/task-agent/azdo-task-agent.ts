@@ -49,6 +49,14 @@ export default class TaskAgent implements ITaskAgent {
         tasks.addAttachment(type, name, filePath);
     }
 
+    attachNewPlanFile(workingDirectory: string, type: string, name: string, content: string) {
+        const stage = tasks.getVariable('System.StageName') || "default_stage";
+        const job = tasks.getVariable('System.JobName') || "default_job";
+        const targetDir = tasks.resolve(workingDirectory, stage, job);
+        const filePath = this.writeFile(targetDir, name, content);
+        tasks.addAttachment(type, name, filePath);
+    }
+
     writeFile(workingDirectory: string, fileName: string, content: string): string {
         const filePath = tasks.resolve(workingDirectory, fileName);
         tasks.writeFile(filePath, content);

@@ -64,7 +64,7 @@ export class TerraformPlan implements ICommand {
                 default:
                     content = result.stdout
             }
-            this.taskAgent.attachNewFile(ctx.cwd, publishedPlanAttachmentType, ctx.publishPlanResults, content);
+            this.taskAgent.attachNewPlanFile(ctx.cwd, publishedPlanAttachmentType, ctx.publishPlanResults, content);
         }
 
         return result.toCommandResponse();

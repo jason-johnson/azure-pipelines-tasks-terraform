@@ -2,6 +2,12 @@ import path from "path";
 import { ITaskAgent } from ".";
 
 export default class TaskAgentMock implements ITaskAgent {
+    attachNewPlanFile(workingDirectory: string, type: string, name: string, content: string): void {
+        const targetPath = path.join(workingDirectory, "default_stage", "default_job");
+        const filePath = this.writeFile(targetPath, name, content);
+        this.attachedFiles[name] = { type: type, path: filePath };
+        this.attachedTypes[type] = { [name]: filePath};
+    }
     public readonly attachedFiles: { [name: string]: { type: string, path: string } } = {};
     public readonly attachedTypes: { [type: string]: { [ name: string ]: string } } = {}
     public readonly writtenFiles: { [path: string]: string } = {};
