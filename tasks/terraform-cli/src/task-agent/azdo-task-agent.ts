@@ -4,6 +4,7 @@ import * as tasks from 'azure-pipelines-task-lib/task';
 import fs from 'fs';
 import Q from 'q';
 import { ITaskAgent } from '.';
+import path from 'path';
 
 export default class TaskAgent implements ITaskAgent {
     private readonly api: WebApi;
@@ -59,6 +60,7 @@ export default class TaskAgent implements ITaskAgent {
 
     writeFile(workingDirectory: string, fileName: string, content: string): string {
         const filePath = tasks.resolve(workingDirectory, fileName);
+        fs.mkdirSync(path.dirname(filePath), { recursive: true });
         tasks.writeFile(filePath, content);
         return filePath;
     }
