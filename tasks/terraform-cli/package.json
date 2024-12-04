@@ -36,7 +36,8 @@
     "intercept-stdout": "^0.1.2",
     "mock-require": "^3.0.3",
     "q": "^2.0.3",
-    "reflect-metadata": "^0.2.2"
+    "reflect-metadata": "^0.2.2",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^10.9.0",
