@@ -7,7 +7,7 @@
     "build": "tsc --build",
     "test": "cucumber-js -p default",
     "test:coverage": "nyc -r cobertura -r html \"cucumber-js\" \"-p\" \"default\"",
-    "test:report": "mkdir -p .tests && cucumber-js -p report | grep -Ev '^##vso|^\\[command]|^[a-zA-Z0-9]' | cucumber-junit > ./.tests/results.xml",
+    "test:report": "mkdir -p .tests && cucumber-js -p report | grep -Ev '^#{2}vso|^\\[command]|^[a-zA-Z0-9]' | cucumber-junit > ./.tests/results.xml",
     "start": "ts-node -r dotenv/config ./src/index.ts",
     "pack": "copyfiles package.json task.json icon.png \".bin/*.js\" \".bin/**/*.js\" -e \".bin/tests/*\" .dist && cd .dist && npm install --only=prod"
   },
@@ -36,7 +36,8 @@
     "intercept-stdout": "^0.1.2",
     "mock-require": "^3.0.3",
     "q": "^2.0.3",
-    "reflect-metadata": "^0.2.2"
+    "reflect-metadata": "^0.2.2",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^10.9.0",

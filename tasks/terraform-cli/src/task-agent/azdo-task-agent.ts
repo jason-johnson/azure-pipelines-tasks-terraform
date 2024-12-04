@@ -4,7 +4,7 @@ import * as tasks from 'azure-pipelines-task-lib/task';
 import fs from 'fs';
 import Q from 'q';
 import { ITaskAgent } from '.';
-import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
 export default class TaskAgent implements ITaskAgent {
     private readonly api: WebApi;
@@ -53,15 +53,13 @@ export default class TaskAgent implements ITaskAgent {
     attachNewPlanFile(workingDirectory: string, type: string, name: string, content: string) {
         const stage = tasks.getVariable('System.StageName') || "default_stage";
         const job = tasks.getVariable('System.JobName') || "default_job";
-        const targetDir = tasks.resolve(workingDirectory, stage, job);
-        const filePath = this.writeFile(targetDir, name, content);
+        const fileName = `${stage}_${job}_${uuidv4()}`;
+        const filePath = this.writeFile(workingDirectory, fileName, content);
         tasks.addAttachment(type, name, filePath);
     }
 
     writeFile(workingDirectory: string, fileName: string, content: string): string {
         const filePath = tasks.resolve(workingDirectory, fileName);
-        const dirname = path.dirname(filePath);
-        fs.existsSync(dirname) || fs.mkdirSync(dirname, { recursive: true });
         tasks.writeFile(filePath, content);
         return filePath;
     }

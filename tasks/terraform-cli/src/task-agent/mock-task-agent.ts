@@ -1,10 +1,11 @@
 import path from "path";
 import { ITaskAgent } from ".";
+import { v4 as uuidv4 } from 'uuid';
 
 export default class TaskAgentMock implements ITaskAgent {
     attachNewPlanFile(workingDirectory: string, type: string, name: string, content: string): void {
-        const targetPath = path.join(workingDirectory, "default_stage", "default_job");
-        const filePath = this.writeFile(targetPath, name, content);
+        const fileName = `default_stage_default_job_${uuidv4()}`;
+        const filePath = this.writeFile(workingDirectory, fileName, content);
         this.attachedFiles[name] = { type: type, path: filePath };
         this.attachedTypes[type] = { [name]: filePath};
     }
