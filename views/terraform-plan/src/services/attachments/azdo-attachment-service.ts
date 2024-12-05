@@ -1,14 +1,12 @@
 import * as SDK from "azure-devops-extension-sdk";
 import { Attachment, IAttachmentService } from "./index";
-import { CommonServiceIds, getClient, IProjectInfo, IProjectPageService } from "azure-devops-extension-api";
-import { Build, BuildRestClient, BuildServiceIds, IBuildPageDataService, Timeline } from "azure-devops-extension-api/Build";
+import { CommonServiceIds, getClient, IProjectPageService } from "azure-devops-extension-api";
+import { BuildRestClient, BuildServiceIds, IBuildPageDataService } from "azure-devops-extension-api/Build";
 import urlparse from 'url-parse';
 
 interface ThisBuild {
-    project: IProjectInfo,
+    projectId: string,
     buildId: number,
-    build: Build,
-    timeline: Timeline,
 }
 
 interface AzdoAttachment {
@@ -30,8 +28,8 @@ export default class AzdoAttachmentService implements IAttachmentService {
 
     async getAttachments(type: string): Promise<Attachment[]> {
         const attachments: Attachment[] = [];
-        const build = await this.getThisBuild();
-        const azdoAttachments = await this.getPlanAttachmentNames(build.project.id, build.buildId, type);
+        const build = await this.getThisBuildInfo();
+        const azdoAttachments = await this.getPlanAttachmentNames(build.projectId, build.buildId, type);
 
         //todo: refactor this to utilize promise.all
         for (const a of azdoAttachments) {
@@ -46,7 +44,7 @@ export default class AzdoAttachmentService implements IAttachmentService {
         return attachments;
     }
 
-    private async getThisBuild(): Promise<ThisBuild> {
+    private async getThisBuildInfo(): Promise<ThisBuild> {
         const projectService = await SDK.getService<IProjectPageService>(CommonServiceIds.ProjectPageService)
         const buildService = await SDK.getService<IBuildPageDataService>(BuildServiceIds.BuildPageDataService)
         const projectFromContext = await projectService.getProject()
@@ -64,14 +62,10 @@ export default class AzdoAttachmentService implements IAttachmentService {
         }
 
         const buildId = buildFromContext.build.id
-        const build = await this.buildClient.getBuild(projectFromContext.name, buildId);
-        const timeline = await this.buildClient.getBuildTimeline(projectFromContext.name, buildId);
 
         return {
-            project: projectFromContext,
-            buildId: buildId,
-            build: build,
-            timeline: timeline
+            projectId: projectFromContext.id,
+            buildId: buildId
         }
     }
 
