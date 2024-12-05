@@ -4,7 +4,7 @@ import { CommonServiceIds, getClient, IProjectPageService } from "azure-devops-e
 import { BuildRestClient, BuildServiceIds, IBuildPageDataService } from "azure-devops-extension-api/Build";
 import urlparse from 'url-parse';
 
-interface ThisBuild {
+interface ThisBuildInfo {
     projectId: string,
     buildId: number,
 }
@@ -28,8 +28,8 @@ export default class AzdoAttachmentService implements IAttachmentService {
 
     async getAttachments(type: string): Promise<Attachment[]> {
         const attachments: Attachment[] = [];
-        const build = await this.getThisBuildInfo();
-        const azdoAttachments = await this.getPlanAttachmentNames(build.projectId, build.buildId, type);
+        const buildInfo = await this.getThisBuildInfo();
+        const azdoAttachments = await this.getPlanAttachmentNames(buildInfo.projectId, buildInfo.buildId, type);
 
         //todo: refactor this to utilize promise.all
         for (const a of azdoAttachments) {
@@ -44,7 +44,7 @@ export default class AzdoAttachmentService implements IAttachmentService {
         return attachments;
     }
 
-    private async getThisBuildInfo(): Promise<ThisBuild> {
+    private async getThisBuildInfo(): Promise<ThisBuildInfo> {
         const projectService = await SDK.getService<IProjectPageService>(CommonServiceIds.ProjectPageService)
         const buildService = await SDK.getService<IBuildPageDataService>(BuildServiceIds.BuildPageDataService)
         const projectFromContext = await projectService.getProject()
