@@ -69,11 +69,7 @@ export default class TerraformPlanDisplay extends React.Component<{ attachments:
                             let html = NoPublishedPlanMessage;
 
                             if (!props.plansLoaded) {
-                                return (
-                                    <div className="flex-row">
-                                        <div>{LoadingMessage}</div>
-                                    </div>
-                                )
+                                html = LoadingMessage;
                             }
                             
                             if (props.chosenPlan > -1) {
