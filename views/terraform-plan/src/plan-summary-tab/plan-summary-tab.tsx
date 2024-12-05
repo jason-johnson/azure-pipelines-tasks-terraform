@@ -15,12 +15,14 @@ interface TerraformPlan {
 }
 
 export const NoPublishedPlanMessage = "No terraform plans have been published for this pipeline run. The terraform cli task must run plan with <code>publishPlanResults: string</code> (where string represents the plan name) to view plans.";
+export const LoadingMessage = "Loading terraform plans...";
 
 export default class TerraformPlanDisplay extends React.Component<{ attachments: IAttachmentService }> {
 
     private readonly attachments: IAttachmentService
     private readonly terraformPlanAttachmentType: string = "terraform-plan-results"
 
+    private plansLoaded = new ObservableValue(false);
     private planSelection = new DropdownSelection();
     private chosenPlan = new ObservableValue(-1);
     private plans = new ObservableArray<TerraformPlan>([]);
@@ -44,6 +46,7 @@ export default class TerraformPlanDisplay extends React.Component<{ attachments:
         const initialSelection = foundPlans.length - 1
         this.planSelection.select(initialSelection)
         this.chosenPlan.value = initialSelection
+        this.plansLoaded.value = true;
     }
 
     public render(): JSX.Element {
@@ -54,8 +57,8 @@ export default class TerraformPlanDisplay extends React.Component<{ attachments:
                 <Card className="flex-grow flex-column"
                     titleProps={{ text: "Terraform plan output" }}>
 
-                    <Observer chosenPlan={this.chosenPlan} plans={this.plans} >
-                        {(props: { chosenPlan: number, plans: TerraformPlan[] }) => {
+                    <Observer chosenPlan={this.chosenPlan} plans={this.plans} plansLoaded={this.plansLoaded}>
+                        {(props: { chosenPlan: number, plans: TerraformPlan[], plansLoaded: boolean }) => {
                             const planItems = props.plans.map((e: TerraformPlan, index: number) => {
                                 return {
                                     id: index.toString(),
@@ -64,6 +67,11 @@ export default class TerraformPlanDisplay extends React.Component<{ attachments:
                             });
 
                             let html = NoPublishedPlanMessage;
+
+                            if (!props.plansLoaded) {
+                                html = LoadingMessage;
+                            }
+                            
                             if (props.chosenPlan > -1) {
                                 const ansi_up = new AnsiUp()
                                 const planText = props.plans[props.chosenPlan].plan;

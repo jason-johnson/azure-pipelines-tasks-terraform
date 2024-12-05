@@ -3,7 +3,7 @@ import React from 'react'
 import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
 import MockAttachmentService from '../services/attachments/mock-attachment-service';
-import TerraformPlanDisplay, { NoPublishedPlanMessage } from './plan-summary-tab';
+import TerraformPlanDisplay, { LoadingMessage, NoPublishedPlanMessage } from './plan-summary-tab';
 
 let container: HTMLDivElement | null;
 let attachments: MockAttachmentService;
@@ -23,7 +23,7 @@ afterEach(() => {
   container = null;
 })
 
-test("no plans have been published", () => {
+test("still loading", () => {
   act(() => {
     render(<TerraformPlanDisplay attachments={attachments} />, container);  
   });
@@ -33,7 +33,7 @@ test("no plans have been published", () => {
   
   if(elements){
     expect(elements.length).toBe(1);
-    expect(elements[0].innerHTML).toBe(NoPublishedPlanMessage);
+    expect(elements[0].innerHTML).toBe(LoadingMessage);
   }
 });
 
