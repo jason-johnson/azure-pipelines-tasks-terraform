@@ -1,16 +1,20 @@
+parameters:
+  - name: taskVersion
+    default: 2
+
 jobs:
-- job: azurerm_mgmt_group_service_connection_rc
+- job: azurerm_mgmt_group_service_connection_${{ parameters.taskVersion }}
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@${{ parameters.taskVersion }}
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'check version'
       inputs:
         command: version
         workingDirectory: $(terraform_templates_dir)
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform init'
       inputs:
         command: init
@@ -24,7 +28,7 @@ jobs:
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: azurerm_mgmt_group_service_connection.tfstate
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform plan'
       inputs:
         command: plan
@@ -33,7 +37,7 @@ jobs:
         providerAzureRmSubscriptionId: $(azure_subscription_id)
         secureVarsFile: azurerm-mgmt-group-scope.vars
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode'
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform apply'
       inputs:
         command: apply
@@ -41,7 +45,7 @@ jobs:
         environmentServiceName: 'env_test_mgmt'
         providerAzureRmSubscriptionId: $(azure_subscription_id)
         commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform destroy'
       inputs:
         command: destroy

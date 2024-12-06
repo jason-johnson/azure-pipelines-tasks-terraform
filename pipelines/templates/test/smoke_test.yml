@@ -3,7 +3,7 @@ parameters:
     default: 2
 
 jobs:
-- job: smoke_test_rc
+- job: smoke_test_${{ parameters.taskVersion }}
   steps:
     - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@${{ parameters.taskVersion }}
       displayName: install terraform

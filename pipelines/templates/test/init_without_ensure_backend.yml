@@ -1,11 +1,15 @@
+parameters:
+  - name: taskVersion
+    default: 2
+
 jobs:
-- job: init_without_ensure_backend_rc
+- job: init_without_ensure_backend_${{ parameters.taskVersion }}
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@${{ parameters.taskVersion }}
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform init'
       inputs:
         command: init
