@@ -4,7 +4,7 @@ parameters:
     default: []
   - name: taskVersions
     type: object
-    default: [2]
+    default: [0,1,2]
 
 stages:
 - ${{ each taskVersion in parameters.taskVersions }}:
