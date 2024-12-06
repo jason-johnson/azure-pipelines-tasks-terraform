@@ -2,7 +2,7 @@ parameters:
   - name: scenarios
     type: object
     default: []
-  - taskVersions:
+  - name: taskVersions
     type: object
     default: [2]
 
