@@ -1,13 +1,17 @@
+parameters:
+  - name: taskVersion
+    default: 2
+
 jobs:
-- job: init_with_version_11rc
+- job: init_with_version_11_${{ parameters.taskVersion }}
   variables: 
     test_templates_dir: $(terraform_templates_dir)/version11
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@${{ parameters.taskVersion }}
       displayName: install terraform
       inputs:
         terraformVersion: 0.11.14
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform init'
       inputs:
         command: init

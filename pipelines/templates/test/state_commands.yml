@@ -1,11 +1,15 @@
+parameters:
+  - name: taskVersion
+    default: 2
+
 jobs:
-- job: state_commands_rc
+- job: state_commands_${{ parameters.taskVersion }}
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@${{ parameters.taskVersion }}
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform init'
       inputs:
         command: init
@@ -18,20 +22,20 @@ jobs:
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: state_commands.tfstate
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform apply'
       inputs:
         command: apply
         workingDirectory: $(terraform_templates_dir)
         environmentServiceName: 'env_test'
         secureVarsFile: state_commands.vars
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: list terraform resources
       inputs:
         workingDirectory: $(terraform_templates_dir)
         command: state
         stateSubCommand: list
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: mv terraform resource
       inputs:
         workingDirectory: $(terraform_templates_dir)
@@ -39,7 +43,7 @@ jobs:
         stateSubCommand: mv
         stateMoveSource: random_string.rs
         stateMoveDestination: random_string.rs_new
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: mv back terraform resource
       inputs:
         workingDirectory: $(terraform_templates_dir)
@@ -47,14 +51,14 @@ jobs:
         stateSubCommand: mv
         stateMoveSource: random_string.rs_new
         stateMoveDestination: random_string.rs
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: rm terraform resource
       inputs:
         workingDirectory: $(terraform_templates_dir)
         command: state
         stateSubCommand: rm
         stateSubCommandAddresses: random_string.rs
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform destroy'
       inputs:
         command: destroy

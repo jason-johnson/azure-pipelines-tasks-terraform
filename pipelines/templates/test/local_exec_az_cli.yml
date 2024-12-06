@@ -1,9 +1,13 @@
+parameters:
+  - name: taskVersion
+    default: 2
+
 jobs:
-- job: local_exec_az_cli_rc
+- job: local_exec_az_cli_${{ parameters.taskVersion }}
   variables: 
     test_templates_dir: $(terraform_templates_dir)/local-exec-az-cli
   steps:
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform init'
       inputs:
         command: init
@@ -16,11 +20,11 @@ jobs:
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: local_exec_az_cli.tfstate
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform validate'
       inputs:
         workingDirectory: $(test_templates_dir)
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform plan'
       inputs:
         command: plan
@@ -29,7 +33,7 @@ jobs:
         secureVarsFile: $(tf_variables_secure_file)
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
         runAzLogin: true
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform apply'
       inputs:
         command: apply
@@ -37,7 +41,7 @@ jobs:
         environmentServiceName: 'env_test'
         commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
         runAzLogin: true
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform destroy'
       condition: always()
       inputs:

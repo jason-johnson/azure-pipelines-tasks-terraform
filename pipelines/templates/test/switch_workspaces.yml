@@ -1,11 +1,15 @@
+parameters:
+  - name: taskVersion
+    default: 2
+
 jobs:
-- job: switch_workspaces_rc
+- job: switch_workspaces_${{ parameters.taskVersion }}
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@${{ parameters.taskVersion }}
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform init'
       inputs:
         command: init
@@ -19,14 +23,14 @@ jobs:
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: workspace_switch.tfstate
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: new workspace foo
       inputs:
         workingDirectory: $(terraform_templates_dir)
         command: workspace        
         workspaceSubCommand: new
         workspaceName: foo
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: new workspace foo skip existing
       inputs:
         workingDirectory: $(terraform_templates_dir)
@@ -34,7 +38,7 @@ jobs:
         workspaceSubCommand: new
         workspaceName: foo
         skipExistingWorkspace: true
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: select workspace default
       inputs:
         workingDirectory: $(terraform_templates_dir)

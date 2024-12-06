@@ -1,13 +1,17 @@
+parameters:
+  - name: taskVersion
+    default: 2
+
 jobs:
-- job: aws_self_configured_rc
+- job: aws_self_configured_${{ parameters.taskVersion }}
   variables: 
     test_templates_dir: $(terraform_templates_dir)/aws
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@${{ parameters.taskVersion }}
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform init'
       inputs:
         command: init
@@ -18,25 +22,25 @@ jobs:
         # AWS_DEFAULT_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
         # see also https://www.terraform.io/docs/language/settings/backends/s3.html#configuration
         secureVarsFile: self-configured-aws.env
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform validate'
       inputs:
         workingDirectory: $(test_templates_dir)
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform plan'
       inputs:
         command: plan
         workingDirectory: $(test_templates_dir)
         secureVarsFile: self-configured-aws.env
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform apply'
       inputs:
         command: apply
         workingDirectory: $(test_templates_dir)
         secureVarsFile: self-configured-aws.env
         commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform destroy'
       inputs:
         command: destroy

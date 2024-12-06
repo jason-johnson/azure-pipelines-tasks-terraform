@@ -2,21 +2,27 @@ parameters:
   - name: scenarios
     type: object
     default: []
+  - name: taskVersions
+    type: object
+    default: [1,2]
 
 stages:
-- stage: test_rc
-  variables:
-    - group: env_rc
-    - name: backendAzureRmResourceGroupName
-      value: rg-trfrm-rc-chn-jbj
-    - name: backendAzureRmResourceGroupLocation
-      value: switzerlandnorth
-    - name: backendAzureRmStorageAccountName
-      value: sttrfrmrcchnjbj
-    - name: backendAzureRmStorageAccountSku
-      value: Standard_RAGRS
-    - name: backendAzureRmContainerName
-      value: azure-pipelines-terraform
-  jobs:
-    - ${{ each scenario in parameters.scenarios }}:
-      - template: ${{ scenario }}
+- ${{ each taskVersion in parameters.taskVersions }}:
+  - stage: test_${{ taskVersion }}
+    variables:
+      - group: env_rc
+      - name: backendAzureRmResourceGroupName
+        value: rg-trfrm-rc-chn-jbj
+      - name: backendAzureRmResourceGroupLocation
+        value: switzerlandnorth
+      - name: backendAzureRmStorageAccountName
+        value: sttrfrmrcchnjbj
+      - name: backendAzureRmStorageAccountSku
+        value: Standard_RAGRS
+      - name: backendAzureRmContainerName
+        value: azure-pipelines-terraform
+    jobs:
+      - ${{ each scenario in parameters.scenarios }}:
+        - template: ${{ scenario }}
+          parameters:
+            taskVersion: ${{ taskVersion }}

@@ -1,16 +1,20 @@
+parameters:
+  - name: taskVersion
+    default: 2
+
 jobs:
-- job: smoke_test_rc
+- job: smoke_test_${{ parameters.taskVersion }}
   steps:
-    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@2
+    - task: JasonBJohnson.azure-pipelines-tasks-terraform-rc.azure-pipelines-tasks-terraform-installer.TerraformInstaller@${{ parameters.taskVersion }}
       displayName: install terraform
       inputs:
         terraformVersion: $(terraformVersion)
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'check version'
       inputs:
         command: version
         workingDirectory: $(terraform_templates_dir)
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform init'
       inputs:
         command: init
@@ -23,11 +27,11 @@ jobs:
         backendAzureRmStorageAccountSku: $(backendAzureRmStorageAccountSku)
         backendAzureRmContainerName: $(backendAzureRmContainerName)
         backendAzureRmKey: test_1.tfstate
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform validate'
       inputs:
         workingDirectory: $(terraform_templates_dir)
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform plan'
       inputs:
         command: plan
@@ -36,14 +40,14 @@ jobs:
         secureVarsFile: $(tf_variables_secure_file)
         publishPlanResults: smoke_test_rc
         commandOptions: '-out=$(System.DefaultWorkingDirectory)/terraform.tfplan -detailed-exitcode'
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform apply'
       inputs:
         command: apply
         workingDirectory: $(terraform_templates_dir)
         environmentServiceName: 'env_test'
         commandOptions: '$(System.DefaultWorkingDirectory)/terraform.tfplan'
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform output'
       inputs:
         command: output
@@ -54,7 +58,7 @@ jobs:
         echo 'some_number is $(TF_OUT_SOME_NUMBER)'
         echo 'some_sensitive_string is $(TF_OUT_SOME_SENSITIVE_STRING)'
       displayName: echo tf output vars
-    - task: TerraformCLI@2
+    - task: TerraformCLI@${{ parameters.taskVersion }}
       displayName: 'terraform destroy'
       inputs:
         command: destroy
