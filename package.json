@@ -21,6 +21,6 @@
   "homepage": "https://github.com/jason-johnson/azure-pipelines-tasks-terraform#readme",
   "devDependencies": {
     "sass": "^1.80.7",
-    "tfx-cli": "^0.17.0"
+    "tfx-cli": "^0.22.1"
   }
 }
