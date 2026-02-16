@@ -194,7 +194,7 @@ stages:
           - task: TfxInstaller@5
             displayName: 'install tfx-cli'
             inputs:
-              version: '0.8.x'
+              version: '0.11.x'
               checkLatest: true
           - task: UnpublishAzureDevOpsExtension@5
             inputs:
