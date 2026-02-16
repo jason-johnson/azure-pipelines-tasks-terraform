@@ -52,7 +52,7 @@
     "chai-arrays": "^2.2.0",
     "copyfiles": "^2.4.1",
     "cucumber-junit": "^1.7.1",
-    "cucumber-tsflow": "^4.4.4",
+    "cucumber-tsflow": "^4.6.1",
     "nyc": "^17.1.0",
     "tfx-cli": "^0.23.1",
     "ts-node": "^10.9.2",
