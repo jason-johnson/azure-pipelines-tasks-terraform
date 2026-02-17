@@ -79,9 +79,9 @@ Feature: terraform import
             | clientSecret   | servicePrincipalKey123 |
         And azure cli not exists
         And resource target provided with address "azurerm_resource_group.rg" and id "/subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus"
-        And running command "terraform import -var=\"resource_group_location=location\" -var=\"resource_group_name=name\" azurerm_resource_group.rg /subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus" returns successful result
+        And running command "terraform import -var=resource_group_location=location -var=resource_group_name=name azurerm_resource_group.rg /subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus" returns successful result
         When the terraform cli task is run        
-        Then the terraform cli task executed command "terraform import -var=\"resource_group_location=location\" -var=\"resource_group_name=name\" azurerm_resource_group.rg /subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus" with the following environment variables
+        Then the terraform cli task executed command "terraform import -var=resource_group_location=location -var=resource_group_name=name azurerm_resource_group.rg /subscriptions/sub1/resourceGroups/rg-tffoo-dev-eastus" with the following environment variables
             | ARM_SUBSCRIPTION_ID | sub1                   |
             | ARM_TENANT_ID       | ten1                   |
             | ARM_CLIENT_ID       | servicePrincipal1      |
