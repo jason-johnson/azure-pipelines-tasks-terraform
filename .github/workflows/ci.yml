@@ -159,6 +159,7 @@ jobs:
   package-extension:
     runs-on: ubuntu-latest
     needs: [setup, build-terraform-cli, build-terraform-installer, build-terraform-plan-view]
+    if: success()
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js 20.x
@@ -172,21 +173,36 @@ jobs:
         with:
           name: terraform-cli-20.x
           path: tasks/terraform-cli/.dist/
+        continue-on-error: true
       - name: Download terraform-installer artifact
         uses: actions/download-artifact@v4
         with:
           name: terraform-installer-20.x
           path: tasks/terraform-installer/.dist/
+        continue-on-error: true
       - name: Download terraform-plan-view artifact
         uses: actions/download-artifact@v4
         with:
           name: terraform-plan-view-20.x
           path: views/terraform-plan/.dist/
+        continue-on-error: true
+      - name: Check if artifacts exist
+        id: check_artifacts
+        run: |
+          if [ -d "tasks/terraform-cli/.dist" ] && [ -d "tasks/terraform-installer/.dist" ] && [ -d "views/terraform-plan/.dist" ]; then
+            echo "artifacts_available=true" >> $GITHUB_OUTPUT
+          else
+            echo "artifacts_available=false" >> $GITHUB_OUTPUT
+            echo "Warning: Some artifacts are missing. Skipping extension packaging."
+          fi
       - name: Install tfx-cli
+        if: steps.check_artifacts.outputs.artifacts_available == 'true'
         run: npm install -g tfx-cli
       - name: Create extension package
+        if: steps.check_artifacts.outputs.artifacts_available == 'true'
         run: tfx extension create --manifest-globs vss-extension.json vss-extension-rc.json --output-path $(pwd)/extension.vsix
       - name: Upload extension artifact
+        if: steps.check_artifacts.outputs.artifacts_available == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: extension-package
