@@ -5,14 +5,12 @@
 This project uses both GitHub Actions and Azure DevOps for CI/CD:
 
 ### GitHub Actions (for Pull Requests)
-- **Build Workflow** (`.github/workflows/build.yml`): Runs on all PRs and non-main branches
+- **CI Workflow** (`.github/workflows/ci.yml`): Runs on all PRs and non-main branches
   - Builds and tests terraform-cli task with coverage
   - Builds and tests terraform-installer task
   - Builds and tests terraform-plan view with coverage
   - Packages the extension
   - Publishes test results and code coverage to pull requests
-  
-- **Test Workflow** (`.github/workflows/test.yml`): Runs unit tests for terraform-cli task
 
 ### Azure DevOps Pipelines (for Integration Testing and Publishing)
 - **Main Pipeline** (`pipelines/main.yml`): Builds and publishes to private marketplace
