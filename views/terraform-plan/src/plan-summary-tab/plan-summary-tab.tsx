@@ -41,6 +41,8 @@ export default class TerraformPlanDisplay extends React.Component<{ attachments:
             foundPlans.push({ name: attachment.name, plan: attachment.content});
         });
         
+        // Sort plans alphabetically (case-insensitive)
+        foundPlans.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
 
         this.plans.change(0, ...foundPlans)
         const initialSelection = foundPlans.length - 1
