@@ -41,9 +41,9 @@ If you're an AI agent or new contributor working on this repository, please see 
 
 - Repository structure and organization
 - Build, test, and development workflows
-- Code patterns and conventions
+- Code patterns and conventions  
 - Common development tasks
 - CI/CD pipeline details
-- MCP server for automation tools
+- Using context7 MCP server to query documentation efficiently
 
 The instructions will help you work more efficiently and follow project conventions.

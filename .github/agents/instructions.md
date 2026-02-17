@@ -323,7 +323,26 @@ INPUT_WORKINGDIRECTORY=<path-to-terraform-files>
 INPUT_BACKENDTYPE=local  # or 'azurerm'
 ```
 
-## References and Documentation
+## Using context7 MCP Server for Documentation
+
+When working on this repository, use the **context7 MCP server** to efficiently query documentation. This is particularly helpful for:
+
+### When to Use context7
+
+1. **Terraform Command Details**: Query official Terraform documentation for command syntax, options, and behavior
+2. **Azure DevOps APIs**: Look up task library methods, service connection patterns, and pipeline variables
+3. **Testing Patterns**: Search Cucumber.js documentation for BDD testing best practices
+4. **TypeScript/Node.js**: Find type definitions, async patterns, and language features
+5. **Dependency Documentation**: Query npm package documentation for libraries used in this project
+
+### Example Use Cases
+
+- "What are the options for terraform plan command?" → Query Terraform CLI docs
+- "How do I use azure-pipelines-task-lib to get input values?" → Query Azure DevOps SDK docs
+- "What's the syntax for Cucumber step definitions?" → Query Cucumber.js docs
+- "How do I implement async/await error handling in TypeScript?" → Query TypeScript docs
+
+### Key Documentation Resources
 
 - **Azure DevOps Task SDK**: https://github.com/microsoft/azure-pipelines-task-lib
 - **Terraform CLI**: https://www.terraform.io/cli
@@ -344,3 +363,12 @@ When working on this repository, be aware of these key stored facts:
 8. **sass dependency**: Required as peer dependency for terraform-plan view
 
 Remember to store new facts you discover using the `store_memory` tool to help future agents working on this repository!
+
+## Tips for Efficient Work
+
+1. **Read this file first** - Understanding the repository structure and conventions saves time
+2. **Use context7** - Query documentation instead of guessing or searching through files
+3. **Follow patterns** - Look at existing commands before creating new ones
+4. **Test early** - Build and test after each change to catch errors quickly
+5. **Store discoveries** - Use `store_memory` to preserve important findings
+6. **Reference memories** - Check stored facts before exploring the repository
