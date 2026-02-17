@@ -88,7 +88,8 @@
                 "output": "output",
                 "forceunlock": "force-unlock",
                 "workspace" : "workspace",
-                "state" : "state"
+                "state" : "state",
+                "test": "test"
             },
             "properties": {
                 "EditableOptions": "False"

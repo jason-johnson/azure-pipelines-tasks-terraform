@@ -41,7 +41,8 @@ export class Task {
       "workspace": new commands.WorkspaceCommandHandler({
         "select": new commands.WorkspaceSelectCommandHandler(runner),
         "new": new commands.WorkspaceNewCommandHandler(runner)
-      })
+      }),
+      "test": new commands.TestCommandHandler(runner)
     }
   }
 
