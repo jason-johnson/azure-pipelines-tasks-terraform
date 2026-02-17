@@ -61,6 +61,7 @@ export { TerraformFormat as FormatCommandHandler } from './tf-fmt';
 export { TerraformWorkspace as WorkspaceCommandHandler } from './tf-workspace';
 export { TerraformWorkspaceSelect as WorkspaceSelectCommandHandler } from './tf-workspace-select';
 export { TerraformWorkspaceNew as WorkspaceNewCommandHandler } from './tf-workspace-new';
+export { TerraformTest as TestCommandHandler } from './tf-test';
 
 declare module '../runners'{
     interface RunnerResult{
