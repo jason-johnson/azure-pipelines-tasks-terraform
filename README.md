@@ -34,3 +34,16 @@ telemetry collection.
 ### Preferred Languages
 
 We prefer all communications to be in English.
+
+## For AI Agents and Contributors
+
+If you're an AI agent or new contributor working on this repository, please see the [Agent Instructions](./.github/agents/instructions.md) for comprehensive guidance on:
+
+- Repository structure and organization
+- Build, test, and development workflows
+- Code patterns and conventions
+- Common development tasks
+- CI/CD pipeline details
+- MCP server for automation tools
+
+The instructions will help you work more efficiently and follow project conventions.
