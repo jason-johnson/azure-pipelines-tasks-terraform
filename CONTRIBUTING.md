@@ -1,5 +1,26 @@
 # Contributing
 
+## CI/CD Pipeline
+
+This project uses both GitHub Actions and Azure DevOps for CI/CD:
+
+### GitHub Actions (for Pull Requests)
+- **CI Workflow** (`.github/workflows/ci.yml`): Runs on all PRs and non-main branches
+  - Builds and tests terraform-cli task with coverage
+  - Builds and tests terraform-installer task
+  - Builds and tests terraform-plan view with coverage
+  - Packages the extension
+  - Publishes test results and code coverage to pull requests
+
+### Azure DevOps Pipelines (for Integration Testing and Publishing)
+- **Main Pipeline** (`pipelines/main.yml`): Builds and publishes to private marketplace
+- **Test Pipeline** (`pipelines/test.yml`): Runs integration tests that require Azure DevOps services
+
+Integration tests must remain in Azure DevOps because they:
+- Require the actual Azure DevOps task runtime environment
+- Need Azure service connections and credentials
+- Test the tasks in the context where they will be used
+
 ## Run Unit Tests for Terraform CLI Task
 
 1. Navigate to `cd tasks\terraform-cli`.
