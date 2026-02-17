@@ -21,9 +21,9 @@ The `instructions.md` file provides detailed information about:
 
 **AI agents should read this file first** when working on this repository to understand the codebase and development practices.
 
-## Using context7 MCP Server
+## Using MCP Servers (Optional)
 
-AI agents should use the **context7** MCP server to efficiently query documentation and understand the codebase. This is especially useful for:
+AI agents can optionally use MCP (Model Context Protocol) servers to efficiently query documentation and understand the codebase, if configured. This is especially useful for:
 
 - Querying Terraform documentation
 - Looking up Azure DevOps task SDK documentation  
@@ -31,14 +31,30 @@ AI agents should use the **context7** MCP server to efficiently query documentat
 - Searching for TypeScript/Node.js best practices
 - Finding Cucumber testing documentation
 
+### Configuration Required
+
+**Note**: MCP servers like context7 are not included in this repository. They must be configured separately in your MCP client (e.g., Claude Desktop, IDEs with MCP support).
+
+Common useful MCP servers for this project:
+- **context7**: Documentation search and retrieval
+- **web_search**: Web search for current information
+- **github**: GitHub API access (may already be available)
+
 ### Example Queries
 
-When working on this repository, use context7 to:
+If you have MCP servers configured, use them to:
 
 1. **Understand Terraform commands**: Query Terraform CLI documentation for command syntax and options
 2. **Azure DevOps Task development**: Look up task SDK methods and patterns
 3. **Testing patterns**: Search Cucumber BDD documentation for testing best practices
 4. **TypeScript conventions**: Find type definitions and patterns
+
+### Direct Documentation Links
+
+If MCP servers are unavailable, reference documentation directly:
+- Azure DevOps Task SDK: https://github.com/microsoft/azure-pipelines-task-lib
+- Terraform CLI: https://www.terraform.io/cli
+- Cucumber.js: https://cucumber.io/docs/cucumber/
 
 ## Benefits for AI Agents
 

@@ -44,6 +44,6 @@ If you're an AI agent or new contributor working on this repository, please see 
 - Code patterns and conventions  
 - Common development tasks
 - CI/CD pipeline details
-- Using context7 MCP server to query documentation efficiently
+- Optional MCP server usage for documentation queries (if configured)
 
 The instructions will help you work more efficiently and follow project conventions.

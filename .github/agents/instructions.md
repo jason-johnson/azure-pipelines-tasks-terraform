@@ -323,11 +323,13 @@ INPUT_WORKINGDIRECTORY=<path-to-terraform-files>
 INPUT_BACKENDTYPE=local  # or 'azurerm'
 ```
 
-## Using context7 MCP Server for Documentation
+## Using MCP Servers for Documentation (Optional)
 
-When working on this repository, use the **context7 MCP server** to efficiently query documentation. This is particularly helpful for:
+**Note**: MCP servers like context7 can greatly enhance AI agent efficiency by providing access to documentation, but they must be configured separately by the user/administrator.
 
-### When to Use context7
+If you have access to MCP servers (such as context7, web search, or documentation servers), use them to efficiently query documentation instead of guessing. This is particularly helpful for:
+
+### Recommended MCP Server Uses
 
 1. **Terraform Command Details**: Query official Terraform documentation for command syntax, options, and behavior
 2. **Azure DevOps APIs**: Look up task library methods, service connection patterns, and pipeline variables
@@ -335,14 +337,26 @@ When working on this repository, use the **context7 MCP server** to efficiently 
 4. **TypeScript/Node.js**: Find type definitions, async patterns, and language features
 5. **Dependency Documentation**: Query npm package documentation for libraries used in this project
 
-### Example Use Cases
+### Example Queries (if MCP available)
 
 - "What are the options for terraform plan command?" → Query Terraform CLI docs
 - "How do I use azure-pipelines-task-lib to get input values?" → Query Azure DevOps SDK docs
 - "What's the syntax for Cucumber step definitions?" → Query Cucumber.js docs
 - "How do I implement async/await error handling in TypeScript?" → Query TypeScript docs
 
-### Key Documentation Resources
+### Configuring MCP Servers
+
+MCP servers are not part of this repository. They must be configured in your MCP client (e.g., Claude Desktop, IDEs with MCP support). Common useful MCP servers for this project:
+
+- **context7**: Documentation search and retrieval
+- **web_search**: Search the web for current information
+- **github**: GitHub API access (already available in Copilot environment)
+
+Consult your MCP client documentation for setup instructions.
+
+### Key Documentation Resources (Direct Links)
+
+If MCP servers are not available, reference these directly:
 
 - **Azure DevOps Task SDK**: https://github.com/microsoft/azure-pipelines-task-lib
 - **Terraform CLI**: https://www.terraform.io/cli
