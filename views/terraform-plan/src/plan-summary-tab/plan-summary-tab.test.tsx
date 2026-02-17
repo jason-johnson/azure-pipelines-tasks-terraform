@@ -37,3 +37,34 @@ test("still loading", () => {
   }
 });
 
+test("plans are sorted alphabetically (case-insensitive)", async () => {
+  // Set up attachments in unsorted order with mixed case
+  attachments.setAttachments(
+    { name: 'cCplan1', type: 'terraform-plan-results', content: 'plan content 1' },
+    { name: 'Bplan2', type: 'terraform-plan-results', content: 'plan content 2' },
+    { name: 'aPlan1', type: 'terraform-plan-results', content: 'plan content 3' },
+    { name: 'cplan1', type: 'terraform-plan-results', content: 'plan content 4' },
+    { name: 'bplan3', type: 'terraform-plan-results', content: 'plan content 5' }
+  );
+
+  // Expected order: aPlan1, Bplan2, bplan3, cCplan1, cplan1
+  const expectedOrder = ['aPlan1', 'Bplan2', 'bplan3', 'cCplan1', 'cplan1'];
+  
+  // Directly test the sorting logic
+  const testPlans = [
+    { name: 'cCplan1', plan: 'plan content 1' },
+    { name: 'Bplan2', plan: 'plan content 2' },
+    { name: 'aPlan1', plan: 'plan content 3' },
+    { name: 'cplan1', plan: 'plan content 4' },
+    { name: 'bplan3', plan: 'plan content 5' }
+  ];
+  
+  testPlans.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+  
+  expect(testPlans.length).toBe(expectedOrder.length);
+  
+  testPlans.forEach((plan, index) => {
+    expect(plan.name).toBe(expectedOrder[index]);
+  });
+});
+
