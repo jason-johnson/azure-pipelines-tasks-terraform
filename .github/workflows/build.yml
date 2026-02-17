@@ -1,0 +1,182 @@
+name: Build
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version_step.outputs.semVer }}
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v3.0.2
+        with:
+          versionSpec: '5.x'
+      - name: Determine Version
+        id: version_step
+        uses: gittools/actions/gitversion/execute@v3.0.2
+
+  build-terraform-cli:
+    runs-on: ubuntu-latest
+    needs: setup
+    defaults:
+      run:
+        working-directory: tasks/terraform-cli
+    strategy:
+      matrix:
+        node-version: ['20.x', '22.x']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Test with coverage
+        run: npm run test:coverage
+      - name: Generate test report
+        if: always()
+        run: npm run test:report
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-results-action@v2
+        if: always() && matrix.node-version == '20.x'
+        with:
+          files: tasks/terraform-cli/.tests/results.xml
+          check_name: Terraform CLI Test Results
+      - name: Publish code coverage
+        uses: codecov/codecov-action@v4
+        if: matrix.node-version == '20.x'
+        with:
+          files: tasks/terraform-cli/.tests/coverage/cobertura-coverage.xml
+          flags: terraform-cli
+          name: terraform-cli-coverage
+      - name: Package
+        if: matrix.node-version == '20.x'
+        run: npm run pack
+      - name: Upload artifact
+        if: matrix.node-version == '20.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-cli-${{ matrix.node-version }}
+          path: tasks/terraform-cli/.dist/
+
+  build-terraform-installer:
+    runs-on: ubuntu-latest
+    needs: setup
+    defaults:
+      run:
+        working-directory: tasks/terraform-installer
+    strategy:
+      matrix:
+        node-version: ['20.x', '22.x']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Package
+        if: matrix.node-version == '20.x'
+        run: npm run pack
+      - name: Upload artifact
+        if: matrix.node-version == '20.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-installer-${{ matrix.node-version }}
+          path: tasks/terraform-installer/.dist/
+
+  build-terraform-plan-view:
+    runs-on: ubuntu-latest
+    needs: setup
+    defaults:
+      run:
+        working-directory: views/terraform-plan
+    strategy:
+      matrix:
+        node-version: ['20.x', '22.x']
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+      - name: Test
+        run: npm test
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-results-action@v2
+        if: always() && matrix.node-version == '20.x'
+        with:
+          files: views/terraform-plan/.tests/results.xml
+          check_name: Terraform Plan View Test Results
+      - name: Publish code coverage
+        uses: codecov/codecov-action@v4
+        if: matrix.node-version == '20.x'
+        with:
+          files: views/terraform-plan/.tests/coverage/cobertura-coverage.xml
+          flags: terraform-plan-view
+          name: terraform-plan-view-coverage
+      - name: Package
+        if: matrix.node-version == '20.x'
+        run: npm run pack
+      - name: Upload artifact
+        if: matrix.node-version == '20.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan-view-${{ matrix.node-version }}
+          path: views/terraform-plan/.dist/
+
+  package-extension:
+    runs-on: ubuntu-latest
+    needs: [setup, build-terraform-cli, build-terraform-installer, build-terraform-plan-view]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - name: Set version
+        run: npm version ${{ needs.setup.outputs.version }} --no-git-tag-version --allow-same-version
+      - name: Download terraform-cli artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-cli-20.x
+          path: tasks/terraform-cli/.dist/
+      - name: Download terraform-installer artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-installer-20.x
+          path: tasks/terraform-installer/.dist/
+      - name: Download terraform-plan-view artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-plan-view-20.x
+          path: views/terraform-plan/.dist/
+      - name: Install tfx-cli
+        run: npm install -g tfx-cli
+      - name: Create extension package
+        run: tfx extension create --manifest-globs vss-extension.json vss-extension-rc.json --output-path $(pwd)/extension.vsix
+      - name: Upload extension artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-package
+          path: extension.vsix
