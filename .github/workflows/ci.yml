@@ -57,7 +57,7 @@ jobs:
         if: always()
         run: npm run test:report
       - name: Publish test results
-        uses: EnricoMi/publish-unit-test-results-action@v2
+        uses: EnricoMi/publish-unit-test-result-action@v2
         if: always() && matrix.node-version == '20.x'
         with:
           files: tasks/terraform-cli/.tests/results.xml
@@ -134,7 +134,7 @@ jobs:
       - name: Test
         run: npm test
       - name: Publish test results
-        uses: EnricoMi/publish-unit-test-results-action@v2
+        uses: EnricoMi/publish-unit-test-result-action@v2
         if: always() && matrix.node-version == '20.x'
         with:
           files: views/terraform-plan/.tests/results.xml
