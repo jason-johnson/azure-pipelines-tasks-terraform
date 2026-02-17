@@ -20,6 +20,7 @@ The Terraform CLI task supports executing the following commands
 - fmt
 - workspace
 - state
+- test
 
 ## Supported Public Cloud Providers
 
@@ -557,8 +558,118 @@ The task supports managing state within pipelines. The following state subcomman
 ### Force Unlock
 
 ```yaml
-- task: TerraformCLI@
+- task: TerraformCLI@1
   displayName: 'terraform force-unlock'
   inputs:
     command: forceunlock
     lockID: '6b49ea93-d4bb-6d06-4a88-63189f162bf7'
+```
+
+## Terraform Test
+
+The task supports running the `terraform test` command, which was introduced in Terraform 1.6+. This command allows you to write and execute structured tests for your Terraform configurations and modules using `.tftest.hcl` or `.tftest.json` files.
+
+### Basic Test Execution
+
+Run all tests in the default `tests` directory:
+
+```yaml
+- task: TerraformCLI@1
+  displayName: 'terraform test'
+  inputs:
+    command: test
+    workingDirectory: $(terraform_templates_dir)
+```
+
+### Test with Verbose Output
+
+Enable verbose logging to see detailed test execution information:
+
+```yaml
+- task: TerraformCLI@1
+  displayName: 'terraform test with verbose output'
+  inputs:
+    command: test
+    workingDirectory: $(terraform_templates_dir)
+    commandOptions: '-verbose'
+```
+
+### Test with Custom Directory
+
+Run tests from a custom directory instead of the default `tests` folder:
+
+```yaml
+- task: TerraformCLI@1
+  displayName: 'terraform test custom directory'
+  inputs:
+    command: test
+    workingDirectory: $(terraform_templates_dir)
+    commandOptions: '-test-directory=./custom-tests'
+```
+
+### Test with Filtering
+
+Run only specific test files using the filter option:
+
+```yaml
+- task: TerraformCLI@1
+  displayName: 'terraform test specific file'
+  inputs:
+    command: test
+    workingDirectory: $(terraform_templates_dir)
+    commandOptions: '-filter=module_validation.tftest.hcl'
+```
+
+### Test with JSON Output
+
+Output test results in JSON format for integration with other tools:
+
+```yaml
+- task: TerraformCLI@1
+  displayName: 'terraform test json output'
+  inputs:
+    command: test
+    workingDirectory: $(terraform_templates_dir)
+    commandOptions: '-json'
+```
+
+### Test with JUnit XML Output
+
+Generate JUnit XML format test results for CI/CD integration:
+
+```yaml
+- task: TerraformCLI@1
+  displayName: 'terraform test with junit output'
+  inputs:
+    command: test
+    workingDirectory: $(terraform_templates_dir)
+    commandOptions: '-junit-xml=test-results.xml'
+```
+
+### Test with Parallelism Control
+
+Control the number of concurrent test operations:
+
+```yaml
+- task: TerraformCLI@1
+  displayName: 'terraform test with parallelism'
+  inputs:
+    command: test
+    workingDirectory: $(terraform_templates_dir)
+    commandOptions: '-parallelism=5'
+```
+
+### Combining Multiple Options
+
+You can combine multiple command options as needed:
+
+```yaml
+- task: TerraformCLI@1
+  displayName: 'terraform test with multiple options'
+  inputs:
+    command: test
+    workingDirectory: $(terraform_templates_dir)
+    commandOptions: '-verbose -filter=integration.tftest.hcl -junit-xml=$(Build.ArtifactStagingDirectory)/test-results.xml'
+```
+
+> **Note**: The `terraform test` command can create real infrastructure during test execution. It's recommended to run tests in sandbox or test environments, and ensure tests properly clean up resources after execution.
