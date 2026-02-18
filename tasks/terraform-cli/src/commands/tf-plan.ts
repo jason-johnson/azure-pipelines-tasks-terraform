@@ -52,7 +52,7 @@ export class TerraformPlan implements ICommand {
         const planResult = await this.runner.exec(planOptions);
 
         // Run terraform show -json on the plan file to get structured data
-        const showOptions = await new RunWithTerraform(ctx, true)
+        const showOptions = await new RunWithTerraform(ctx, true, "show")
             .withJsonOutput(undefined)
             .withPlanOrStateFile(planFilePath)
             .build();

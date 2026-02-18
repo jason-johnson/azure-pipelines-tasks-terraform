@@ -5,9 +5,10 @@ Feature: terraform plan for aws
   Scenario: plan without aws service connection
     Given terraform exists
     And terraform command is "plan"
-    And running command "terraform plan" returns successful result
+    And running command "terraform plan -out=tfplan-test.tfplan -detailed-exitcode" returns successful result
+    And running command "terraform show -json tfplan-test.tfplan" returns successful result with stdout from file "./src/tests/features/plan-show-no-changes.json"
     When the terraform cli task is run
-    Then the terraform cli task executed command "terraform plan" without the following environment variables
+    Then the terraform cli task executed command "terraform plan -out=tfplan-test.tfplan -detailed-exitcode" without the following environment variables
       | AWS_ACCESS_KEY_ID     |
       | AWS_SECRET_ACCESS_KEY |
       | AWS_REGION            |
@@ -21,9 +22,10 @@ Feature: terraform plan for aws
       | username | foo |
       | password | bar |
     And aws provider region is configured as "us-east-1"
-    And running command "terraform plan" returns successful result
+    And running command "terraform plan -out=tfplan-test.tfplan -detailed-exitcode" returns successful result
+    And running command "terraform show -json tfplan-test.tfplan" returns successful result with stdout from file "./src/tests/features/plan-show-no-changes.json"
     When the terraform cli task is run
-    Then the terraform cli task executed command "terraform plan" with the following environment variables
+    Then the terraform cli task executed command "terraform plan -out=tfplan-test.tfplan -detailed-exitcode" with the following environment variables
       | AWS_ACCESS_KEY_ID     | foo       |
       | AWS_SECRET_ACCESS_KEY | bar       |
       | AWS_REGION            | us-east-1 |
