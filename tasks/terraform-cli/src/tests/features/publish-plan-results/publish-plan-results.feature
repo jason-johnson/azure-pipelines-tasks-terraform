@@ -37,7 +37,7 @@ Feature: publish plan results
     Scenario: publish plan results not specified
         Given terraform exists
         And terraform command is "plan"
-        And running command "terraform plan -detailed-exitcode -out=tfplan-test.tfplan" returns successful result with exit code 2 and stdout from file "./src/tests/features/publish-plan-results/plan-output-with-adds-destroys-and-updates.txt"
+        And running command "terraform plan -out=tfplan-test.tfplan -detailed-exitcode" returns successful result with exit code 2 and stdout from file "./src/tests/features/publish-plan-results/plan-output-with-adds-destroys-and-updates.txt"
         And running command "terraform show -json tfplan-test.tfplan" returns successful result with stdout from file "./src/tests/features/publish-plan-results/plan-show-with-adds-destroys-and-updates.json"
         When the terraform cli task is run
         Then the terraform cli task is successful
