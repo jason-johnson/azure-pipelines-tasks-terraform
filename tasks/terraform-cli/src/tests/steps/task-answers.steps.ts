@@ -28,15 +28,21 @@ export class TaskAnswersSteps {
     @after()
     public clearExecutedCommandsSpy(){
         resetRequestedAnswers();
+        // Clean up test mode flag
+        delete process.env.TASK_TEST_MODE;
     }
 
     @given("terraform not exists")
     public answerTerraformNotExists(){
+        // Set test mode flag for predictable plan filenames
+        process.env.TASK_TEST_MODE = 'true';
         this.answerToolExists("terraform", false);
     }
 
     @given("terraform exists")
     public answerTerraformExists(){
+        // Set test mode flag for predictable plan filenames
+        process.env.TASK_TEST_MODE = 'true';
         this.answerToolExists("terraform", true);
     }
 
@@ -148,5 +154,17 @@ export class TaskAnswersSteps {
                 stdout : `version successful`
             }
         }
+    }
+
+    @given("running command matching pattern {string} returns successful result with stdout from file {string}")
+    public runningCommandMatchingPatternReturnsSuccessfulResultWithStdOutFromFile(pattern: string, filePath: string){
+        const stdout = fs.readFileSync(filePath, 'utf-8');
+        // For now, we'll use a placeholder name that tests can reference
+        // This is a workaround for commands with dynamic parts like UUIDs
+        this.answers.exec[pattern] = <TaskLibAnswerExecResult>{
+            stderr: '',
+            stdout: stdout,
+            code: 0
+        }         
     }
 }

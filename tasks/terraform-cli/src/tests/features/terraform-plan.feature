@@ -114,9 +114,10 @@ Feature: terraform plan
             | -u servicePrincipal1      |
             | -p=servicePrincipalKey123 |
         And task configured to run az login
-        And running command "terraform plan -input=true -lock=false -no-color -detailed-exitcode" returns successful result with exit code 2
+        And running command "terraform plan -input=true -lock=false -no-color -detailed-exitcode -out=tfplan-test.tfplan" returns successful result with exit code 2
+        And running command "terraform show -json tfplan-test.tfplan" returns successful result with stdout from file "./src/tests/features/plan-show-with-changes.json"
         When the terraform cli task is run        
-        Then the terraform cli task executed command "terraform plan -input=true -lock=false -no-color -detailed-exitcode" with the following environment variables
+        Then the terraform cli task executed command "terraform plan -input=true -lock=false -no-color -detailed-exitcode -out=tfplan-test.tfplan" with the following environment variables
             | ARM_SUBSCRIPTION_ID | sub1                   |
             | ARM_TENANT_ID       | ten1                   |
             | ARM_CLIENT_ID       | servicePrincipal1      |
@@ -148,9 +149,10 @@ Feature: terraform plan
             | -u servicePrincipal1      |
             | -p=servicePrincipalKey123 |
         And task configured to run az login
-        And running command "terraform plan -input=true -lock=false -no-color -detailed-exitcode" returns successful result with exit code 0
+        And running command "terraform plan -input=true -lock=false -no-color -detailed-exitcode -out=tfplan-test.tfplan" returns successful result with exit code 0
+        And running command "terraform show -json tfplan-test.tfplan" returns successful result with stdout from file "./src/tests/features/plan-show-no-changes.json"
         When the terraform cli task is run        
-        Then the terraform cli task executed command "terraform plan -input=true -lock=false -no-color -detailed-exitcode" with the following environment variables
+        Then the terraform cli task executed command "terraform plan -input=true -lock=false -no-color -detailed-exitcode -out=tfplan-test.tfplan" with the following environment variables
             | ARM_SUBSCRIPTION_ID | sub1                   |
             | ARM_TENANT_ID       | ten1                   |
             | ARM_CLIENT_ID       | servicePrincipal1      |

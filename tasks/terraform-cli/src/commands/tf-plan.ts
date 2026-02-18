@@ -30,7 +30,11 @@ export class TerraformPlan implements ICommand {
         
         // Always generate a plan file for accurate change detection
         const publishPlanResults = (ctx.publishPlanResults !== undefined ? ctx.publishPlanResults : "").trim();
-        const planName = publishPlanResults.length > 0 ? publishPlanResults : `tfplan-${uuidv4()}.tfplan`;
+        
+        // Use a predictable name in test mode, otherwise use UUID
+        const isTestMode = process.env.TASK_TEST_MODE === 'true';
+        const generatedPlanName = isTestMode ? 'tfplan-test.tfplan' : `tfplan-${uuidv4()}.tfplan`;
+        const planName = publishPlanResults.length > 0 ? publishPlanResults : generatedPlanName;
         const planFilePath = path.join(ctx.cwd, planName);
         
         // Always add -detailed-exitcode and plan file
@@ -64,7 +68,8 @@ export class TerraformPlan implements ICommand {
         ctx.setVariable("TERRAFORM_PLAN_HAS_DESTROY_CHANGES", (planSummary.destroy > 0).toString());
 
         // Log plan summary
-        const summaryMessages = formatPlanSummary(planSummary, publishPlanResults.length > 0 ? publishPlanResults : "plan");
+        const displayName = publishPlanResults.length > 0 ? publishPlanResults : "plan";
+        const summaryMessages = formatPlanSummary(planSummary, displayName);
         for (const message of summaryMessages) {
             if (planSummary.hasChanges) {
                 this.logger.warning(message);
@@ -73,7 +78,7 @@ export class TerraformPlan implements ICommand {
             }
         }
 
-        // Publish plan results if requested
+        // Publish plan results if explicitly requested
         if (publishPlanResults.length > 0) {
             this.logger.debug("Publishing plan results...");
             this.taskAgent.attachNewPlanFile(ctx.cwd, publishedPlanAttachmentType, publishPlanResults, planResult.stdout);

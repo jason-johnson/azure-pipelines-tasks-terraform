@@ -1,0 +1,52 @@
+{
+    "resource_changes": [
+        {
+            "address": "azurerm_resource_group.rg1",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg1",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["create"],
+                "before": null,
+                "after": {
+                    "location": "eastus",
+                    "name": "rg1"
+                }
+            }
+        },
+        {
+            "address": "azurerm_resource_group.rg2",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg2",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["update"],
+                "before": {
+                    "location": "eastus",
+                    "name": "rg2"
+                },
+                "after": {
+                    "location": "westus",
+                    "name": "rg2"
+                }
+            }
+        },
+        {
+            "address": "azurerm_resource_group.rg3",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg3",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["delete"],
+                "before": {
+                    "location": "eastus",
+                    "name": "rg3"
+                },
+                "after": null
+            }
+        }
+    ]
+}
