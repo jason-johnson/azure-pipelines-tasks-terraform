@@ -62,9 +62,32 @@ export default class RunWithCommandOptions extends RunnerOptionsDecorator{
                 continue;
             }
 
-            if (c === "\\" && inQuotes) {
-                escaped = true;
-                continue;
+            if (c === "\\") {
+                // Peek ahead to see if next char is a quote
+                if (i + 1 < commandOptions.length && commandOptions.charAt(i + 1) === '"') {
+                    if (inQuotes) {
+                        // Inside quotes: normal escape handling
+                        escaped = true;
+                        continue;
+                    }
+                    else {
+                        // Outside quotes: treat \" as two literal characters
+                        arg += '\\';
+                        arg += '"';
+                        i++; // Skip the next quote character
+                        continue;
+                    }
+                }
+                else if (inQuotes) {
+                    // Inside quotes with non-quote following
+                    escaped = true;
+                    continue;
+                }
+                else {
+                    // Outside quotes with non-quote following
+                    arg += c;
+                    continue;
+                }
             }
 
             append(c);
