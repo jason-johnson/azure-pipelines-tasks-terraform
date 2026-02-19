@@ -24,8 +24,15 @@
       "type": "string",
       "label": "Version",
       "defaultValue": "latest",
-      "required": true,
-      "helpMarkDown": "Specify the version of terraform that should be installed"
+      "required": false,
+      "helpMarkDown": "Specify the version of terraform that should be installed. Supports 'latest', a specific version (e.g. '1.5.0'), or a semver range (e.g. '~>1.5.0', '^1.5.0', '>=1.5.0'). Mutually exclusive with terraformVersionFile."
+    },
+    {
+      "name": "terraformVersionFile",
+      "type": "filePath",
+      "label": "Version File",
+      "required": false,
+      "helpMarkDown": "(optional) Path to a Terraform configuration file containing a required_version constraint in the terraform block. The task will parse the constraint and install the latest matching version. Mutually exclusive with terraformVersion."
     },
     {
       "name": "downloadUrl",
