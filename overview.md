@@ -109,16 +109,27 @@ Supported semver operators:
 - `>=1.5.0` - Greater than or equal to version
 - `>1.5.0 <2.0.0` - Range of versions
 
-### Install Using Version from Terraform Configuration File
+### Install Using Version from Terraform Configuration
 
-The installer can read the `required_version` constraint from a Terraform configuration file and install the latest matching version automatically.
+The installer can read the `required_version` constraint from a Terraform configuration file or directory and install the latest matching version automatically. This aligns with how Terraform treats all `.tf` files in a directory as a single configuration.
 
+#### Using a specific file:
 ```yaml
 - task: TerraformInstaller@1
   displayName: install terraform from config file
   inputs:
     terraformVersionFile: 'terraform/main.tf'
 ```
+
+#### Using a directory (recommended):
+```yaml
+- task: TerraformInstaller@1
+  displayName: install terraform from terraform directory
+  inputs:
+    terraformVersionFile: 'terraform'
+```
+
+When a directory is provided, the task will search all `.tf` files in that directory for a `required_version` constraint. This mirrors Terraform's behavior of treating all files in a directory as a single configuration.
 
 Example `main.tf` with version constraint:
 ```hcl

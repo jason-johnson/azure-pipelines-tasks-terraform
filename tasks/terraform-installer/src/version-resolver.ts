@@ -1,5 +1,6 @@
 import * as semver from 'semver';
 import * as fs from 'fs';
+import * as path from 'path';
 const fetch = require('node-fetch');
 const hcl2Parser = require('hcl2-parser');
 
@@ -54,17 +55,27 @@ export async function resolveSemverRange(range: string): Promise<string> {
 }
 
 /**
- * Parses a Terraform configuration file and extracts the required_version constraint
- * @param filePath Path to the Terraform configuration file
+ * Finds all .tf files in a directory (non-recursive)
+ * @param dirPath Path to the directory
+ * @returns Array of full paths to .tf files
+ */
+function findTerraformFiles(dirPath: string): string[] {
+    try {
+        const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+        return entries
+            .filter(entry => entry.isFile() && entry.name.endsWith('.tf'))
+            .map(entry => path.join(dirPath, entry.name));
+    } catch (error) {
+        throw new Error(`Failed to read directory ${dirPath}: ${error}`);
+    }
+}
+
+/**
+ * Parses a single Terraform file and extracts the required_version constraint
+ * @param filePath Path to a single Terraform configuration file
  * @returns The version constraint string from required_version, or null if not found
  */
-export function parseVersionConstraintFromFile(filePath: string): string | null {
-    console.log(`Parsing version constraint from file: ${filePath}`);
-    
-    if (!fs.existsSync(filePath)) {
-        throw new Error(`Terraform configuration file not found: ${filePath}`);
-    }
-    
+function parseVersionConstraintFromSingleFile(filePath: string): string | null {
     const fileContent = fs.readFileSync(filePath, 'utf8');
     
     try {
@@ -80,31 +91,80 @@ export function parseVersionConstraintFromFile(filePath: string): string | null 
                     const constraint = Array.isArray(terraformBlock.required_version) 
                         ? terraformBlock.required_version[0] 
                         : terraformBlock.required_version;
-                    console.log(`Found required_version constraint: ${constraint}`);
                     return constraint;
                 }
             }
         }
         
-        console.log("No required_version constraint found in terraform block");
         return null;
     } catch (error) {
-        throw new Error(`Failed to parse Terraform configuration file: ${error}`);
+        // Log but don't throw - this file might not have the constraint
+        console.log(`Could not parse ${path.basename(filePath)}: ${error}`);
+        return null;
     }
 }
 
 /**
- * Resolves a version input that may be a version file path, semver range, or specific version
- * @param versionInput The version string or file path
- * @param isFilePath Whether the input is a file path
+ * Parses a Terraform configuration file or directory and extracts the required_version constraint
+ * @param pathInput Path to a Terraform configuration file or directory
+ * @returns The version constraint string from required_version, or null if not found
+ */
+export function parseVersionConstraintFromFile(pathInput: string): string | null {
+    console.log(`Parsing version constraint from: ${pathInput}`);
+    
+    if (!fs.existsSync(pathInput)) {
+        throw new Error(`Terraform configuration path not found: ${pathInput}`);
+    }
+    
+    const stats = fs.statSync(pathInput);
+    
+    if (stats.isDirectory()) {
+        console.log(`Path is a directory, searching for .tf files...`);
+        const tfFiles = findTerraformFiles(pathInput);
+        
+        if (tfFiles.length === 0) {
+            throw new Error(`No .tf files found in directory: ${pathInput}`);
+        }
+        
+        console.log(`Found ${tfFiles.length} .tf file(s) in directory`);
+        
+        // Try to parse each file until we find a required_version constraint
+        for (const tfFile of tfFiles) {
+            console.log(`  Checking ${path.basename(tfFile)}...`);
+            const constraint = parseVersionConstraintFromSingleFile(tfFile);
+            if (constraint) {
+                console.log(`Found required_version constraint in ${path.basename(tfFile)}: ${constraint}`);
+                return constraint;
+            }
+        }
+        
+        console.log("No required_version constraint found in any .tf file");
+        return null;
+    } else {
+        // It's a single file
+        console.log(`Path is a file, parsing...`);
+        const constraint = parseVersionConstraintFromSingleFile(pathInput);
+        if (constraint) {
+            console.log(`Found required_version constraint: ${constraint}`);
+        } else {
+            console.log("No required_version constraint found in file");
+        }
+        return constraint;
+    }
+}
+
+/**
+ * Resolves a version input that may be a file/directory path, semver range, or specific version
+ * @param versionInput The version string, file path, or directory path
+ * @param isFilePath Whether the input is a file or directory path
  * @returns A resolved specific version number
  */
 export async function resolveVersion(versionInput: string, isFilePath: boolean = false): Promise<string> {
     if (isFilePath) {
-        // Parse the file to get the constraint
+        // Parse the file or directory to get the constraint
         const constraint = parseVersionConstraintFromFile(versionInput);
         if (!constraint) {
-            throw new Error(`No required_version constraint found in file: ${versionInput}`);
+            throw new Error(`No required_version constraint found in: ${versionInput}`);
         }
         // Resolve the constraint to a specific version
         return await resolveSemverRange(constraint);
