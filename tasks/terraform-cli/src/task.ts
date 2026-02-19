@@ -54,11 +54,19 @@ export class Task {
       throw new Error(`Support for command "${this.ctx.name}" is not implemented`);
     }
 
+    const commandsRequiringTfFiles = ['init', 'plan', 'apply', 'destroy', 'validate', 'refresh', 'import', 'fmt', 'test'];
+
     let response: commands.CommandResponse | undefined;
     try {
       const cwd = this.ctx.cwd;
       if (cwd && !fs.existsSync(cwd)) {
         throw new Error(`Working directory does not exist: "${cwd}"`);
+      }
+      if (cwd && commandsRequiringTfFiles.includes(this.ctx.name)) {
+        const hasTfFiles = fs.readdirSync(cwd).some(f => f.endsWith('.tf'));
+        if (!hasTfFiles) {
+          throw new Error(`No Terraform files found in working directory: "${cwd}"`);
+        }
       }
       await this.ctx.setIdTokens();
       if (this.ctx.name !== 'version') {
