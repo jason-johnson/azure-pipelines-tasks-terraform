@@ -28,9 +28,9 @@ Feature: publish plan results
         Then the terraform cli task is successful
         And a plan named "test_deploy.tfplan" is published with the following content from file "./src/tests/features/publish-plan-results/plan-summary-no-changes.txt"
         And the following warnings are not logged
-        |Plan 'test_deploy.tfplan' is going to create 0 resource.|
-        |Plan 'test_deploy.tfplan' is going to update 0 resource.|
-        |Plan 'test_deploy.tfplan' is going to destroy 0 resource.|
+        |Plan 'test_deploy.tfplan' is going to create 0 resources.|
+        |Plan 'test_deploy.tfplan' is going to update 0 resources.|
+        |Plan 'test_deploy.tfplan' is going to destroy 0 resources.|
         And the following info messages are logged
         |Plan 'test_deploy.tfplan' has no changes. Infrastructure is up-to-date.|
 

@@ -66,13 +66,13 @@ export function formatPlanSummary(summary: PlanChangeSummary, planName: string):
         messages.push(`Plan '${planName}' has no changes. Infrastructure is up-to-date.`);
     } else {
         if (summary.add > 0) {
-            messages.push(`Plan '${planName}' is going to create ${summary.add} resource${summary.add > 1 ? 's' : ''}.`);
+            messages.push(`Plan '${planName}' is going to create ${summary.add} resource${summary.add == 1 ? '' : 's'}.`);
         }
         if (summary.change > 0) {
-            messages.push(`Plan '${planName}' is going to update ${summary.change} resource${summary.change > 1 ? 's' : ''}.`);
+            messages.push(`Plan '${planName}' is going to update ${summary.change} resource${summary.change == 1 ? '' : 's'}.`);
         }
         if (summary.destroy > 0) {
-            messages.push(`Plan '${planName}' is going to destroy ${summary.destroy} resource${summary.destroy > 1 ? 's' : ''}.`);
+            messages.push(`Plan '${planName}' is going to destroy ${summary.destroy} resource${summary.destroy == 1 ? '' : 's'}.`);
         }
     }
     
