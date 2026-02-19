@@ -135,6 +135,21 @@ export class TerraformSteps {
         }
     }
 
+    @then("the terraform cli task fails with message containing {string}")
+    public terraformCliTaskFailsWithMessageContaining(fragment: string){
+        if(this.test.error){
+            throw this.test.error;
+        }
+        else{
+            expect(this.test.response).to.not.be.undefined;
+            expect(this.test.error).to.be.undefined;
+            if(this.test.response){
+                expect(this.test.response.status).to.eq(CommandStatus.Failed);
+                expect(this.test.response.message).to.include(fragment);
+            }
+        }
+    }
+
     @then("the terraform cli task throws error with message {string}")
     public theTerraformCliTaskThrowsError(message: string){
         expect(this.test.error).to.not.be.undefined;

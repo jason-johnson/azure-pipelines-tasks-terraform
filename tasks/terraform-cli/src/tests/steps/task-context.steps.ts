@@ -1,14 +1,38 @@
-import { binding, given, then } from 'cucumber-tsflow';
+import { binding, given, then, after } from 'cucumber-tsflow';
 import { expect } from 'chai';
 import { MockTaskContext } from '../../context';
 import { DataTable } from '@cucumber/cucumber'
 import { BackendTypes } from '../../backends';
 import util from "util";
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
 
 @binding([MockTaskContext])
 export class TaskContextSteps {
-    constructor(private ctx: MockTaskContext) { }    
-    
+    constructor(private ctx: MockTaskContext) { }
+
+    private emptyTempDir?: string;
+
+    @after()
+    public cleanupEmptyTempDir(){
+        if (this.emptyTempDir) {
+            fs.rmdirSync(this.emptyTempDir);
+            this.emptyTempDir = undefined;
+        }
+    }
+
+    @given("the working directory does not exist")
+    public theWorkingDirectoryDoesNotExist(){
+        this.ctx.cwd = "/nonexistent-terraform-working-dir";
+    }
+
+    @given("the working directory is empty")
+    public theWorkingDirectoryIsEmpty(){
+        this.emptyTempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'tf-test-empty-'));
+        this.ctx.cwd = this.emptyTempDir;
+    }
+
     @given("terraform command is {string}")
     public inputTerraformCommand(command: string){
         this.ctx.name = command;
