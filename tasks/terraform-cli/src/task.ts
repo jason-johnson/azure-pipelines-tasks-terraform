@@ -5,6 +5,7 @@ import { AwsProvider, AzureRmProvider, TerraformProviderContext } from "./provid
 import GoogleProvider from "./providers/google";
 import { IRunner } from "./runners";
 import { ITaskAgent } from "./task-agent";
+import fs from 'fs';
 
 export class Task {
   private readonly commands: { [name: string]: commands.ICommand };
@@ -55,6 +56,10 @@ export class Task {
 
     let response: commands.CommandResponse | undefined;
     try {
+      const cwd = this.ctx.cwd;
+      if (cwd && !fs.existsSync(cwd)) {
+        throw new Error(`Working directory does not exist: "${cwd}"`);
+      }
       await this.ctx.setIdTokens();
       if (this.ctx.name !== 'version') {
         let version = this.commands['version'];

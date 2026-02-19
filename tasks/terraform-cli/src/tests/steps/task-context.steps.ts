@@ -9,6 +9,11 @@ import util from "util";
 export class TaskContextSteps {
     constructor(private ctx: MockTaskContext) { }    
     
+    @given("the working directory does not exist")
+    public theWorkingDirectoryDoesNotExist(){
+        this.ctx.cwd = "/nonexistent-terraform-working-dir";
+    }
+
     @given("terraform command is {string}")
     public inputTerraformCommand(command: string){
         this.ctx.name = command;

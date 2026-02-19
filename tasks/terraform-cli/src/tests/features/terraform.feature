@@ -8,6 +8,13 @@ Feature: Terraform
       When the terraform cli task is run
       Then the terraform cli task fails with message "Error: Not found terraform"
 
+   Scenario: working directory does not exist
+      Given terraform exists
+      And terraform command is "init"
+      And the working directory does not exist
+      When the terraform cli task is run
+      Then the terraform cli task fails with message "Error: Working directory does not exist: \"/nonexistent-terraform-working-dir\""
+
    Scenario: does not fail when stderr exists and exit code is 0
       Given terraform exists
       And terraform command is "version"
