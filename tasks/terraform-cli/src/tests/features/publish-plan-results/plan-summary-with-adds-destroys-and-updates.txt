@@ -1,3 +1,6 @@
+[0m[1mazurerm_resource_group.test_02: Refreshing state... [id=/subscriptions/00000000-aaaa-0000-0000-aaaaaaaaaaaa/resourceGroups/test-02-rg][0m
+[0m[1mazurerm_resource_group.test_01: Refreshing state... [id=/subscriptions/00000000-aaaa-0000-0000-aaaaaaaaaaaa/resourceGroups/test-01-rg][0m
+
 Terraform will perform the following actions:
 
 [1m  # azurerm_resource_group.test_01[0m will be updated in-place[0m[0m
@@ -30,3 +33,10 @@ Terraform will perform the following actions:
 [1mChanges to Outputs:[0m
   [32m+[0m [0m[1m[0mthree[0m[0m = (known after apply)
   [31m-[0m [0m[1m[0mtwo[0m[0m   = "/subscriptions/00000000-aaaa-0000-0000-aaaaaaaaaaaa/resourceGroups/test-02-rg" [90m->[0m [0m[90mnull[0m[0m[0m
+
+------------------------------------------------------------------------
+
+This plan was saved to: tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "tfplan"

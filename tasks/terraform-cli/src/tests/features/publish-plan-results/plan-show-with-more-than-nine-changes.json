@@ -1,0 +1,184 @@
+{
+    "resource_changes": [
+        {
+            "address": "azurerm_resource_group.rg1",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg1",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["create"],
+                "before": null,
+                "after": {
+                    "location": "eastus",
+                    "name": "rg1"
+                }
+            }
+        },
+        {
+            "address": "azurerm_resource_group.rg2",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg2",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["create"],
+                "before": null,
+                "after": {
+                    "location": "eastus",
+                    "name": "rg2"
+                }
+            }
+        },
+        {
+            "address": "azurerm_resource_group.rg3",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg3",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["create"],
+                "before": null,
+                "after": {
+                    "location": "eastus",
+                    "name": "rg3"
+                }
+            }
+        },
+        {
+            "address": "azurerm_resource_group.rg4",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg4",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["create"],
+                "before": null,
+                "after": {
+                    "location": "eastus",
+                    "name": "rg4"
+                }
+            }
+        },
+        {
+            "address": "azurerm_resource_group.rg5",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg5",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["create"],
+                "before": null,
+                "after": {
+                    "location": "eastus",
+                    "name": "rg5"
+                }
+            }
+        },
+        {
+            "address": "azurerm_resource_group.rg6",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg6",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["create"],
+                "before": null,
+                "after": {
+                    "location": "eastus",
+                    "name": "rg6"
+                }
+            }
+        },
+        {
+            "address": "azurerm_resource_group.rg7",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg7",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["create"],
+                "before": null,
+                "after": {
+                    "location": "eastus",
+                    "name": "rg7"
+                }
+            }
+        },
+        {
+            "address": "azurerm_resource_group.rg8",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg8",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["create"],
+                "before": null,
+                "after": {
+                    "location": "eastus",
+                    "name": "rg8"
+                }
+            }
+        },
+        {
+            "address": "azurerm_resource_group.rg9",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg9",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["create"],
+                "before": null,
+                "after": {
+                    "location": "eastus",
+                    "name": "rg9"
+                }
+            }
+        },
+        {
+            "address": "azurerm_resource_group.rg10",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg10",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["create"],
+                "before": null,
+                "after": {
+                    "location": "eastus",
+                    "name": "rg10"
+                }
+            }
+        },
+        {
+            "address": "azurerm_resource_group.rg11",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg11",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["create"],
+                "before": null,
+                "after": {
+                    "location": "eastus",
+                    "name": "rg11"
+                }
+            }
+        },
+        {
+            "address": "azurerm_resource_group.rg12",
+            "mode": "managed",
+            "type": "azurerm_resource_group",
+            "name": "rg12",
+            "provider_name": "azurerm",
+            "change": {
+                "actions": ["create"],
+                "before": null,
+                "after": {
+                    "location": "eastus",
+                    "name": "rg12"
+                }
+            }
+        }
+    ]
+}

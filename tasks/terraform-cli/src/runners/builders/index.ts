@@ -19,6 +19,7 @@ export { default as RunWithDetailedExitCode } from "./run-with-forced-detailed-e
 export { default as RunWithJsonOutput } from './run-with-json-output';
 export { default as RunWithLockId } from './run-with-lock-id';
 export { default as RunWithOptions } from './run-with-options';
+export { default as RunWithPlanFile } from './run-with-plan-file';
 export { default as RunWithPlanOrStateFile } from './run-with-plan-or-state-file';
 export { default as RunWithRawOutputs } from "./run-with-raw-outputs";
 export { default as RunWithResourceTarget } from './run-with-resource-target';
