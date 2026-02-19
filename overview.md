@@ -84,6 +84,69 @@ If `terraformVersion` not provided, task defaults to `latest`
     terraformVersion: 1.8.5
 ```
 
+### Install Using Semver Range
+
+The installer task supports semver ranges to install the latest version matching a constraint. This is useful for ensuring compatibility while still getting the latest patches and minor updates.
+
+```yaml
+- task: TerraformInstaller@1
+  displayName: install terraform with semver range
+  inputs:
+    terraformVersion: '~>1.5.0'  # Terraform-style pessimistic constraint
+```
+
+```yaml
+- task: TerraformInstaller@1
+  displayName: install terraform with npm-style semver
+  inputs:
+    terraformVersion: '^1.5.0'   # npm-style caret constraint
+```
+
+Supported semver operators:
+- `~>1.5.0` - Terraform-style pessimistic constraint (equivalent to `~1.5.0`)
+- `^1.5.0` - Compatible with version (allows minor and patch updates)
+- `~1.5.0` - Reasonably close to version (allows patch updates)
+- `>=1.5.0` - Greater than or equal to version
+- `>1.5.0 <2.0.0` - Range of versions
+
+### Install Using Version from Terraform Configuration
+
+The installer can read the `required_version` constraint from a Terraform configuration file or directory and install the latest matching version automatically. This aligns with how Terraform treats all `.tf` files in a directory as a single configuration.
+
+#### Using a specific file:
+```yaml
+- task: TerraformInstaller@1
+  displayName: install terraform from config file
+  inputs:
+    terraformVersionFile: 'terraform/main.tf'
+```
+
+#### Using a directory (recommended):
+```yaml
+- task: TerraformInstaller@1
+  displayName: install terraform from terraform directory
+  inputs:
+    terraformVersionFile: 'terraform'
+```
+
+When a directory is provided, the task will search all `.tf` files in that directory for a `required_version` constraint. This mirrors Terraform's behavior of treating all files in a directory as a single configuration.
+
+Example `main.tf` with version constraint:
+```hcl
+terraform {
+  required_version = "~>1.5.0"
+  
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.0"
+    }
+  }
+}
+```
+
+**Note:** `terraformVersion` and `terraformVersionFile` are mutually exclusive - you can only specify one or the other.
+
 ## Check Terraform Version
 
 The task supports running `terraform version` individually. When run, if the version is out of date, the task will log a warning to the pipeline summary if there is a newer version of terraform available.

@@ -1,10 +1,12 @@
 import * as tasks from 'azure-pipelines-task-lib/task';
 import { sanitizeVersion } from './sanitizer'
+import { resolveSemverRange } from './version-resolver'
 import * as tools from 'azure-pipelines-tool-lib/tool';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
 import { format } from 'util';
+import * as semver from 'semver';
 const uuidV4 = require('uuid/v4');
 const fetch = require('node-fetch');
 const terraformToolName = "terraform";
@@ -23,7 +25,18 @@ export async function download(inputVersion: string, downloadUrl: string | undef
                 throw new Error(`Unable to retrieve latest version: ${err}`)
             })
     }
-    var version = latestVersion != "" ? sanitizeVersion(latestVersion) : sanitizeVersion(inputVersion);
+    
+    var resolvedVersion = latestVersion != "" ? latestVersion : inputVersion;
+    
+    // Check if the version is a semver range and resolve it
+    const normalizedVersion = resolvedVersion.replace(/~>/g, '~');
+    if (semver.validRange(normalizedVersion) && !semver.valid(resolvedVersion)) {
+        console.log(`Detected semver range: ${resolvedVersion}`);
+        resolvedVersion = await resolveSemverRange(resolvedVersion);
+        console.log(`Resolved to version: ${resolvedVersion}`);
+    }
+    
+    var version = sanitizeVersion(resolvedVersion);
     var cachedToolPath = tools.findLocalTool(terraformToolName, version);
     if(!cachedToolPath){
         const url = downloadUrl || getDownloadUrl(version)
