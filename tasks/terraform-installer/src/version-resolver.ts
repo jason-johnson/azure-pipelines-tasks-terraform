@@ -17,9 +17,9 @@ export async function fetchAvailableTerraformVersions(): Promise<string[]> {
         // Extract version numbers from the releases
         const versions = Object.keys(data.versions)
             .filter(v => {
-                // Filter out pre-release versions (alpha, beta, rc)
-                const version = data.versions[v];
-                return !version.prerelease && semver.valid(v);
+                // Filter out pre-release versions (alpha, beta, rc) using semver
+                const parsed = semver.parse(v);
+                return parsed && parsed.prerelease.length === 0;
             })
             .sort((a, b) => semver.rcompare(a, b)); // Sort descending (newest first)
         
@@ -70,9 +70,12 @@ export function parseVersionConstraintFromFile(filePath: string): string | null 
     try {
         const parsed = hcl2Parser.parseToObject(fileContent);
         
+        // The parser returns an array where the first element contains the parsed object
+        const parsedData = Array.isArray(parsed) ? parsed[0] : parsed;
+        
         // Navigate through the HCL structure to find terraform.required_version
-        if (parsed && parsed.terraform && Array.isArray(parsed.terraform)) {
-            for (const terraformBlock of parsed.terraform) {
+        if (parsedData && parsedData.terraform && Array.isArray(parsedData.terraform)) {
+            for (const terraformBlock of parsedData.terraform) {
                 if (terraformBlock.required_version) {
                     const constraint = Array.isArray(terraformBlock.required_version) 
                         ? terraformBlock.required_version[0] 
