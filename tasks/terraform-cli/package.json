@@ -29,9 +29,9 @@
   "dependencies": {
     "applicationinsights": "^2.9.6",
     "azure-devops-node-api": "^14.1.0",
-    "azure-pipelines-task-lib": "^4.17.3",
-    "azure-pipelines-tasks-artifacts-common": "^2.247.0",
-    "azure-pipelines-tasks-azure-arm-rest": "^3.248.1",
+    "azure-pipelines-task-lib": "^5.279.0",
+    "azure-pipelines-tasks-artifacts-common": "^2.276.0",
+    "azure-pipelines-tasks-azure-arm-rest": "^3.279.2",
     "dotenv": "^16.4.5",
     "intercept-stdout": "^0.1.2",
     "mock-require": "^3.0.3",
