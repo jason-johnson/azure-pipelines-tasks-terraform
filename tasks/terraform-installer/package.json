@@ -34,7 +34,7 @@
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "azure-pipelines-task-lib": "^4.17.3",
+    "azure-pipelines-task-lib": "^5.279.0",
     "azure-pipelines-tool-lib": "^2.0.8",
     "hcl2-parser": "^1.0.3",
     "node-fetch-with-proxy": "^0.1.6",
