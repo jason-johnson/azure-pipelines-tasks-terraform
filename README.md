@@ -1,6 +1,6 @@
-## NOTICE: PROJECT TRANSITIONED TO NEW OWNER
+## NOTICE: PROJECT CONSIDERING RETIREMENT
 
-[@jason-johnson](https://github.com/jason-johnson) has taken over ownership of this extension. The previous publisher will no longer be creating updates for this extension so, going forward, please use the new publisher as described in this updated documentation.
+These days the Microsoft Labs extension is more popular.  I'm not allowed to publish under the old name anymore, so I would have to create a new extension in the marketplace for something that isn't the most popular extension for terraform anymore.  I'm leaning towards it being better to just support the MS Labs extension instead of continuing on here but I'll keep this open for a few more months in any case.
 
 # Azure Pipelines Extension for Terraform
 
